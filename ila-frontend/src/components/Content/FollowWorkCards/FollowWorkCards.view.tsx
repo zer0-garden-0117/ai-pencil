@@ -33,7 +33,7 @@ export const FollowWorkCardsView = memo(function WorkViewComponent({
     <>
         <Group justify="space-between">
           <Text fz="md" fw={700} mb="xs">
-            フォロー中のみ表示
+            フォローの新着
           </Text>
         </Group>
         <Space h="xs" />

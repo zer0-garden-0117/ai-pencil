@@ -45,7 +45,6 @@ class WorkRepository(
         if (workIds.isEmpty()) return emptyList()
 
         return try {
-            // workId を DynamoDB のキー形式に変換
             val keys = workIds.map { workId ->
                 mapOf(
                     "workId" to AttributeValue.builder().s(workId).build()
@@ -64,12 +63,17 @@ class WorkRepository(
 
             val response = dynamoDbClient.batchGetItem(batchGetRequest)
 
-            // 取得した item を Work にマッピング
-            val workItems = response.responses()["work"]?.map { item ->
-                TableSchema.fromClass(Work::class.java).mapToItem(item)
-            } ?: emptyList()
+            // まずは取得できた Work を workId -> Work の Map にする
+            val schema = TableSchema.fromClass(Work::class.java)
+            val workMap: Map<String, Work> =
+                response.responses()["work"]
+                    ?.map { item -> schema.mapToItem(item) }
+                    ?.associateBy { it.workId }
+                    ?: emptyMap()
 
-            workItems
+            // 呼び出し時の workIds の順に並べ直す
+            workIds.mapNotNull { workMap[it] }  // 取得できなかったIDは落とす場合
+
         } catch (e: DynamoDbException) {
             throw RuntimeException(
                 "Failed to batch get works by workIds: ${workIds.joinToString(",")}",

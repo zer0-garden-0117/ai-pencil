@@ -23,8 +23,11 @@ class LikedService(
     ): LikedWithSearchResult {
         val liked = likedRepository.findByUserId(userId)
 
+        // updatedAt順にソート(updateAtの日付が新しい順に並び替える)
+        val sortedLiked = liked.sortedByDescending { it.updatedAt }
+
         // offsetで指定した件数分スキップしlimit分だけ取得
-        val filteredLiked = liked.drop(offset).take(limit)
+        val filteredLiked = sortedLiked.drop(offset).take(limit)
         val count = liked.size
         return LikedWithSearchResult(
             liked = filteredLiked,
