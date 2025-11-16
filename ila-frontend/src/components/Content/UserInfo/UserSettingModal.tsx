@@ -1,7 +1,7 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Modal, Text, Card, Group, Button, Checkbox, Anchor, Pill } from '@mantine/core';
+import { Modal, Text, Card, Group, Button, Checkbox, Anchor, Pill, Radio, Stack } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { UserSettingFormValues } from './UserInfo.hook';
 import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
@@ -55,17 +55,14 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             handleSettingSave();
           })}
         >
-          {/* センシティブな画像を表示するかどうか */}
-          <Checkbox
-            label="センシティブな画像を表示する (R18+)"
-            {...settingForm.getInputProps('showSensitiveImages')}
-          />
-          {/* 微センシティブな画像を表示するかどうか */}
-          <Checkbox
-            mt={10}
-            label="微センシティブな画像を表示する (R15+)"
-            {...settingForm.getInputProps('showMildlySensitiveImages')}
-          />
+          {/* settingFormに反映する */}
+          <Radio.Group {...settingForm.getInputProps('viewRating')}>
+            <Stack mt="xs">
+              <Radio value={0} label="全年齢のみ表示" />
+              <Radio value={1} label="微センシティブも表示 (R15+)" />
+              <Radio value={2} label="センシティブも表示 (R18+)" />
+            </Stack>
+          </Radio.Group>
 
           <Group justify="flex-end" mt="md">
             <Button
@@ -116,7 +113,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             const parts = loginUser?.plan?.split(':') || [];
             const [planName, renewDate, renewTime] = parts;
             // planNameにFreeが含まれている場合はFreeのみ表示
-            if (planName.includes('Free')) return 'Free';
+            if (planName?.includes('Free')) return 'Free';
             return `${planName} (${renewDate}:${renewTime}に自動更新)`;
           })()}
         </Pill>

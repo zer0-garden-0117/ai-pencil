@@ -25,8 +25,7 @@ export type UserInfoFormValues = {
 };
 
 export type UserSettingFormValues = {
-  showSensitiveImages: boolean;
-  showMildlySensitiveImages: boolean;
+  viewRating: number;
 };
 
 export const useUserInfo = (
@@ -125,18 +124,14 @@ export const useUserInfo = (
 
   const settingForm = useForm({
     initialValues: {
-      // センシティブな画像を表示するかどうか
-      showSensitiveImages: false,
-      // 微センシティブな画像を表示するかどうか
-      showMildlySensitiveImages: false,
+      viewRating: 0,
     },
   });
 
   const initSettingForm = () => {
     // 設定用フォームの初期化処理があればここに追加
     settingForm.setValues({
-      showSensitiveImages: false,
-      showMildlySensitiveImages: false,
+      viewRating: userData?.viewRating,
     });
   };
 
@@ -230,11 +225,13 @@ export const useUserInfo = (
   }
 
   const handleSettingButton = () => {
+    initSettingForm();
     setSettingOpened(true);
   }
 
   const handleSettingSave = async () => {
     setIsSaving(true);
+    console.log('Setting values to save:', settingForm.values);
     // 設定保存処理があればここに追加
     // ToDo: 設定保存処理
     // 1秒遅延
