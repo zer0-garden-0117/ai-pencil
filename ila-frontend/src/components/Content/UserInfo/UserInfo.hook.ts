@@ -255,7 +255,8 @@ export const useUserInfo = (
     // 保存後、モーダルを閉じる
     setSettingOpened(false);
     setIsLogouting(false);
-    router.push('/');
+    // トップページへリダイレクト
+    window.location.href = '/';
   };
 
   const handleFollowListClick = () => {

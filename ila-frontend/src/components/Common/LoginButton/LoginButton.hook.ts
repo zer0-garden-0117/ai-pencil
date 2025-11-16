@@ -21,6 +21,7 @@ export const useLoginButton = (
       setIsLogining(false);
     } catch (error) {
       console.error('Login failed:', error);
+      setIsLogining(false);
     }
   };
 

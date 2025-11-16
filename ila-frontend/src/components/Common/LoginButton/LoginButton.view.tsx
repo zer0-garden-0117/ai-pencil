@@ -1,8 +1,6 @@
 'use client';
 
-import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
-import { Button, Group, Avatar, Text, Loader } from '@mantine/core';
-import { useEffect } from 'react';
+import { Button, Group } from '@mantine/core';
 
 type LoginButtonViewProps = {
   isLogining: boolean;
@@ -11,10 +9,6 @@ type LoginButtonViewProps = {
 
 
 export default function LoginButtonView({ isLogining, onLogin }: LoginButtonViewProps) {
-  const { user } = useFirebaseAuthContext();
-
-  // 認証前
-  if (!user) {
     return (
     <Group>
       <Button 
@@ -34,9 +28,10 @@ export default function LoginButtonView({ isLogining, onLogin }: LoginButtonView
         size="md"
         loading={isLogining}
       >
-        Sign in with Twitter
+        <Group>
+          Sign in with Twitter
+        </Group>
       </Button>
     </Group>
     )
-  }
 }
