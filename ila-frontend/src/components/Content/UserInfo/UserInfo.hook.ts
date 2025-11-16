@@ -32,12 +32,13 @@ export const useUserInfo = (
   { userId, tab, page }: UseUserInfoProps
 ) => {
   const router = useRouter();
-  const { user: loginUser, getFreshIdToken, getIdTokenLatest } = useFirebaseAuthContext();
+  const { user: loginUser, getFreshIdToken, getIdTokenLatest, signOut } = useFirebaseAuthContext();
   const { trigger: checkAvailability, isMutating: isChecking } = useUserCheckAvailability();
   const { trigger: updateMyUser } = useMyUserUpdate();
   const [coverImageFile, setCoverImageFile] = useState<File>(new File([], ""));
   const [profileImageFile, setProfileImageFile] = useState<File>(new File([], ""));
   const [isSaving, setIsSaving] = useState(false);
+  const [isLogouting, setIsLogouting] = useState(false);
   const [isUserIdAvailable, setIsUserIdAvailable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginUser, setIsLoginUser] = useState(false);
@@ -242,6 +243,21 @@ export const useUserInfo = (
     setIsSaving(false);
   }
 
+  const handleLogout = async () => {
+    setIsLogouting(true);
+    // ログアウト処理
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+    // 保存後、モーダルを閉じる
+    setSettingOpened(false);
+    setIsLogouting(false);
+    router.push('/');
+  };
+
   const handleFollowListClick = () => {
     router.push(`/user/${userData?.customUserId}/follow?page=1`);
   };
@@ -288,6 +304,7 @@ export const useUserInfo = (
     isLoginUser,
     isChecking,
     isSaving,
+    isLogouting,
     isUserIdAvailable,
     isLoading,
     isUserDataLoading,
@@ -302,6 +319,7 @@ export const useUserInfo = (
     setConfirmOpened,
     handleSave,
     handleSettingSave,
+    handleLogout,
     handleCoverImageDrop,
     handleProfileImageDrop,
     handleEditButton,

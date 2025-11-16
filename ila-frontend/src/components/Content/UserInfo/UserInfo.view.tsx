@@ -2,13 +2,11 @@
 
 import React, { useState, memo } from 'react';
 import { UserInfoFormValues, UserSettingFormValues } from './UserInfo.hook';
-import { IconSettings, IconPencil, IconEdit } from '@tabler/icons-react';
+import { IconSettings, IconEdit } from '@tabler/icons-react';
 import { UsersGetResult } from '@/apis/openapi/users/useUsersGet';
 import FollowButton from '@/components/Common/FollowButton/FollowButton';
-import LogoutButton from '@/components/Common/LogoutButton/LogoutButton';
-import { Skeleton, Button, Group, Text, Card, Space, Modal, TextInput, Textarea, Center, Loader, Anchor, Pill, AspectRatio, Checkbox } from '@mantine/core';
+import { Skeleton, Button, Group, Text, Card, Space, Anchor, AspectRatio } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { MyUserGetResult } from '@/apis/openapi/myusers/useMyUserGet';
 import { SkeltonIcon } from '../SkeltonIcon/SkeltonIcon';
 import { useRouter } from 'next/navigation';
@@ -30,6 +28,7 @@ type UserInfoViewProps = {
   isLoginUser: boolean,
   isChecking: boolean,
   isSaving: boolean,
+  isLogouting: boolean,
   isUserIdAvailable: boolean,
   isLoading: boolean,
   isUserDataLoading: boolean,
@@ -44,6 +43,7 @@ type UserInfoViewProps = {
   setConfirmOpened: React.Dispatch<React.SetStateAction<boolean>>,
   handleSave: (values: UserInfoFormValues) => Promise<void>,
   handleSettingSave: () => void,
+  handleLogout: () => void,
   handleCoverImageDrop: (files: File[]) => void,
   handleProfileImageDrop: (files: File[]) => void,
   handleEditButton: () => void,
@@ -67,6 +67,7 @@ export const UserInfoView = memo(function WorkViewComponent({
   isLoginUser,
   isChecking,
   isSaving,
+  isLogouting,
   isUserIdAvailable,
   isLoading,
   isUserDataLoading,
@@ -81,6 +82,7 @@ export const UserInfoView = memo(function WorkViewComponent({
   setConfirmOpened,
   handleSave,
   handleSettingSave,
+  handleLogout,
   handleCoverImageDrop,
   handleProfileImageDrop,
   handleEditButton,
@@ -308,8 +310,10 @@ export const UserInfoView = memo(function WorkViewComponent({
         setSettingOpened={setSettingOpened}
         settingForm={settingForm}
         isSaving={isSaving}
+        isLogouting={isLogouting}
         isDeleting={isDeleting}
         handleSettingSave={handleSettingSave}
+        handleLogout={handleLogout}
         handleDeleteUserClick={handleDeleteUserClick}
       />
 

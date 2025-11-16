@@ -3,16 +3,18 @@
 import React, { memo } from 'react';
 import { Modal, Text, Card, Group, Button, Checkbox } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import LogoutButton from '@/components/Common/LogoutButton/LogoutButton';
 import { UserSettingFormValues } from './UserInfo.hook';
+import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
 
 type UserSettingModalProps = {
   settingOpened: boolean;
   setSettingOpened: React.Dispatch<React.SetStateAction<boolean>>;
   settingForm: UseFormReturnType<UserSettingFormValues>;
   isSaving: boolean;
+  isLogouting: boolean;
   isDeleting: boolean;
   handleSettingSave: () => void;
+  handleLogout: () => void;
   handleDeleteUserClick: () => void;
 };
 
@@ -21,10 +23,13 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
   setSettingOpened,
   settingForm,
   isSaving,
+  isLogouting,
   isDeleting,
   handleSettingSave,
+  handleLogout,
   handleDeleteUserClick,
 }: UserSettingModalProps) {
+  const { signOut } = useFirebaseAuthContext();
   return (
     <Modal
       opened={settingOpened}
@@ -59,7 +64,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             <Button
               variant="outline"
               radius="xl"
-              disabled={isSaving || isDeleting}
+              disabled={isSaving || isLogouting || isDeleting}
               onClick={() => setSettingOpened(false)}
             >
               キャンセル
@@ -68,7 +73,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
               type="submit"
               color="blue"
               radius="xl"
-              disabled={isDeleting}
+              disabled={isDeleting || isLogouting}
               loading={isSaving}
             >
               保存
@@ -86,7 +91,19 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
       <Card withBorder radius="md" p="md" mb={10}>
         <Group justify="space-between" align="center">
           <Text fz="sm">ログアウト</Text>
-          <LogoutButton isDisable={isSaving || isDeleting} />
+          <Group>
+            <Button 
+              onClick={handleLogout}
+              variant="outline" 
+              color="red"
+              size="sm"
+              radius={"xl"}
+              disabled={isSaving || isDeleting}
+              loading={isLogouting}
+            >
+              Logout
+            </Button>
+          </Group>
         </Group>
 
         <Group justify="space-between" align="center" mt={20}>
@@ -97,7 +114,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             size="sm"
             radius="xl"
             onClick={handleDeleteUserClick}
-            disabled={isSaving || isDeleting}
+            disabled={isSaving || isLogouting || isDeleting}
           >
             ユーザーを削除する
           </Button>
