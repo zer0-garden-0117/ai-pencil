@@ -9,6 +9,7 @@ import { usePublicUsersGet } from "@/apis/openapi/publicusers/usePublicUsersGet"
 import { MyUserGetResult } from '@/apis/openapi/myusers/useMyUserGet';
 import { useTagUsersGet } from "@/apis/openapi/users/useTagUsersGet";
 import { useUsersDelete } from "@/apis/openapi/myusers/useUsersDelete";
+import { useMyUserViewRatingUpdate } from "@/apis/openapi/myusers/useMyUserViewRatingUpdate";
 
 type UseUserInfoProps = {
   userId: string;
@@ -25,7 +26,7 @@ export type UserInfoFormValues = {
 };
 
 export type UserSettingFormValues = {
-  viewRating: number;
+  viewRating: string;
 };
 
 export const useUserInfo = (
@@ -35,6 +36,7 @@ export const useUserInfo = (
   const { user: loginUser, getFreshIdToken, getIdTokenLatest, signOut } = useFirebaseAuthContext();
   const { trigger: checkAvailability, isMutating: isChecking } = useUserCheckAvailability();
   const { trigger: updateMyUser } = useMyUserUpdate();
+  const { trigger: updateViewRating } = useMyUserViewRatingUpdate();
   const { trigger: deleteUser } = useUsersDelete();
   const [coverImageFile, setCoverImageFile] = useState<File>(new File([], ""));
   const [profileImageFile, setProfileImageFile] = useState<File>(new File([], ""));
@@ -124,14 +126,14 @@ export const useUserInfo = (
 
   const settingForm = useForm({
     initialValues: {
-      viewRating: 0,
+      viewRating: "0",
     },
   });
 
   const initSettingForm = () => {
     // 設定用フォームの初期化処理があればここに追加
     settingForm.setValues({
-      viewRating: userData?.viewRating,
+      viewRating: userData?.viewRating?.toString() || "0",
     });
   };
 
@@ -188,7 +190,7 @@ export const useUserInfo = (
 
       // トークンと認証情報を更新
       await getFreshIdToken();
-      updateUser();
+      await updateUser();
       setIsUserDataLoading(true);
 
       // 更新処理後、モーダルを閉じる
@@ -231,11 +233,16 @@ export const useUserInfo = (
 
   const handleSettingSave = async () => {
     setIsSaving(true);
-    console.log('Setting values to save:', settingForm.values);
-    // 設定保存処理があればここに追加
-    // ToDo: 設定保存処理
-    // 1秒遅延
-    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    await updateViewRating({
+      headers: { Authorization: `Bearer ${await getIdTokenLatest()}` },
+      body: {
+        viewRating: parseInt(settingForm.values.viewRating, 10),
+      }
+    });
+
+    await getFreshIdToken();
+    await updateUser();
   
     // 保存後、モーダルを閉じる
     setSettingOpened(false);

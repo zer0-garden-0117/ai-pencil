@@ -10,6 +10,7 @@ import com.ila.zer0.generated.model.ApiUser
 import com.ila.zer0.generated.model.PatchMyUserViewRatingRequest
 import com.ila.zer0.mapper.UserMapper
 import com.ila.zer0.service.user.UserManagerService
+import com.ila.zer0.service.user.UserService
 import io.swagger.v3.oas.annotations.Parameter
 import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
@@ -27,8 +28,9 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 class MyUsersController(
     private val userManagerService: UserManagerService,
+    private val userService: UserService,
     private val userMapper: UserMapper,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
 ) : MyusersApi {
     val logger = LoggerFactory.getLogger(UsersController::class.java)
 
@@ -76,7 +78,24 @@ class MyUsersController(
     override fun patchMyUserViewRating(
         @RequestBody patchMyUserViewRatingRequest: PatchMyUserViewRatingRequest
     ): ResponseEntity<ApiUser> {
-        return ResponseEntity(HttpStatus.NOT_IMPLEMENTED)
+        // バリデーション (0〜2の範囲)
+        if (patchMyUserViewRatingRequest.viewRating < 0 || patchMyUserViewRatingRequest.viewRating > 2) {
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
+
+        // 認証ユーザー取得
+        val userId =
+            getUserId() ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+        // ユーザーを取得して更新
+        val user =
+            userManagerService.getUserById(userId) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+        user.viewRating = patchMyUserViewRatingRequest.viewRating
+        val updatedUser = userService.updateUser(user)
+
+        // APIモデルに変換
+        val updatedApiUser = userMapper.toApiUser(updatedUser)
+        return ResponseEntity.ok(updatedApiUser)
     }
 
     override fun deleteMyUser(): ResponseEntity<ApiUser> {
