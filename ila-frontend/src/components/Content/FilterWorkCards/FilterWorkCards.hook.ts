@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 
 const PAGE_SIZE = 4;
 
-export const useTopCards = () => {
+export const useFilterWorkCards = () => {
   const router = useRouter();
   const worksFilterType = "new";
 

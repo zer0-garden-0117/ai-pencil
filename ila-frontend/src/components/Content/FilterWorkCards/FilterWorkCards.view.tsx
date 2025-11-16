@@ -6,7 +6,7 @@ import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
 import { IconFilter2 } from '@tabler/icons-react';
 import { PublicWorksGetResult } from '@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite';
 
-type TopCardsViewProps = {
+type FilterWorkCardsViewProps = {
   worksData: PublicWorksGetResult | undefined;
   illustNum: number;
   isSubmitting: boolean;
@@ -14,13 +14,13 @@ type TopCardsViewProps = {
   handleFollowClick: () => void;
 };
 
-export const TopCardsView = memo(function WorkViewComponent({
+export const FilterWorkCardsView = memo(function WorkViewComponent({
   worksData,
   illustNum,
   isSubmitting,
   handleMoreClick,
   handleFollowClick
-}: TopCardsViewProps): JSX.Element {
+}: FilterWorkCardsViewProps): JSX.Element {
   const loadedCount = worksData?.works?.length ?? 0;
   const skeletonCount =
     worksData && illustNum > loadedCount ? illustNum - loadedCount : 0;
@@ -81,4 +81,4 @@ export const TopCardsView = memo(function WorkViewComponent({
     </>
   );
 });
-TopCardsView.displayName = 'TopCardsView';
+FilterWorkCardsView.displayName = 'FilterWorkCardsView';

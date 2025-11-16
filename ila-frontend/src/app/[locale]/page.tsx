@@ -1,6 +1,6 @@
 'use client';
 import FollowWorkCards from "@/components/Content/FollowWorkCards/FollowWorkCards";
-import TopCards from "@/components/Content/TopCards/TopCards";
+import FilterWorkCards from "@/components/Content/FilterWorkCards/FilterWorkCards";
 import { Card, Space } from "@mantine/core";
 import { useTranslations } from "next-intl";
 
@@ -10,7 +10,7 @@ const TopPage: React.FC = () => {
   return (
     <>
       <Card withBorder>
-      <TopCards />
+      <FilterWorkCards />
       <Space h="md" />
       <FollowWorkCards />
       </Card>
