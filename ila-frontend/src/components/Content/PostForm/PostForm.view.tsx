@@ -76,7 +76,6 @@ export const PostFormView = memo(function WorkViewComponent({
                   radius={"xl"}
                   w="fit-content"
                   onClick={handleConfirmClick}
-                  variant='outline'
                 >
                   投稿の確認
                 </Button>

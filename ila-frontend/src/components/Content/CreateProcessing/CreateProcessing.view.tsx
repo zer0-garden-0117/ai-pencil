@@ -28,7 +28,6 @@ export const CreateProcessingView = memo(function WorkViewComponent({
       <Group justify="flex-end">
         <Button
           radius={"xl"}
-          variant="outline"
           size="xs"
           leftSection={
             <IconPencilCode

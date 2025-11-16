@@ -92,7 +92,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
 
       {/* プラン、ブーストの設定 */}
       <Text mt={20} mb={10} fz="md" fw={500}>
-        プラン、ブーストの設定
+        イラスト生成数の設定
       </Text>
 
       {/* プランの状態 */}
@@ -105,6 +105,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             <Button
               onClick={handlePlanChangeClick}
               radius="xl"
+              disabled={isSaving || isLogouting || isDeleting}
             >
               変更
             </Button>
@@ -114,7 +115,8 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
           {(() => {
             const parts = loginUser?.plan?.split(':') || [];
             const [planName, renewDate, renewTime] = parts;
-            if (!planName) return 'Free';
+            // planNameにFreeが含まれている場合はFreeのみ表示
+            if (planName.includes('Free')) return 'Free';
             return `${planName} (${renewDate}:${renewTime}に自動更新)`;
           })()}
         </Pill>
@@ -128,6 +130,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             <Button
               onClick={handleBoostChangeClick}
               radius="xl"
+              disabled={isSaving || isLogouting || isDeleting}
             >
               追加
             </Button>
@@ -146,6 +149,15 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
               </Pill>
             );
           })}
+          {/* loginUser.boostが存在しない場合の処理 */}
+          {(!loginUser?.boost || loginUser.boost.length === 0) && (
+              <Pill
+                mb="md"
+                style={{ display: 'inline-flex', width: 'fit-content', marginRight: 8 }}
+              >
+                ブーストは追加されていません
+              </Pill>
+          )}
         </Group>
       </Card>
       
@@ -174,7 +186,8 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
           </Group>
         </Group>
 
-        <Group justify="space-between" align="center" mt={20}>
+        {/* ユーザーの削除 */}
+        {/* <Group justify="space-between" align="center" mt={20}>
           <Text fz="sm">ユーザーの削除</Text>
           <Button
             variant="outline"
@@ -186,7 +199,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
           >
             ユーザーを削除する
           </Button>
-        </Group>
+        </Group> */}
       </Card>
     </Modal>
   );

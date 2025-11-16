@@ -8,6 +8,7 @@ import { useUsersGet } from "@/apis/openapi/users/useUsersGet";
 import { usePublicUsersGet } from "@/apis/openapi/publicusers/usePublicUsersGet";
 import { MyUserGetResult } from '@/apis/openapi/myusers/useMyUserGet';
 import { useTagUsersGet } from "@/apis/openapi/users/useTagUsersGet";
+import { useUsersDelete } from "@/apis/openapi/myusers/useUsersDelete";
 
 type UseUserInfoProps = {
   userId: string;
@@ -35,6 +36,7 @@ export const useUserInfo = (
   const { user: loginUser, getFreshIdToken, getIdTokenLatest, signOut } = useFirebaseAuthContext();
   const { trigger: checkAvailability, isMutating: isChecking } = useUserCheckAvailability();
   const { trigger: updateMyUser } = useMyUserUpdate();
+  const { trigger: deleteUser } = useUsersDelete();
   const [coverImageFile, setCoverImageFile] = useState<File>(new File([], ""));
   const [profileImageFile, setProfileImageFile] = useState<File>(new File([], ""));
   const [isSaving, setIsSaving] = useState(false);
@@ -278,10 +280,12 @@ export const useUserInfo = (
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     // ユーザー削除処理
-    // ToDo: ユーザー削除処理の実装
+    await deleteUser({
+      headers: { Authorization: `Bearer ${await getIdTokenLatest()}` },
+    });
 
-    // 1秒遅延
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // ログアウト処理
+    await signOut();
 
     // 削除後、トップページへリダイレクト
     setConfirmOpened(false);

@@ -1,5 +1,6 @@
 package com.ila.zer0.controller.users
 
+import com.google.firebase.auth.FirebaseAuth
 import com.ila.zer0.config.token.CustomAuthenticationToken
 import com.ila.zer0.generated.endpoint.MyusersApi
 import com.ila.zer0.generated.model.ApiIsTag
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile
 class MyUsersController(
     private val userManagerService: UserManagerService,
     private val userMapper: UserMapper,
+    private val firebaseAuth: FirebaseAuth
 ) : MyusersApi {
     val logger = LoggerFactory.getLogger(UsersController::class.java)
 
@@ -84,6 +86,9 @@ class MyUsersController(
 
         // ユーザー削除
         userManagerService.deleteUsers(userId)
+
+        // firebaseAuthからも削除する場合はここで実装
+        firebaseAuth.deleteUser(userId)
 
         return ResponseEntity.ok(ApiUser(userId, null))
     }
