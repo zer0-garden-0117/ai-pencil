@@ -10,9 +10,13 @@ const TopPage: React.FC = () => {
   return (
     <>
       <Card withBorder>
-      <FilterWorkCards />
-      <Space h="md" />
-      <FollowWorkCards />
+        <FilterWorkCards filterType="new" />
+        <Space h="md" />
+        <FollowWorkCards />
+        <Space h="md" />
+        <FilterWorkCards filterType="random"/>
+        <Space h="md" />
+        <FilterWorkCards filterType="recommended"/>
       </Card>
     </>
   );

@@ -11,6 +11,7 @@ export type PublicWorks =
   operations['getPublicWorksByFilter']['responses']['200']['content']['application/json']['works'];
 
 export type PublicWorksGetQuery = operations['getPublicWorksByFilter']['parameters']['query'];
+export type FilterType = PublicWorksGetQuery['publicWorksFilterType'];
 
 export type PublicWorksGetInfiniteArgs = {
   initialOffset?: PublicWorksGetQuery['offset'];

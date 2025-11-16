@@ -1,17 +1,20 @@
-import { PublicWorksGetResult, usePublicWorksGetByFilterInfinite } from "@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite";
+import { FilterType, PublicWorksGetResult, usePublicWorksGetByFilterInfinite } from "@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite";
 import { useRouter } from "next/navigation";
 
 const PAGE_SIZE = 4;
 
-export const useFilterWorkCards = () => {
+type UseFilterWorkCardsProps = {
+  filterType: FilterType;
+};
+
+export const useFilterWorkCards = ({ filterType }: UseFilterWorkCardsProps) => {
   const router = useRouter();
-  const worksFilterType = "new";
 
   const { data, size, setSize, isValidating } = usePublicWorksGetByFilterInfinite(
     {
       initialOffset: 0,
       limit: PAGE_SIZE,
-      worksFilterType,
+      worksFilterType: filterType,
     },
     { revalidateOnFocus: false }
   );
