@@ -80,12 +80,11 @@ class UsageRepository(
     }
 
 
-    fun getRemaining(userId: String, yyyymmdd: String, defaultLimit: Int = 5): Int {
+    fun getRemaining(userId: String, yyyymmdd: String, limit: Int): Int {
         val item = findByKey(userId, yyyymmdd)
         return if (item == null) {
-            defaultLimit
+            limit
         } else {
-            val limit = item.limit
             val used = item.usedCount
             (limit - used).coerceAtLeast(0)
         }
@@ -94,7 +93,6 @@ class UsageRepository(
     fun consumeOne(
         userId: String,
         yyyymmdd: String,
-        limitIfAbsent: Int,
         ttlEpochSeconds: Long? = null
     ): Int {
         try {
@@ -103,39 +101,34 @@ class UsageRepository(
                 "yyyymmdd" to AttributeValue.builder().s(yyyymmdd).build()
             )
 
-            val exprAttrValues = mutableMapOf(
-                ":one" to AttributeValue.builder().n("1").build(),
-                ":lim" to AttributeValue.builder().n(limitIfAbsent.toString()).build()
+            val exprAttrValues = mutableMapOf<String, AttributeValue>(
+                ":one" to AttributeValue.builder().n("1").build()
             )
-            val exprAttrNames = mutableMapOf(
-                "#lim" to "limit"
-            )
+            val exprAttrNames = mutableMapOf<String, String>()
 
-            val setParts = mutableListOf(" #lim = if_not_exists(#lim, :lim)")
-            if (ttlEpochSeconds != null) {
+            // TTL をセットする場合のみ SET 句を付ける
+            val updateExpression = if (ttlEpochSeconds != null) {
                 exprAttrValues[":ttl"] = AttributeValue.builder().n(ttlEpochSeconds.toString()).build()
                 exprAttrNames["#ttl"] = "ttl"
-                setParts.add(" #ttl = :ttl")
+                "ADD usedCount :one SET #ttl = :ttl"
+            } else {
+                "ADD usedCount :one"
             }
 
-            val updateExpression = "ADD usedCount :one SET${setParts.joinToString(",")}"
-
-            val request = UpdateItemRequest.builder()
+            val requestBuilder = UpdateItemRequest.builder()
                 .tableName("usage")
                 .key(key)
                 .updateExpression(updateExpression)
-                .conditionExpression("attribute_not_exists(usedCount) OR usedCount < :lim")
                 .expressionAttributeValues(exprAttrValues)
-                .expressionAttributeNames(exprAttrNames)
                 .returnValues(ReturnValue.UPDATED_NEW)
-                .build()
 
-            val res = dynamoDbClient.updateItem(request)
-            val newCount = res.attributes()["usedCount"]?.n()?.toInt() ?: 0
-            return newCount
-        } catch (e: ConditionalCheckFailedException) {
-            // 上限到達
-            throw e
+            if (exprAttrNames.isNotEmpty()) {
+                requestBuilder.expressionAttributeNames(exprAttrNames)
+            }
+
+            val res = dynamoDbClient.updateItem(requestBuilder.build())
+            return res.attributes()["usedCount"]?.n()?.toInt() ?: 0
+
         } catch (e: DynamoDbException) {
             throw RuntimeException(
                 "Failed to consumeOne for userId=$userId, yyyymmdd=$yyyymmdd",

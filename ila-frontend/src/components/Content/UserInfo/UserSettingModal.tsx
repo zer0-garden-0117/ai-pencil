@@ -1,12 +1,14 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Modal, Text, Card, Group, Button, Checkbox } from '@mantine/core';
+import { Modal, Text, Card, Group, Button, Checkbox, Anchor, Pill } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { UserSettingFormValues } from './UserInfo.hook';
 import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
+import { MyUserGetResult } from '@/apis/openapi/myusers/useMyUserGet';
 
 type UserSettingModalProps = {
+  loginUser: MyUserGetResult;
   settingOpened: boolean;
   setSettingOpened: React.Dispatch<React.SetStateAction<boolean>>;
   settingForm: UseFormReturnType<UserSettingFormValues>;
@@ -16,9 +18,12 @@ type UserSettingModalProps = {
   handleSettingSave: () => void;
   handleLogout: () => void;
   handleDeleteUserClick: () => void;
+  handlePlanChangeClick: () => void;
+  handleBoostChangeClick: () => void;
 };
 
 export const UserSettingModal = memo(function UserSettingModalComponent({
+  loginUser,
   settingOpened,
   setSettingOpened,
   settingForm,
@@ -28,6 +33,8 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
   handleSettingSave,
   handleLogout,
   handleDeleteUserClick,
+  handlePlanChangeClick,
+  handleBoostChangeClick,
 }: UserSettingModalProps) {
   const { signOut } = useFirebaseAuthContext();
   return (
@@ -81,6 +88,67 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
           </Group>
         </form>
       </Card>
+
+
+      {/* プラン、ブーストの設定 */}
+      <Text mt={20} mb={10} fz="md" fw={500}>
+        プラン、ブーストの設定
+      </Text>
+
+      {/* プランの状態 */}
+      <Card withBorder radius="md" p="md" mb={10}>
+        <Group gap="10px" mb="5px" justify="space-between">
+          <Text fw={500} fz="sm">
+            プラン
+          </Text>
+          <Anchor>
+            <Button
+              onClick={handlePlanChangeClick}
+              radius="xl"
+            >
+              変更
+            </Button>
+          </Anchor>
+        </Group>
+        <Pill mb="md" style={{ display: 'inline-flex', width: 'fit-content' }}>
+          {(() => {
+            const parts = loginUser?.plan?.split(':') || [];
+            const [planName, renewDate, renewTime] = parts;
+            if (!planName) return 'Free';
+            return `${planName} (${renewDate}:${renewTime}に自動更新)`;
+          })()}
+        </Pill>
+
+        {/* ブーストの状態 */}
+        <Group gap="10px" mb="5px" justify="space-between">
+          <Text fw={500} fz="sm">
+            ブースト
+          </Text>
+          <Anchor>
+            <Button
+              onClick={handleBoostChangeClick}
+              radius="xl"
+            >
+              追加
+            </Button>
+          </Anchor>
+        </Group>
+        <Group gap={1}>
+          {loginUser?.boost?.map((boostItem, index) => {
+            const [label, date] = boostItem.split(':');
+            return (
+              <Pill
+                key={index}
+                mb="md"
+                style={{ display: 'inline-flex', width: 'fit-content', marginRight: 8 }}
+              >
+                {label} ({date}まで有効)
+              </Pill>
+            );
+          })}
+        </Group>
+      </Card>
+      
 
       {/* その他 */}
       <Text mt={20} mb={10} fz="md" fw={500}>

@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Service
 class UserManagerService(
@@ -70,20 +73,40 @@ class UserManagerService(
         val followerCount = followService.getFollowerCount(userId)
         user.follow = followCount
         user.follower = followerCount
-        user.illustNumLimit = calLimitNumByPlanAndBoost(user.plan, user.boost)
-        user.remainingIllustNum = usageService.getRemainingToday(userId, user.illustNumLimit)
         val products = productService.findActive(user.userId)
         // productsにBasicが含まれていればplanをBasicに設定、含まれていなければFreeに設定
         // planをBasicにする場合は、Basic:it.autoUpdateToの形式でuser.planに設定
-        if (products.any { it.product == "Basic" }) {
-            val basicProduct = products.first { it.product == "Basic" }
-            user.plan = "Basic:" + basicProduct.autoUpdateTo
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val today = LocalDate.now(ZoneId.of("Asia/Tokyo"))
+
+        fun isValid(dateStr: String?): Boolean {
+            if (dateStr.isNullOrBlank()) return false
+            return try {
+                val date = LocalDate.parse(dateStr, formatter)
+                date.isAfter(today) || date.isEqual(today) // 今日含む
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        // ===== Basic の有効期限チェック =====
+        val basicProduct = products
+            .filter { it.product == "Basic" }
+            .firstOrNull { isValid(it.supportTo) }
+
+        if (basicProduct != null) {
+            user.plan = "Basic:${basicProduct.autoUpdateTo}"
         } else {
             user.plan = "Free"
         }
-        // boostにBasic以外の有効なプランをプロダクト名:有効期限の形式で追加
-        user.boost = products.filter { it.product != "Basic" }
-            .map { it.product + ":" + it.supportTo }
+
+        // ===== Boost（Basic以外）の有効期限チェック =====
+        user.boost = products
+            .filter { it.product != "Basic" }
+            .filter { isValid(it.supportTo) }
+            .map { "${it.product}:${it.supportTo}" }
+        user.illustNumLimit = calLimitNumByPlanAndBoost(user.plan, user.boost)
+        user.remainingIllustNum = usageService.getRemainingToday(userId, user.illustNumLimit)
         return user
     }
 
@@ -403,25 +426,36 @@ class UserManagerService(
 
     @Transactional
     fun deleteUsers(userId: String) {
-        likedService.deleteUser(userId)
+        // いいねを削除
+        // likedService.deleteUser(userId)
+        // タグを削除
+        // taggedRepository.deleteByUserId(userId)
+        // 作品を削除 (ttlを設定)
+        // ToDo: 作品の削除は保留
+        // ユーザーを削除
+        // userService.deleteUserById(userId)
+        // firebaseから削除
+        // firebaseService.deleteUser(userId)
     }
 
     fun calLimitNumByPlanAndBoost(plan: String, boost: List<String>): Int {
-        val basePlan = plan.split(":").first()
-        var limitNum = when (basePlan) {
-            "Free" -> 3
-            "Basic" -> 10
-            else -> 3
+        // plan に含まれるワードでベースの上限を決定
+        var limitNum = when {
+            plan.contains("Basic") -> 10
+            plan.contains("Free") -> 3
+            else -> 3  // 想定外は一旦 Free 相当として扱う
         }
-        boost.forEach {
-            val plan = it.split(":").first()
-            limitNum += when (plan) {
-                "Boost S" -> 10
-                "Boost M" -> 10
-                "Boost L" -> 20
+
+        // boost の各要素は "Boost S:2025-12-31" のように「:有効期限」が付く想定
+        boost.forEach { boostStr ->
+            limitNum += when {
+                boostStr.contains("Boost S") -> 10
+                boostStr.contains("Boost M") -> 10
+                boostStr.contains("Boost L") -> 20
                 else -> 0
             }
         }
+
         return limitNum
     }
 

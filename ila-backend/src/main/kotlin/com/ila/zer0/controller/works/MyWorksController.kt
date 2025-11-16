@@ -43,7 +43,7 @@ class MyWorksController(
         }
 
         // 生成可能数をチェック
-        if (usageService.getRemainingToday(user.userId, defaultLimit = user.illustNumLimit) <= 0) {
+        if (usageService.getRemainingToday(user.userId, limit = user.illustNumLimit) <= 0) {
             return ResponseEntity(HttpStatus.PAYMENT_REQUIRED)
         }
         // プランによってttlとsupportToに設定する日数を設定
@@ -68,7 +68,7 @@ class MyWorksController(
         workManagerService.createWork(work)
 
         // イラスト生成数をデクリメント
-        usageService.consumeOneToday(user.userId, limitIfAbsent = user.illustNumLimit)
+        usageService.consumeOneToday(user.userId)
 
         val workWithTag = WorkWithTag(
             work = work,

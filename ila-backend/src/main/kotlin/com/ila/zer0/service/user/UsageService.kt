@@ -19,22 +19,20 @@ class UsageService(
         return usageRepository.findByKey(userId, sk)
     }
 
-    fun getRemainingToday(userId: String, defaultLimit: Int = 3): Int {
+    fun getRemainingToday(userId: String, limit: Int): Int {
         val sk = todaySk()
-        return usageRepository.getRemaining(userId, sk, defaultLimit)
+        return usageRepository.getRemaining(userId, sk, limit)
     }
 
-    fun consumeOneToday(
-        userId: String,
-        limitIfAbsent: Int,
-        ttlDays: Long = 35
-    ): Int {
+    fun consumeOneToday(userId: String): Int {
+        // ttlは35を設定
         val sk = todaySk()
-        val ttlEpochSeconds = ttlEpoch(ttlDays)
+        val ttlEpochSeconds = ttlEpoch(35)
+
+        // イラスト生成数をデクリメント
         return usageRepository.consumeOne(
             userId = userId,
             yyyymmdd = sk,
-            limitIfAbsent = limitIfAbsent,
             ttlEpochSeconds = ttlEpochSeconds
         )
     }

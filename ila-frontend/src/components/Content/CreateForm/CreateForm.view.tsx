@@ -37,7 +37,6 @@ export const CreateWorkView = memo(function WorkViewComponent({
         </Text>
         <Button
           radius={"xl"}
-          variant="outline"
           size="xs"
           leftSection={
             <IconPencilCode

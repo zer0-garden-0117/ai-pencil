@@ -230,67 +230,6 @@ export const UserInfoEditModal = memo(function UserInfoEditModal({
             }}
             mb="md"
           />
-
-          {/* プランの状態 */}
-          <Group gap="10px" mb="5px">
-            <Text fw={500} fz="sm">
-              プラン
-            </Text>
-            <Anchor>
-              <Button
-                onClick={handlePlanChangeClick}
-                size="compact-xs"
-                fw={500}
-                fz="xs"
-                mb={3}
-                radius="xl"
-              >
-                プランの変更
-              </Button>
-            </Anchor>
-          </Group>
-          <Pill mb="md" style={{ display: 'inline-flex', width: 'fit-content' }}>
-            {(() => {
-              const parts = loginUser?.plan?.split(':') || [];
-              const [planName, renewDate, renewTime] = parts;
-              if (!planName) return 'Free';
-              return `${planName} (${renewDate}:${renewTime}に自動更新)`;
-            })()}
-          </Pill>
-
-          {/* ブーストの状態 */}
-          <Group gap="10px" mb="5px">
-            <Text fw={500} fz="sm">
-              ブースト
-            </Text>
-            <Anchor>
-              <Button
-                onClick={handleBoostChangeClick}
-                size="compact-xs"
-                fw={500}
-                fz="xs"
-                mb={3}
-                radius="xl"
-              >
-                ブーストの追加
-              </Button>
-            </Anchor>
-          </Group>
-          <Group gap={1}>
-            {loginUser?.boost?.map((boostItem, index) => {
-              const [label, date] = boostItem.split(':');
-              return (
-                <Pill
-                  key={index}
-                  mb="md"
-                  style={{ display: 'inline-flex', width: 'fit-content', marginRight: 8 }}
-                >
-                  {label} ({date}まで有効)
-                </Pill>
-              );
-            })}
-          </Group>
-
           {/* ボタン */}
           <Group justify="flex-end" mt="md">
             <Button

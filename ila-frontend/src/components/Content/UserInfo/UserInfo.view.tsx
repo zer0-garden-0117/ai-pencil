@@ -306,6 +306,7 @@ export const UserInfoView = memo(function WorkViewComponent({
       />
       {/* ユーザー設定モーダル */}
       <UserSettingModal
+        loginUser={loginUser}
         settingOpened={settingOpened}
         setSettingOpened={setSettingOpened}
         settingForm={settingForm}
@@ -315,6 +316,8 @@ export const UserInfoView = memo(function WorkViewComponent({
         handleSettingSave={handleSettingSave}
         handleLogout={handleLogout}
         handleDeleteUserClick={handleDeleteUserClick}
+        handlePlanChangeClick={handlePlanChangeClick}
+        handleBoostChangeClick={handleBoostChangeClick}
       />
 
       {/* 確認モーダル */}
