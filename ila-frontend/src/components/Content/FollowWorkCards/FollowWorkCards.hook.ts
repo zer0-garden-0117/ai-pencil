@@ -45,15 +45,10 @@ export const useFollowWorkCards = () => {
     setSize(size + 1);
   };
 
-  const handleNewClick = () => {
-    router.push('/');
-  };
-
   return {
     worksData,
     illustNum,
     isSubmitting: isLoadingMore,
     handleMoreClick,
-    handleNewClick,
   };
 };

@@ -1,18 +1,15 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Card, Center, Button, Space, SimpleGrid, Text, Group } from '@mantine/core';
+import { Center, Button, Space, SimpleGrid, Text, Group } from '@mantine/core';
 import { PublicWorksGetResult } from '@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite';
-import { ImageCard } from '../ImageCard/ImageCard';
 import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
-import { IconFilter, IconFilter2, IconFilter2Bolt, IconSparkles, IconUser, IconUserBolt, IconUserCheck, IconUserSearch } from '@tabler/icons-react';
 
 type FollowWorkCardsViewProps = {
   worksData: PublicWorksGetResult | undefined;
   illustNum: number;
   isSubmitting: boolean;
   handleMoreClick: () => void;
-  handleNewClick: () => void;
 };
 
 export const FollowWorkCardsView = memo(function WorkViewComponent({
@@ -20,13 +17,17 @@ export const FollowWorkCardsView = memo(function WorkViewComponent({
   illustNum,
   isSubmitting,
   handleMoreClick,
-  handleNewClick
 }: FollowWorkCardsViewProps): JSX.Element {
   const loadedCount = worksData?.works?.length ?? 0;
   const skeletonCount =
     worksData && illustNum > loadedCount ? illustNum - loadedCount : 0;
   const isMoreView =
     worksData && worksData.totalWorksCount && (worksData.totalWorksCount >= (worksData.works?.length ?? 0) + 1);
+  
+  // worksData.totalWorksCountが0の場合は表示しない
+  if (worksData && worksData.totalWorksCount === 0) {
+    return <></>;
+  }
 
   return (
     <>
@@ -52,8 +53,7 @@ export const FollowWorkCardsView = memo(function WorkViewComponent({
           ))}
 
           {/* もっと見るの再取得の分だけ Skeleton を末尾に追加 */}
-          {worksData &&
-            skeletonCount > 0 &&
+          {worksData && (worksData.totalWorksCount) && (worksData.totalWorksCount > 0) && (skeletonCount > 0) &&
             Array.from({ length: skeletonCount }).map((_, idx) => (
               <ImageCardWithUser
                 key={`more-skeleton-${idx}`}
