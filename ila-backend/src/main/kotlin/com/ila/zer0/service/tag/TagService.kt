@@ -7,6 +7,9 @@ import com.ila.zer0.repository.TagRepository
 import com.ila.zer0.repository.WorkRepository
 import org.springframework.stereotype.Service
 import java.text.Normalizer
+import java.time.LocalDate
+import java.time.ZoneId
+import kotlin.random.Random
 
 @Service
 class TagService(
@@ -35,6 +38,40 @@ class TagService(
             tags = filteredTags,
             totalCount = count
         )
+    }
+
+    // offset：スキップ件数。例えば、offset = 10の場合、最初の10件をスキップ
+    // limit：limit件数。例えば、limit = 10の場合、11件目から20件目までの10件を返す
+    fun findByTagsWithOffsetAndRandom(
+        tags: List<String>,
+        offset: Int,
+        limit: Int
+    ): TagsWithSearchResult {
+        val allTags = tags.flatMap { tagRepository.findByTag(it) }
+        val uniqueTags = allTags.distinctBy { it.workId }
+        val sortedTags = uniqueTags.sortedByDescending { it.updatedAt }
+
+        // 日替わりシード（デフォルト: seedOffset = 0）
+        val shuffledTags = dailyShuffle(sortedTags, seedOffset = 0)
+
+        val filteredTags = shuffledTags.drop(offset).take(limit)
+        return TagsWithSearchResult(filteredTags, shuffledTags.size)
+    }
+
+    fun findByTagsWithOffsetAndRandomAlt(
+        tags: List<String>,
+        offset: Int,
+        limit: Int
+    ): TagsWithSearchResult {
+        val allTags = tags.flatMap { tagRepository.findByTag(it) }
+        val uniqueTags = allTags.distinctBy { it.workId }
+        val sortedTags = uniqueTags.sortedByDescending { it.updatedAt }
+
+        // 日替わりシード（別パターン）
+        val shuffledTags = dailyShuffle(sortedTags, seedOffset = 1000)
+
+        val filteredTags = shuffledTags.drop(offset).take(limit)
+        return TagsWithSearchResult(filteredTags, shuffledTags.size)
     }
 
     fun findByTagsWithoutOffset(
@@ -160,5 +197,12 @@ class TagService(
 
         // タグ登録
         tagRepository.registerTags(tags)
+    }
+
+    private fun <T> dailyShuffle(list: List<T>, seedOffset: Long = 0): List<T> {
+        val today = LocalDate.now(ZoneId.of("Asia/Tokyo"))
+        val seedBase = today.toEpochDay()
+        val random = Random(seedBase + seedOffset)
+        return list.shuffled(random)
     }
 }

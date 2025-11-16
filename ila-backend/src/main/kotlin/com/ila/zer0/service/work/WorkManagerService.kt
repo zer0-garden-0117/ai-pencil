@@ -133,6 +133,63 @@ class WorkManagerService(
     }
 
     @Transactional
+    fun findWorksByRandom(offset: Int, limit: Int): WorksWithSearchResult? {
+        // ランダムで取得
+        val workIds = mutableListOf<String>()
+        val tagResult = tagService.findByTagsWithOffsetAndRandom(listOf("GLOBAL"), offset, limit)
+        tagResult.tags.forEach { tag ->
+            workIds.add(tag.workId)
+        }
+
+        // 作品情報取得
+        val works = workRepository.findByWorkIds(workIds)
+
+        // ユーザー情報取得
+        val userIds = works.map { it.userId }.toSet().toList()
+        val users = userRepository.findByUserIds(userIds)
+
+        // ユーザー情報を作品に紐付け
+        val userMap = users.associateBy { it.userId }
+        works.forEach { work ->
+            userMap[work.userId]?.let { user ->
+                work.userName = user.userName
+                work.customUserId = user.customUserId
+                work.profileImageUrl = user.profileImageUrl
+            }
+        }
+        return WorksWithSearchResult(works, tagResult.totalCount)
+    }
+
+    @Transactional
+    fun findWorksByRecommended(offset: Int, limit: Int): WorksWithSearchResult? {
+        // ToDo: おすすめの取得については別途検討
+        // 現状はランダム取得と同じロジックとする
+        val workIds = mutableListOf<String>()
+        val tagResult = tagService.findByTagsWithOffsetAndRandomAlt(listOf("GLOBAL"), offset, limit)
+        tagResult.tags.forEach { tag ->
+            workIds.add(tag.workId)
+        }
+
+        // 作品情報取得
+        val works = workRepository.findByWorkIds(workIds)
+
+        // ユーザー情報取得
+        val userIds = works.map { it.userId }.toSet().toList()
+        val users = userRepository.findByUserIds(userIds)
+
+        // ユーザー情報を作品に紐付け
+        val userMap = users.associateBy { it.userId }
+        works.forEach { work ->
+            userMap[work.userId]?.let { user ->
+                work.userName = user.userName
+                work.customUserId = user.customUserId
+                work.profileImageUrl = user.profileImageUrl
+            }
+        }
+        return WorksWithSearchResult(works, tagResult.totalCount)
+    }
+
+    @Transactional
     fun findWorksByTags(words: List<String>?): WorksWithSearchResult? {
         // 空のリストやnullチェック
         if (words.isNullOrEmpty()) {

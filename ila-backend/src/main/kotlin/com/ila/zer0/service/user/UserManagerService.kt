@@ -168,9 +168,10 @@ class UserManagerService(
                 logger.error("Failed to cover image to Png: ${e.message}")
                 throw RuntimeException("Error during cover image conversion")
             }
+            val fileName = "${user.customUserId}_${Instant.now().toEpochMilli()}.png"
             val coverImageUrl = s3Service.uploadToS3(
                 coverImagePng,
-                user.userId + "_coverImage_" + Instant.now().toEpochMilli() + ".png",
+                "coverImage/$fileName",
                 "image/png"
             )
             user.coverImageUrl = coverImageUrl
@@ -184,9 +185,10 @@ class UserManagerService(
                 logger.error("Failed to profile image to Png: ${e.message}")
                 throw RuntimeException("Error during profile image conversion")
             }
+            val fileName = "${user.customUserId}_${Instant.now().toEpochMilli()}.png"
             val profileImageUrl = s3Service.uploadToS3(
                 profileImagePng,
-                user.userId + "_profileImage_" + Instant.now().toEpochMilli() + ".png",
+                "profileImage/$fileName",
                 "image/png")
             user.profileImageUrl = profileImageUrl
         }

@@ -32,15 +32,22 @@ class PublicWorksController(
         @RequestParam(value = "publicWorksFilterType", required = true) publicWorksFilterType: String
     ): ResponseEntity<ApiWorks> {
         // バリデーション
-        if (publicWorksFilterType != "new" && publicWorksFilterType != "theme") {
+        if (publicWorksFilterType != "new" &&
+            publicWorksFilterType != "theme" &&
+            publicWorksFilterType != "random" &&
+            publicWorksFilterType != "recommended") {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
 
         // 作品検索
         val workResult = if (publicWorksFilterType == "new") {
             workManagerService.findWorksByTags(listOf("GLOBAL"), offset, limit)
+        } else if (publicWorksFilterType == "random") {
+            workManagerService.findWorksByRandom(offset, limit)
+        } else if (publicWorksFilterType == "recommended") {
+            workManagerService.findWorksByRecommended(offset, limit)
         } else {
-            workManagerService.findWorksByTags(listOf("theme"), offset, limit)
+            workManagerService.findWorksByTags(listOf("THEME"), offset, limit)
         }
 
         // APIモデルに変換
