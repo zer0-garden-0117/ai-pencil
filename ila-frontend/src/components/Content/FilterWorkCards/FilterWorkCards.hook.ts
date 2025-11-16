@@ -1,5 +1,4 @@
 import { FilterType, PublicWorksGetResult, usePublicWorksGetByFilterInfinite } from "@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite";
-import { useRouter } from "next/navigation";
 
 const PAGE_SIZE = 4;
 
@@ -8,8 +7,6 @@ type UseFilterWorkCardsProps = {
 };
 
 export const useFilterWorkCards = ({ filterType }: UseFilterWorkCardsProps) => {
-  const router = useRouter();
-
   const { data, size, setSize, isValidating } = usePublicWorksGetByFilterInfinite(
     {
       initialOffset: 0,
@@ -46,15 +43,11 @@ export const useFilterWorkCards = ({ filterType }: UseFilterWorkCardsProps) => {
     setSize(size + 1);
   };
 
-  const handleFollowClick = () => {
-    router.push('/follow');
-  };
-
   return {
     worksData,
+    filterType,
     illustNum,
     isSubmitting: isLoadingMore,
     handleMoreClick,
-    handleFollowClick,
   };
 };

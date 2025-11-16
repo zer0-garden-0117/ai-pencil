@@ -1,25 +1,24 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Card, Center, Button, Space, SimpleGrid, Text, Group } from '@mantine/core';
+import { Center, Button, Space, SimpleGrid, Text, Group } from '@mantine/core';
 import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
-import { IconFilter2 } from '@tabler/icons-react';
-import { PublicWorksGetResult } from '@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite';
+import { FilterType, PublicWorksGetResult } from '@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite';
 
 type FilterWorkCardsViewProps = {
   worksData: PublicWorksGetResult | undefined;
+  filterType: FilterType;
   illustNum: number;
   isSubmitting: boolean;
   handleMoreClick: () => void;
-  handleFollowClick: () => void;
 };
 
 export const FilterWorkCardsView = memo(function WorkViewComponent({
   worksData,
+  filterType,
   illustNum,
   isSubmitting,
   handleMoreClick,
-  handleFollowClick
 }: FilterWorkCardsViewProps): JSX.Element {
   const loadedCount = worksData?.works?.length ?? 0;
   const skeletonCount =
@@ -29,10 +28,12 @@ export const FilterWorkCardsView = memo(function WorkViewComponent({
 
   return (
     <>
-      {/* <Card> */}
         <Group justify="space-between">
           <Text fz="md" fw={700} mb="xs">
-            新着
+            {/* filterTypeによって表示切替 */}
+            {filterType === "new" && "新着"}
+            {filterType === "random" && "ランダム"}
+            {filterType === "recommended" && "おすすめ"}
           </Text>
         </Group>
         <Space h="xs" />
@@ -76,8 +77,6 @@ export const FilterWorkCardsView = memo(function WorkViewComponent({
           </Button>
         </Center>
         )}
-
-      {/* </Card> */}
     </>
   );
 });
