@@ -41,7 +41,7 @@ class UserRepository(
         }
     }
 
-    // 指定した userId のリストに対応する User のリストを返す
+    // 指定した userId のリストに対応する User のリストを、呼び出し時の userIds の順に返す
     fun findByUserIds(userIds: List<String>): List<User> {
         if (userIds.isEmpty()) return emptyList()
 
@@ -65,11 +65,17 @@ class UserRepository(
 
             val response = dynamoDbClient.batchGetItem(batchGetRequest)
 
-            val userItems = response.responses()["user"]?.map { item ->
-                TableSchema.fromClass(User::class.java).mapToItem(item)
-            } ?: emptyList()
+            // まずは取得できた User を userId -> User の Map にする
+            val schema = TableSchema.fromClass(User::class.java)
+            val userMap: Map<String, User> =
+                response.responses()["user"]
+                    ?.map { item -> schema.mapToItem(item) }
+                    ?.associateBy { it.userId }   // User エンティティの userId プロパティで紐付け
+                    ?: emptyMap()
 
-            userItems
+            // 呼び出し時の userIds の順に並べ直す
+            userIds.mapNotNull { userMap[it] }  // 取得できなかった ID は落とす
+
         } catch (e: DynamoDbException) {
             throw RuntimeException(
                 "Failed to batch get users by userIds: ${userIds.joinToString(",")}",

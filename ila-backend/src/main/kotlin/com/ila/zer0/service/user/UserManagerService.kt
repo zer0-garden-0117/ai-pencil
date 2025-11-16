@@ -288,13 +288,13 @@ class UserManagerService(
         }
 
         // userIdでユーザー情報を取得
-        val followUsers = mutableListOf<User>()
         val callerUserFollows = followService.findByUserId(callerUserId)
-        followIds.forEach { followId ->
-            val followUser = userService.findUserById(followId)
+
+        // followIdsで取得
+        val followUsers = userRepository.findByUserIds(followIds)
+        followUsers.forEach { followUser ->
             // callerUserFollowsにfollowUser.userIdが含まれているかどうかでisFollowingを設定
-            followUser?.isFollowing = callerUserFollows.any { it.followUserId == followId }
-            followUser?.let { followUsers.add(it) }
+            followUser.isFollowing = callerUserFollows.any { it.followUserId == followUser.userId }
         }
 
         return UsersWithSearchResult(followUsers, followResult.totalCount)
@@ -330,11 +330,7 @@ class UserManagerService(
         }
 
         // userIdでユーザー情報を取得
-        val followUsers = mutableListOf<User>()
-        followIds.forEach { followId ->
-            val followUser = userService.findUserById(followId)
-            followUser?.let { followUsers.add(it) }
-        }
+        val followUsers = userRepository.findByUserIds(followIds)
 
         return UsersWithSearchResult(followUsers, followResult.totalCount)
     }
