@@ -16,6 +16,8 @@ import UserWorksCards from '../UserWorksCards/UserWorksCards';
 import { CustomPill } from '@/components/Common/CustomPill/CustomPill';
 import { UserInfoEditModal } from './UserInfoEditModal';
 import { TagUsersGetResult } from '@/apis/openapi/users/useTagUsersGet';
+import { UserSettingModal } from './UserSettingModal';
+import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
 type UserInfoViewProps = {
   page: number;
@@ -132,19 +134,6 @@ export const UserInfoView = memo(function WorkViewComponent({
             isClickable={false}
             onClick={() => {}}
           />
-          {/* <div key="LoginButton"> */}
-            {/* {isLoginUser &&
-              <LogoutButton />
-            } */}
-            {/* userDataが存在しない場合は非表示 */}
-            {/* {!isLoginUser && userData &&
-              <FollowButton
-                isFollowState={userData?.isFollowing}
-                userId={userData?.userId}
-                updateUser={updateUser}
-              />
-            } */}
-          {/* </div> */}
         </Group>
 
         {/* ユーザー名と編集ボタン */}
@@ -314,111 +303,23 @@ export const UserInfoView = memo(function WorkViewComponent({
         handleBoostChangeClick={handleBoostChangeClick}
       />
       {/* ユーザー設定モーダル */}
-      <Modal
-        opened={settingOpened}
-        onClose={() => setSettingOpened(false)}
-        size="lg"
-        centered
-        withCloseButton={false}
-      >
-
-        {/* その他 */}
-        <Text mb={10} fz="md" fw={500}>表示設定</Text>
-        <Card withBorder radius="md">
-        <form
-          onSubmit={settingForm.onSubmit(() => {
-            handleSettingSave();
-          })}
-        >
-
-          {/* センシティブな画像を表示するかどうか */}
-          <Checkbox
-            label="センシティブな画像を表示する (R18+)"
-            {...settingForm.getInputProps('showSensitiveImages')}
-          />
-          {/* 微センシティブな画像を表示するかどうか */}
-          <Checkbox mt={10}
-            label="微センシティブな画像を表示する (R15+)"
-            {...settingForm.getInputProps('showMildlySensitiveImages')}
-          />
-          <Group justify="flex-end" mt="md">
-            <Button
-              variant="outline"
-              radius="xl"
-              disabled={isSaving || isDeleting}
-            >
-              キャンセル
-            </Button>
-            <Button
-              type="submit"
-              color="blue"
-              radius={"xl"}
-              disabled={isDeleting}
-              loading={isSaving}
-            >
-              保存
-            </Button>
-          </Group>
-        </form>
-        </Card>
-
-        {/* その他 */}
-        <Text mt={20} mb={10} fz="md" fw={500}>その他</Text>
-
-        {/* ログアウトする */}
-        <Card withBorder radius={"md"} p="md" mb={10}>
-        <Group justify="space-between" align="center">
-          <Text fz="sm">ログアウト</Text>
-          <LogoutButton isDisable={isSaving || isDeleting}/>
-        </Group>
-        {/* ユーザーを削除する */}
-        <Group justify="space-between" align="center" mt={20}>
-          <Text fz="sm">ユーザーの削除</Text>
-          <Button
-            variant="outline" 
-            color="red"
-            size="sm"
-            radius={"xl"}
-            onClick={handleDeleteUserClick}
-            disabled={isSaving || isDeleting}
-          >
-            ユーザーを削除する
-          </Button>
-        </Group>
-        </Card>
-      </Modal>
+      <UserSettingModal
+        settingOpened={settingOpened}
+        setSettingOpened={setSettingOpened}
+        settingForm={settingForm}
+        isSaving={isSaving}
+        isDeleting={isDeleting}
+        handleSettingSave={handleSettingSave}
+        handleDeleteUserClick={handleDeleteUserClick}
+      />
 
       {/* 確認モーダル */}
-      <Modal
-        opened={confirmOpened}
-        onClose={() => setConfirmOpened(false)}
-        title="削除の確認"
-        centered
-        withCloseButton={false}
-      >
-        <Text size="sm" mb="md">
-          本当に削除しますか？この操作は取り消しできません。
-        </Text>
-        <Group justify="flex-end" mt="md">
-          <Button variant="default" onClick={() => setConfirmOpened(false)} disabled={isDeleting}>
-            キャンセル
-          </Button>
-          <Button
-            color="red"
-            onClick={handleConfirmDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? (
-              <Group gap="xs" align="center">
-                <span>削除中…</span>
-                <Loader size="xs" />
-              </Group>
-            ) : (
-              '削除'
-            )}
-          </Button>
-        </Group>
-      </Modal>
+      <UserDeleteConfirmModal
+        confirmOpened={confirmOpened}
+        setConfirmOpened={setConfirmOpened}
+        isDeleting={isDeleting}
+        handleConfirmDelete={handleConfirmDelete}
+      />
     </>
   );
 });
