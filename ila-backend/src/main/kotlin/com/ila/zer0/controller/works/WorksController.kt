@@ -3,6 +3,7 @@ package com.ila.zer0.controller.works
 import com.ila.zer0.config.token.CustomAuthenticationToken
 import com.ila.zer0.dto.WorkWithTag
 import com.ila.zer0.entity.User
+import com.ila.zer0.entity.Work
 import com.ila.zer0.generated.endpoint.WorksApi
 import com.ila.zer0.generated.model.ApiWorkWithTag
 import com.ila.zer0.generated.model.ApiWorks
@@ -41,6 +42,9 @@ class WorksController(
         // 作品を取得
         val workResult = workManagerService.getFollowUserWorks(user.userId, offset, limit)
 
+        // ユーザーの閲覧制限に基づき画像URLをロック画像に差し替え
+        applyViewRestriction(workResult.works, user)
+
         // APIモデルに変換
         val apiWorksWithTags = mutableListOf<ApiWorkWithTag>()
         workResult.works.forEach { work ->
@@ -77,6 +81,9 @@ class WorksController(
         workWithTag.work.likes = likesCountAndIsLiked.likesCount
         workWithTag.work.isLiked = likesCountAndIsLiked.isLiked
 
+        // ユーザーの閲覧制限に基づき画像URLをロック画像に差し替え
+        applyViewRestriction(workWithTag, user)
+
         // APIモデルに変換して返却
         val response = toApiWorkWithTag(workWithTag)
         return ResponseEntity.ok(response)
@@ -89,7 +96,7 @@ class WorksController(
         @RequestParam(value = "worksUserFilterType", required = true) worksUserFilterType: String
     ): ResponseEntity<ApiWorks> {
         // 認証済みユーザーを取得
-        getUser() ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
+        val user = getUser() ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
 
         // worksUserFilterTypeがcreatedでない場合はエラーを返す
         if (worksUserFilterType != "created") {
@@ -100,6 +107,9 @@ class WorksController(
         val usersWorks = workManagerService.getUsersWorksByCustomUserIdWithFilter(
             customUserId, offset, limit, worksUserFilterType)
             ?: return ResponseEntity.notFound().build()
+
+        // ユーザーの閲覧制限に基づき画像URLをロック画像に差し替え
+        applyViewRestriction(usersWorks.works, user)
 
         // APIモデルに変換
         val apiWorkWithTags = mutableListOf<ApiWorkWithTag>()
@@ -132,5 +142,23 @@ class WorksController(
             return null
         }
         return userManagerService.getUserById(customAuth.userId)
+    }
+
+    private fun applyViewRestriction(work: Work, user: User) {
+        val lockImageUrl = "https://cfa-backend-dev.s3.us-east-1.amazonaws.com/placeholder/lock2.png"
+        if (user.viewRating < work.rating) {
+            work.thumbnailImgUrl = lockImageUrl
+            work.titleImgUrl = lockImageUrl
+            work.prompt = ""
+            work.negativePrompt = ""
+        }
+    }
+
+    private fun applyViewRestriction(works: Iterable<Work>, user: User) {
+        works.forEach { applyViewRestriction(it, user) }
+    }
+
+    private fun applyViewRestriction(workWithTag: WorkWithTag, user: User) {
+        applyViewRestriction(workWithTag.work, user)
     }
 }

@@ -1,6 +1,8 @@
 package com.ila.zer0.controller.works
 
 import com.ila.zer0.dto.WorkWithTag
+import com.ila.zer0.entity.User
+import com.ila.zer0.entity.Work
 import com.ila.zer0.generated.endpoint.PublicworksApi
 import com.ila.zer0.generated.model.ApiWorkWithTag
 import com.ila.zer0.generated.model.ApiWorks
@@ -8,15 +10,12 @@ import com.ila.zer0.mapper.TagMapper
 import com.ila.zer0.mapper.WorkMapper
 import com.ila.zer0.service.user.UserManagerService
 import com.ila.zer0.service.work.WorkManagerService
-import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.Valid
-import jakarta.validation.constraints.NotNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import kotlin.collections.forEach
 
 @RestController
 class PublicWorksController(
@@ -50,6 +49,9 @@ class PublicWorksController(
             workManagerService.findWorksByTags(listOf("THEME"), offset, limit)
         }
 
+        // publicはviewRatingを0とみなす
+        applyViewRestriction(workResult?.works ?: emptyList(), User(viewRating = 0))
+
         // APIモデルに変換
         val apiWorksWithTags = mutableListOf<ApiWorkWithTag>()
         workResult?.works?.forEach { work ->
@@ -80,6 +82,9 @@ class PublicWorksController(
         workWithTag.work.profileImageUrl = workUser.profileImageUrl
         workWithTag.work.likes = workManagerService.getLikes(workWithTag.work.workId)
 
+        // publicはviewRatingを0とみなす
+        applyViewRestriction(workWithTag, User(viewRating = 0))
+
         // APIモデルに変換して返却
         val response = toApiWorkWithTag(workWithTag)
         return ResponseEntity.ok(response)
@@ -101,6 +106,9 @@ class PublicWorksController(
             customUserId, offset, limit, publicWorksUserFilterType)
             ?: return ResponseEntity.notFound().build()
 
+        // publicはviewRatingを0とみなす
+        applyViewRestriction(usersWorks.works, User(viewRating = 0))
+
         // APIモデルに変換
         val apiWorkWithTags = mutableListOf<ApiWorkWithTag>()
         usersWorks.works.forEach { work ->
@@ -119,6 +127,9 @@ class PublicWorksController(
     ): ResponseEntity<ApiWorks> {
         // 作品検索
         val workResult = workManagerService.findWorksByTags(listOf(tag), offset, limit)
+
+        // publicはviewRatingを0とみなす
+        applyViewRestriction(workResult?.works ?: emptyList(), User(viewRating = 0))
 
         // APIモデルに変換
         val apiWorksWithTags = mutableListOf<ApiWorkWithTag>()
@@ -141,5 +152,23 @@ class PublicWorksController(
             apiTags = apiTags
         )
         return apiWorkWithTag
+    }
+
+    private fun applyViewRestriction(work: Work, user: User) {
+        val lockImageUrl = "https://cfa-backend-dev.s3.us-east-1.amazonaws.com/placeholder/lock2.png"
+        if (user.viewRating < work.rating) {
+            work.thumbnailImgUrl = lockImageUrl
+            work.titleImgUrl = lockImageUrl
+            work.prompt = ""
+            work.negativePrompt = ""
+        }
+    }
+
+    private fun applyViewRestriction(works: Iterable<Work>, user: User) {
+        works.forEach { applyViewRestriction(it, user) }
+    }
+
+    private fun applyViewRestriction(workWithTag: WorkWithTag, user: User) {
+        applyViewRestriction(workWithTag.work, user)
     }
 }

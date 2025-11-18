@@ -89,6 +89,9 @@ class MyWorksController(
         // 作品の取得
         val workWithTag = workManagerService.findWorkById(workId = workId)
 
+        // ユーザーの閲覧制限に基づき画像URLをロック画像に差し替え
+        applyViewRestriction(workWithTag, user)
+
         // 認証ユーザーの作品でない場合はエラーを返す
         if (workWithTag.work.userId != user.userId) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
@@ -179,5 +182,19 @@ class MyWorksController(
             return null
         }
         return userManagerService.getUserById(customAuth.userId)
+    }
+
+    private fun applyViewRestriction(work: Work, user: User) {
+        val lockImageUrl = "https://cfa-backend-dev.s3.us-east-1.amazonaws.com/placeholder/lock2.png"
+        if (user.viewRating < work.rating) {
+            work.thumbnailImgUrl = lockImageUrl
+            work.titleImgUrl = lockImageUrl
+            work.prompt = ""
+            work.negativePrompt = ""
+        }
+    }
+
+    private fun applyViewRestriction(workWithTag: WorkWithTag, user: User) {
+        applyViewRestriction(workWithTag.work, user)
     }
 }
