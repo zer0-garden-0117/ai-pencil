@@ -38,7 +38,7 @@ export const usePostedWork = (
   // 認証状態が変わったら更新
   useEffect(() => {
     updateWork();
-  }, [idToken, updateWork]);
+  }, [idToken, updateWork, user?.viewRating]);
 
   const handleEditClick = (workId: string) => {
     router.push(`/illust/edit/${workId}`);

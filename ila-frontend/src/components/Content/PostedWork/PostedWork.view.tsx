@@ -71,6 +71,7 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
                   {/* いいね、シェア、メニュー */}
                   <WorkActionGroup
                     workId={workId}
+                    workRating={imageData?.apiWork?.rating}
                     workCustomUserId={imageData?.apiWork?.customUserId}
                     thumbnailImgUrl={imageData?.apiWork?.thumbnailImgUrl}
                     isLiked={imageData?.apiWork?.isLiked}
