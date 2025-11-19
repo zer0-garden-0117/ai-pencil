@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFirebaseAuthContext } from "@/providers/auth/firebaseAuthProvider";
 import { useWorksGetById } from "@/apis/openapi/works/useWorksGetById";
@@ -14,7 +14,7 @@ export const usePostedWork = (
   { workId }: UsePostedWorkProps
 ) => {
   const router = useRouter();
-  const { getIdTokenLatest, user } = useFirebaseAuthContext();
+  const { getIdTokenLatest, user, idToken } = useFirebaseAuthContext();
   const { trigger: deleteLike } = useUsersLikedDelete();
   const { trigger: registerLike } = useUsersLikedRegister();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,6 +34,11 @@ export const usePostedWork = (
   const imageData = user ? privateImageData : publicImageData;
   const error = user ? privateError : publicError;
   const updateWork = user ? mutatePrivateWork : mutatePublicWork;
+
+  // 認証状態が変わったら更新
+  useEffect(() => {
+    updateWork();
+  }, [idToken, updateWork]);
 
   const handleEditClick = (workId: string) => {
     router.push(`/illust/edit/${workId}`);

@@ -1,5 +1,6 @@
 package com.ila.zer0.controller.works
 
+import com.ila.zer0.config.token.CustomAuthenticationToken
 import com.ila.zer0.dto.WorkWithTag
 import com.ila.zer0.entity.User
 import com.ila.zer0.entity.Work
@@ -12,6 +13,8 @@ import com.ila.zer0.service.user.UserManagerService
 import com.ila.zer0.service.work.WorkManagerService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -50,7 +53,8 @@ class PublicWorksController(
         }
 
         // publicはviewRatingを0とみなす
-        applyViewRestriction(workResult?.works ?: emptyList(), User(viewRating = 0))
+        val user = getUser() ?: User(viewRating = 0)
+        applyViewRestriction(workResult?.works ?: emptyList(), user)
 
         // APIモデルに変換
         val apiWorksWithTags = mutableListOf<ApiWorkWithTag>()
@@ -83,7 +87,8 @@ class PublicWorksController(
         workWithTag.work.likes = workManagerService.getLikes(workWithTag.work.workId)
 
         // publicはviewRatingを0とみなす
-        applyViewRestriction(workWithTag, User(viewRating = 0))
+        val user = getUser() ?: User(viewRating = 0)
+        applyViewRestriction(workWithTag, user)
 
         // APIモデルに変換して返却
         val response = toApiWorkWithTag(workWithTag)
@@ -107,7 +112,8 @@ class PublicWorksController(
             ?: return ResponseEntity.notFound().build()
 
         // publicはviewRatingを0とみなす
-        applyViewRestriction(usersWorks.works, User(viewRating = 0))
+        val user = getUser() ?: User(viewRating = 0)
+        applyViewRestriction(usersWorks.works, user)
 
         // APIモデルに変換
         val apiWorkWithTags = mutableListOf<ApiWorkWithTag>()
@@ -129,7 +135,8 @@ class PublicWorksController(
         val workResult = workManagerService.findWorksByTags(listOf(tag), offset, limit)
 
         // publicはviewRatingを0とみなす
-        applyViewRestriction(workResult?.works ?: emptyList(), User(viewRating = 0))
+        val user = getUser() ?: User(viewRating = 0)
+        applyViewRestriction(workResult?.works ?: emptyList(), user)
 
         // APIモデルに変換
         val apiWorksWithTags = mutableListOf<ApiWorkWithTag>()
@@ -152,6 +159,16 @@ class PublicWorksController(
             apiTags = apiTags
         )
         return apiWorkWithTag
+    }
+
+    private fun getUser(): User? {
+        val authentication: Authentication? =
+            SecurityContextHolder.getContext().authentication
+        val customAuth = authentication as? CustomAuthenticationToken
+        if (customAuth?.userId == null) {
+            return null
+        }
+        return userManagerService.getUserById(customAuth.userId)
     }
 
     private fun applyViewRestriction(work: Work, user: User) {

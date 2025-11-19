@@ -29,38 +29,37 @@ class FirebaseAuthFilter(
         // デバッグ用: リクエストヘッダー情報をログ出力
         val authHeader = request.getHeader("Authorization")
 
-        if (isPathExempted(request)) {
+        if (isPathExempted(request) && shouldAttemptTokenAuth(request)) {
+            // 認証不要なパスでかつヘッダ情報がなければそのままスキップするが、
+            // ヘッダ情報がある場合は、検証して認証情報をセットする
+            logger.info("No Authorization header found for exempted path: $requestURI, skipping filter")
             filterChain.doFilter(request, response)
             return
         }
 
-        if (requestURI !in noBearerTokenPathSet) {
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                val idToken = authHeader.substring(7)
-                try {
-                    val decodedToken: FirebaseToken = firebaseAuth.verifyIdToken(idToken)
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            val idToken = authHeader.substring(7)
+            try {
+                val decodedToken: FirebaseToken = firebaseAuth.verifyIdToken(idToken)
 
-                    // 認証成功
-                    logger.info("Token claims: ${decodedToken.claims}")
-                    val customAuthentication = CustomAuthenticationToken(
-                        userId = decodedToken.uid,
-                        userName = decodedToken.name
-                    )
-                    SecurityContextHolder.getContext().authentication = customAuthentication
-                    logger.info("Authentication set successfully")
-                } catch (e: Exception) {
-                    logger.error("Firebase token verification failed: ${e.message}", e)
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Firebase ID token")
-                    return
-                }
-            } else {
-                logger.warn("No valid Authorization header found for protected path: $requestURI")
-                logger.warn("Expected format: 'Bearer <token>'")
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization header required")
+                // 認証成功
+                logger.info("Token claims: ${decodedToken.claims}")
+                val customAuthentication = CustomAuthenticationToken(
+                    userId = decodedToken.uid,
+                    userName = decodedToken.name
+                )
+                SecurityContextHolder.getContext().authentication = customAuthentication
+                logger.info("Authentication set successfully")
+            } catch (e: Exception) {
+                logger.error("Firebase token verification failed: ${e.message}", e)
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Firebase ID token")
                 return
             }
         } else {
-            logger.info("URI $requestURI does not require authentication, skipping filter")
+            logger.warn("No valid Authorization header found for protected path: $requestURI")
+            logger.warn("Expected format: 'Bearer <token>'")
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization header required")
+            return
         }
         filterChain.doFilter(request, response)
     }
@@ -84,5 +83,12 @@ class FirebaseAuthFilter(
             val pathPattern = exemptedUri.replace("*", ".*") // ワイルドカードを正規表現に変換
             pathWithMethod.matches(Regex("$pathPattern:$exemptedMethod"))
         }
+    }
+
+    // ヘッダがない場合や、idTokenが"null"の場合は場合はtrueを返す
+    private fun shouldAttemptTokenAuth(request: HttpServletRequest): Boolean {
+        val authHeader = request.getHeader("Authorization") ?: return true
+        val idToken = authHeader.substring(7)
+        return (idToken == "null")
     }
 }

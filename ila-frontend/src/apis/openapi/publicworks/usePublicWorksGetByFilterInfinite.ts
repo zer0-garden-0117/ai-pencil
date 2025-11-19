@@ -17,6 +17,7 @@ export type PublicWorksGetInfiniteArgs = {
   initialOffset?: PublicWorksGetQuery['offset'];
   limit: PublicWorksGetQuery['limit'];
   worksFilterType: PublicWorksGetQuery['publicWorksFilterType'];
+  getIdTokenLatest: () => Promise<string | null>;
 };
 
 export const usePublicWorksGetByFilterInfinite = (
@@ -27,6 +28,7 @@ export const usePublicWorksGetByFilterInfinite = (
     initialOffset = 0,
     limit,
     worksFilterType,
+    getIdTokenLatest,
   } = args;
 
   const getKey = (
@@ -48,7 +50,12 @@ export const usePublicWorksGetByFilterInfinite = (
       PublicWorksGetQuery['publicWorksFilterType']
     ]
   ): Promise<PublicWorksGetResult> => {
+    const token = await getIdTokenLatest();
+    // if (!token) throw new Error('Failed to acquire latest ID token');
+    // token が null の場合でもアクセス可能なAPIなので、そのまま進める
+
     const { data, error } = await client.GET('/public/works', {
+      headers: { Authorization: `Bearer ${token}` },
       params: {
         query: {
           offset: off,
