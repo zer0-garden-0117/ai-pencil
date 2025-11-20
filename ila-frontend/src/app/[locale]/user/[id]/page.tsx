@@ -2,18 +2,27 @@
 
 import UserInfo from "@/components/Content/UserInfo/UserInfo";
 
-const UserPage: React.FC<{ params: { id: string }, searchParams: { tab?: string, page?: string } }> = (
+const UserPage: React.FC<
+  {
+    params: { id: string },
+    searchParams: { tab?: string, page?: string, settingModal?: boolean, callbackUrl?: string}
+  }
+> = (
   { params, searchParams }
 ) => {
   const userId = decodeURIComponent(params.id);
   const tab = searchParams.tab ?? 'home';
   const page = Number(searchParams.page ?? 1);
+  const settingModal = searchParams.settingModal ?? false;
+  const callbackUrl = searchParams.callbackUrl ?? undefined;
 
   return (
     <UserInfo
       userId={userId}
       tab={tab}
       page={page}
+      settingModal={settingModal}
+      callbackUrl={callbackUrl}
     />
   )
 };

@@ -8,12 +8,14 @@ type UserInfoProps = {
   userId: string;
   tab: string;
   page: number;
+  settingModal: boolean;
+  callbackUrl: string | undefined;
 };
 
 export const UserInfo: React.FC<UserInfoProps> = (
-  { userId, tab, page }
+  { userId, tab, page, settingModal, callbackUrl }
 ): JSX.Element => {
-  const viewProps = useUserInfo({ userId, tab, page });
+  const viewProps = useUserInfo({ userId, tab, page, settingModal, callbackUrl });
   return <UserInfoView {...viewProps} />;
 };
 

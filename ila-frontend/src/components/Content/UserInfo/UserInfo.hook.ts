@@ -15,6 +15,8 @@ type UseUserInfoProps = {
   userId: string;
   tab: string;
   page: number;
+  settingModal: boolean;
+  callbackUrl: string | undefined;
 };
 
 export type UserInfoFormValues = {
@@ -30,7 +32,7 @@ export type UserSettingFormValues = {
 };
 
 export const useUserInfo = (
-  { userId, tab, page }: UseUserInfoProps
+  { userId, tab, page, settingModal, callbackUrl }: UseUserInfoProps
 ) => {
   const router = useRouter();
   const { user: loginUser, getFreshIdToken, getIdTokenLatest, signOut } = useFirebaseAuthContext();
@@ -46,7 +48,7 @@ export const useUserInfo = (
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginUser, setIsLoginUser] = useState(false);
   const [opened, setOpened] = useState(false);
-  const [settingOpened, setSettingOpened] = useState(false);
+  const [settingOpened, setSettingOpened] = useState(settingModal);
   const [confirmOpened, setConfirmOpened] = useState(false);
   const [isUserDataLoading, setIsUserDataLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -245,7 +247,11 @@ export const useUserInfo = (
     // 保存後、モーダルを閉じる
     setSettingOpened(false);
     setIsSaving(false);
-    window.location.reload();
+    if (callbackUrl) {
+      window.location.href = callbackUrl;
+    } else {
+      window.location.href = `/user/${userData?.customUserId}`;
+    }
   }
 
   const handleLogout = async () => {

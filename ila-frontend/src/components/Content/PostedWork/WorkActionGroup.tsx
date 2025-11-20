@@ -73,7 +73,7 @@ export const WorkActionGroup = ({
               backdropFilter: 'blur(2px)',
             }}
             onClick={(e) => {
-              router.push(`/user/${user?.customUserId}`);
+              router.push(`/user/${user?.customUserId}?settingModal=true&callbackUrl=/illust/${workId}`);
             }}
           >
             表示の設定へ
