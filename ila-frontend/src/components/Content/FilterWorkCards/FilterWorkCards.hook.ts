@@ -1,6 +1,5 @@
 import { FilterType, PublicWorksGetResult, usePublicWorksGetByFilterInfinite } from "@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite";
 import { useFirebaseAuthContext } from "@/providers/auth/firebaseAuthProvider";
-import { useEffect } from "react";
 
 const PAGE_SIZE = 4;
 
@@ -19,11 +18,6 @@ export const useFilterWorkCards = ({ filterType }: UseFilterWorkCardsProps) => {
     },
     { revalidateOnFocus: false }
   );
-
-  // 認証状態が変わったら更新
-  useEffect(() => {
-    updateWorks();
-  }, [idToken, updateWorks]);
 
   // data は「ページごとの配列」なので flatten する
   const flatWorks = data ? data.flatMap(

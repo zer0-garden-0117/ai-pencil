@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFirebaseAuthContext } from "@/providers/auth/firebaseAuthProvider";
 import { useWorksGetById } from "@/apis/openapi/works/useWorksGetById";
@@ -34,11 +34,6 @@ export const usePostedWork = (
   const imageData = user ? privateImageData : publicImageData;
   const error = user ? privateError : publicError;
   const updateWork = user ? mutatePrivateWork : mutatePublicWork;
-
-  // 認証状態が変わったら更新
-  useEffect(() => {
-    updateWork();
-  }, [idToken, updateWork, user?.viewRating]);
 
   const handleEditClick = (workId: string) => {
     router.push(`/illust/edit/${workId}`);

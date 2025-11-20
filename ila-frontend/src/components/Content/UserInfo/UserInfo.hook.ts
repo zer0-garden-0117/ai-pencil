@@ -240,13 +240,12 @@ export const useUserInfo = (
         viewRating: parseInt(settingForm.values.viewRating, 10),
       }
     });
-
-    await getFreshIdToken();
     await updateUser();
   
     // 保存後、モーダルを閉じる
     setSettingOpened(false);
     setIsSaving(false);
+    window.location.reload();
   }
 
   const handleLogout = async () => {

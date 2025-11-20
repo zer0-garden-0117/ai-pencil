@@ -19,6 +19,7 @@ export const useLoginButton = (
         onSuccess();
       }
       setIsLogining(false);
+      window.location.reload();
     } catch (error) {
       console.error('Login failed:', error);
       setIsLogining(false);

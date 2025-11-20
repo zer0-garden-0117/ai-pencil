@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, ActionIcon, useMantineColorScheme, Avatar, Modal, Button, Text, Skeleton } from '@mantine/core';
 import { useRouter } from "next/navigation";
 import { IconUser } from '@tabler/icons-react';
