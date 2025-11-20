@@ -5,9 +5,11 @@ import { useTranslations } from 'next-intl';
 import { UserIcon } from './UserIcon/UserIcon';
 import { DrawIcon } from './DrawIcon/DrawIcon';
 
-export interface HeaderProps {}
+export interface HeaderProps {
+  setLoading: (loading: boolean) => void;
+}
 
-export const Header: React.FC<HeaderProps> = () => {
+export const Header: React.FC<HeaderProps> = ({ setLoading }) => {
   const t = useTranslations("header");
 
   return (
@@ -27,7 +29,7 @@ export const Header: React.FC<HeaderProps> = () => {
         <Group gap="8">
           <Box style={{ flex: 1 }} />
           <DrawIcon />
-          <UserIcon />
+          <UserIcon setLoading={setLoading} />
         </Group>
       </Box>
       <Space w="md" />

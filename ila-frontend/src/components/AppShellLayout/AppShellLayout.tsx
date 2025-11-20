@@ -56,7 +56,7 @@ export const AppShellLayout: React.FC<{ children: React.ReactNode }> = ({
       })}
     >
       <AppShell.Header>
-        <Header/>
+        <Header setLoading={setLoading} />
       </AppShell.Header>
       <AppShell.Main>
         {children}

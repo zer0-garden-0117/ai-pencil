@@ -6,7 +6,11 @@ import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
 import LoginButton from '@/components/Common/LoginButton/LoginButton';
 import { SkeltonIcon } from '@/components/Content/SkeltonIcon/SkeltonIcon';
 
-export const UserIcon: React.FC = () => {
+export interface UserIconProps {
+  setLoading: (loading: boolean) => void;
+}
+
+export const UserIcon: React.FC<UserIconProps> = ({ setLoading }) => {
   const { user, loading } = useFirebaseAuthContext();
   const router = useRouter();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -78,7 +82,14 @@ export const UserIcon: React.FC = () => {
         size="sm"
         radius={"md"}
       >
-        <LoginButton onSuccess={closeModal} />
+        <LoginButton
+          onSuccess={
+            () => {
+              setLoading(true);
+              closeModal();
+            }
+          }
+        />
       </Modal>
     </Box>
   );
