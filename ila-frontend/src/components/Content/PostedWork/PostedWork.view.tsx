@@ -8,6 +8,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { WorkModal } from '../WorkModal/WorkModal';
 import { SkeltonIcon } from '../SkeltonIcon/SkeltonIcon';
 import { WorkActionGroup } from './WorkActionGroup';
+import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
 
 type PostedWorkViewProps = {
   workId: string;
@@ -31,6 +32,14 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
   handleTagClick
 }: PostedWorkViewProps): JSX.Element {
   const [opened, { open, close }] = useDisclosure(false);
+  const { user } = useFirebaseAuthContext();
+  const isViewSettingNeeded = !!(
+    user &&
+    (imageData?.apiWork?.rating !== undefined &&
+    typeof user.viewRating === 'number' &&
+    user.viewRating < imageData?.apiWork?.rating)
+  );
+
 
   const renderDescription = (description: string | undefined) => {
     if (!description) return null;
@@ -203,13 +212,14 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
               <IconPencilCode size={20} color='var(--mantine-color-blue-6)'/>
               <Text fw={500} fz={"sm"}>プロンプト</Text>
             </Group>
-            {imageData?.apiWork?.prompt ? (
+            {imageData ? (
               <Textarea
                 mb="md"
                 rows={5}
                 minRows={5}
                 maxRows={5}
                 readOnly
+                disabled={user ? (isViewSettingNeeded || !imageData?.apiWork?.prompt) : !imageData?.apiWork?.prompt}
                 value={imageData?.apiWork?.prompt || ""}
               />
             ) : (
@@ -233,7 +243,10 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
                 minRows={5}
                 maxRows={5}
                 readOnly
-                value={imageData?.apiWork?.negativePrompt || ""}
+                // userがnullの場合は、imageData?.apiWork?.negativePromptが存在しない場合はdisalbedにする
+                // userがnull以外の場合は、isViewSettingNeededがtrueの場合 or imageData?.apiWork?.negativePromptが存在しない場合はdisabledにする
+                disabled={user ? (isViewSettingNeeded || !imageData?.apiWork?.negativePrompt) : !imageData?.apiWork?.negativePrompt}
+                value={imageData?.apiWork?.negativePrompt}
               />
             ) : (
               <Skeleton 

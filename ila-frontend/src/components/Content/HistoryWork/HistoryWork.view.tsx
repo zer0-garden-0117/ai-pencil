@@ -24,6 +24,13 @@ export const HistoryWorkView = memo(function HistoryWorkViewComponent({
 }: HistoryWorkViewProps): JSX.Element {
   const { user } = useFirebaseAuthContext();
   const [opened, { open, close }] = useDisclosure(false);
+  const isViewSettingNeeded = !!(
+    user &&
+    (imageData?.apiWork?.rating !== undefined &&
+    typeof user.viewRating === 'number' &&
+    user.viewRating < imageData?.apiWork?.rating)
+  );
+
 
   if (imageData && !imageData.apiWork?.isMine) {
     return <ForbiddenCard alertText='イラストを生成したユーザー以外は表示できません。' />;
@@ -108,13 +115,14 @@ export const HistoryWorkView = memo(function HistoryWorkViewComponent({
               <IconPencilCode size={20} color='var(--mantine-color-blue-6)'/>
               <Text fw={500} fz={"sm"}>プロンプト</Text>
             </Group>
-            {imageData?.apiWork?.prompt ? (
+            {imageData ? (
               <Textarea
                 mb="md"
                 rows={5}
                 minRows={5}
                 maxRows={5}
                 readOnly
+                disabled={user ? (isViewSettingNeeded || !imageData?.apiWork?.prompt) : !imageData?.apiWork?.prompt}
                 value={imageData?.apiWork?.prompt || ""}
               />
             ) : (
@@ -138,6 +146,7 @@ export const HistoryWorkView = memo(function HistoryWorkViewComponent({
                 minRows={5}
                 maxRows={5}
                 readOnly
+                disabled={user ? (isViewSettingNeeded || !imageData?.apiWork?.negativePrompt) : !imageData?.apiWork?.negativePrompt}
                 value={imageData?.apiWork?.negativePrompt || ""}
               />
             ) : (
