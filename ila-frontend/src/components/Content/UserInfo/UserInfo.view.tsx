@@ -238,7 +238,7 @@ export const UserInfoView = memo(function WorkViewComponent({
             variant={tab === 'home' ? 'filled' : 'light'}
             onClick={() => router.push(`${userData?.customUserId}?tab=home`)}
           >
-            ホーム
+            投稿
           </Button>
           <Button
             size="compact-sm"
@@ -252,7 +252,7 @@ export const UserInfoView = memo(function WorkViewComponent({
             variant={tab === 'tag' ? 'filled' : 'light'}
             onClick={() => router.push(`${userData?.customUserId}?tab=tag`)}
           >
-            お気に入りタグ
+            タグ
           </Button>
         </Group>
         <Space h={10}/>
@@ -273,6 +273,22 @@ export const UserInfoView = memo(function WorkViewComponent({
         )}
         {tab === 'tag' && (
           <Card withBorder padding="md" radius="md">
+          {/* タイトルと件数 */}
+          <Group mb={"md"}>
+            <Text fw={700}>
+              {/* userWorksFilterTypeがpostedの場合は「投稿」、favoriteの場合は「いいね」 */}
+              タグ
+            </Text>
+            {/* userWorksData?.tagsがnullの場合はSkeleton表示 */}
+            {taggedUsersData?.tags ? (
+              <Text color="dimmed">
+                {/* userWorksFilterTypeがpostedの場合は「投稿」、favoriteの場合は「いいね」 */}
+                {taggedUsersData.totalTagCount}件のタグ
+              </Text>
+            ) : (
+              <Skeleton width={80} height={20} />
+            )}
+          </Group>
             <Group gap="xs" wrap="wrap">
               {taggedUsersData?.tags?.map((tag) => (
                 <CustomPill key={tag} onClick={() => router.push(`/illust/tag/${encodeURIComponent(tag)}`)}>
