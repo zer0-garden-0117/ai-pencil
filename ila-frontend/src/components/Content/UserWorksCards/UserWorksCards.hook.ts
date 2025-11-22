@@ -27,6 +27,7 @@ export const useUserWorkCards = (
       offset: (page - 1) * illustNum,
       limit: illustNum,
       userWorksFilterType,
+      getIdTokenLatest
   },
     { revalidateOnFocus: false }
   );

@@ -16,13 +16,14 @@ export type UsersWorksGetArgs = {
   offset: UsersWorksGetQuery["offset"];
   limit: UsersWorksGetQuery["limit"];
   userWorksFilterType: UsersWorksGetQuery["publicWorksUserFilterType"];
+  getIdTokenLatest: () => Promise<string | null>;
 };
 
 export const usePublicWorksByUserIdAndFilterGet = (
   args: UsersWorksGetArgs,
   options?: SWRConfiguration<UsersWorksGetResult, Error>
 ): SWRResponse<UsersWorksGetResult, Error> => {
-  const { customUserId, offset, limit, userWorksFilterType } = args ?? {};
+  const { customUserId, offset, limit, userWorksFilterType, getIdTokenLatest } = args ?? {};
 
   return useSWR<UsersWorksGetResult, Error>(
     customUserId
@@ -35,8 +36,12 @@ export const usePublicWorksByUserIdAndFilterGet = (
       UsersWorksGetQuery["limit"],
       UsersWorksGetQuery["publicWorksUserFilterType"]
     ]): Promise<UsersWorksGetResult> => {
+      const token = await getIdTokenLatest();
+      // if (!token) throw new Error('Failed to acquire latest ID token');
+      // token が null の場合でもアクセス可能なAPIなので、そのまま進める
 
       const { data, error } = await client.GET("/public/works/user/{customUserId}", {
+        headers: { Authorization: `Bearer ${token}` },
         params: {
           path: { customUserId: id },
           query: {
