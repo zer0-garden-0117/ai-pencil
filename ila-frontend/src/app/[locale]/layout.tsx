@@ -12,10 +12,10 @@ import 'mantine-react-table/styles.css'; //make sure MRT styles were imported in
 import ClientGoogleAnalytics from '@/utils/googleAnalytics';
 import { FirebaseAuthProvider } from '@/providers/auth/firebaseAuthProvider';
 
-const APP_NAME = 'イラストAI';
-const APP_DESCRIPTION = 'イラストAI';
+const APP_NAME = 'AIペンシル';
+const APP_DESCRIPTION = 'AIペンシルは、AIイラストを“つくる・見つける・つながる”ためのSNSです。生成したAIイラストの投稿やシェアはもちろん、好みの作品を発見してクリエイター同士の交流を楽しめます。';
 const APP_IMAGE_URL = process.env.NEXT_PUBLIC_CDN_URL + '/toppage_ogpImage.jpeg'
-const APP_IMAGE_ALT = 'イラストAI';
+const APP_IMAGE_ALT = 'AIペンシル - AIイラストのSNSサイト';
 
 export const metadata: Metadata = {
   icons: {
