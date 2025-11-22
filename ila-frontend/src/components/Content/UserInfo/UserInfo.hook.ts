@@ -16,7 +16,7 @@ type UseUserInfoProps = {
   tab: string;
   page: number;
   settingModal: boolean;
-  callbackUrl: string | undefined;
+  callback: string | undefined;
 };
 
 export type UserInfoFormValues = {
@@ -32,7 +32,7 @@ export type UserSettingFormValues = {
 };
 
 export const useUserInfo = (
-  { userId, tab, page, settingModal, callbackUrl }: UseUserInfoProps
+  { userId, tab, page, settingModal, callback }: UseUserInfoProps
 ) => {
   const router = useRouter();
   const { user: loginUser, getFreshIdToken, getIdTokenLatest, signOut } = useFirebaseAuthContext();
@@ -249,8 +249,8 @@ export const useUserInfo = (
     // 保存後、モーダルを閉じる
     setSettingOpened(false);
     setIsSaving(false);
-    if (callbackUrl) {
-      window.location.href = callbackUrl;
+    if (callback) {
+      window.location.href = `/illust/${callback}`;
     } else {
       window.location.href = `/user/${userData?.customUserId}`;
     }

@@ -59,8 +59,8 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
           <Radio.Group {...settingForm.getInputProps('viewRating')}>
             <Stack mt="xs">
               <Radio value="0" label="全年齢のみ表示" />
-              <Radio value="1" label="微センシティブも表示 (R15+)" />
-              <Radio value="2" label="センシティブも表示 (R18+)" />
+              <Radio value="1" label="微センシティブも表示 (R15)" />
+              <Radio value="2" label="センシティブも表示 (R18)" />
             </Stack>
           </Radio.Group>
 

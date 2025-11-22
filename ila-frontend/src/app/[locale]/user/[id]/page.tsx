@@ -5,7 +5,7 @@ import UserInfo from "@/components/Content/UserInfo/UserInfo";
 const UserPage: React.FC<
   {
     params: { id: string },
-    searchParams: { tab?: string, page?: string, settingModal?: boolean, callbackUrl?: string}
+    searchParams: { tab?: string, page?: string, settingModal?: boolean, callback?: string}
   }
 > = (
   { params, searchParams }
@@ -14,7 +14,7 @@ const UserPage: React.FC<
   const tab = searchParams.tab ?? 'home';
   const page = Number(searchParams.page ?? 1);
   const settingModal = searchParams.settingModal ?? false;
-  const callbackUrl = searchParams.callbackUrl ?? undefined;
+  const callback = searchParams.callback ?? undefined;
 
   return (
     <UserInfo
@@ -22,7 +22,7 @@ const UserPage: React.FC<
       tab={tab}
       page={page}
       settingModal={settingModal}
-      callbackUrl={callbackUrl}
+      callback={callback}
     />
   )
 };
