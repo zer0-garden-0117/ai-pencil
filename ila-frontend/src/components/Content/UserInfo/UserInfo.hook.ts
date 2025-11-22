@@ -102,6 +102,8 @@ export const useUserInfo = (
 
   useEffect(() => {
     setIsUserDataLoading(!userData);
+    initForm();
+    initSettingForm();
   }, [userData]);
 
   const form = useForm<UserInfoFormValues>({
@@ -128,14 +130,14 @@ export const useUserInfo = (
 
   const settingForm = useForm({
     initialValues: {
-      viewRating: "0",
+      viewRating: userData?.viewRating?.toString(),
     },
   });
 
   const initSettingForm = () => {
     // 設定用フォームの初期化処理があればここに追加
     settingForm.setValues({
-      viewRating: userData?.viewRating?.toString() || "0",
+      viewRating: userData?.viewRating?.toString(),
     });
   };
 
