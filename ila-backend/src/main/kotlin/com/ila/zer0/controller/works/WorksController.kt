@@ -145,7 +145,7 @@ class WorksController(
     }
 
     private fun applyViewRestriction(work: Work, user: User) {
-        val lockImageUrl = "https://cfa-backend-dev.s3.us-east-1.amazonaws.com/placeholder/lock2.png"
+        val lockImageUrl = work.placeholderImgUrl
         if (user.viewRating < work.rating) {
             work.thumbnailImgUrl = lockImageUrl
             work.titleImgUrl = lockImageUrl

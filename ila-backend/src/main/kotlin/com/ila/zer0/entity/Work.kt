@@ -52,6 +52,9 @@ data class Work(
     @get:DynamoDbAttribute("watermaskImgUrl")
     var watermaskImgUrl: String = "",
 
+    @get:DynamoDbAttribute("placeholderImgUrl")
+    var placeholderImgUrl: String = "",
+
     @get:DynamoDbAttribute("likes")
     var likes: Int = 0,
 
