@@ -4,6 +4,7 @@ import React, { memo } from 'react';
 import { Center, Button, Space, SimpleGrid, Text, Group } from '@mantine/core';
 import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
 import { FilterType, PublicWorksGetResult } from '@/apis/openapi/publicworks/usePublicWorksGetByFilterInfinite';
+import { IconChevronDown } from '@tabler/icons-react';
 
 type FilterWorkCardsViewProps = {
   worksData: PublicWorksGetResult | undefined;
@@ -63,7 +64,7 @@ export const FilterWorkCardsView = memo(function WorkViewComponent({
               />
             ))}
         </SimpleGrid>
-        <Space h="xs" />
+        <Space h="md" />
 
         {/* もっとボタン */}
         {isMoreView && (
@@ -72,6 +73,9 @@ export const FilterWorkCardsView = memo(function WorkViewComponent({
             onClick={handleMoreClick}
             loading={isSubmitting}
             radius="xl"
+            rightSection={
+              <IconChevronDown size={16} />
+            }
           >
             もっと見る
           </Button>

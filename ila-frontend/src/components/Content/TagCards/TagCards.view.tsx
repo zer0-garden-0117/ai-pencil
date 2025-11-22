@@ -3,7 +3,7 @@
 import React, { memo } from 'react';
 import { Card, Center, Button, Space, SimpleGrid, Text, Group, Skeleton } from '@mantine/core';
 import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
-import { IconStar, IconStarFilled } from '@tabler/icons-react';
+import { IconChevronDown, IconStar, IconStarFilled } from '@tabler/icons-react';
 import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
 import { PublicWorksTagsGetResult } from '@/apis/openapi/publicworks/usePublicWorksTagsGetInfinite';
 import { UsersTagGetResult } from '@/apis/openapi/myusers/useUsersTagGet';
@@ -115,7 +115,7 @@ export const TagCardsView = memo(function WorkViewComponent({
               />
             ))}
         </SimpleGrid>
-        <Space h="xs" />
+        <Space h="md" />
 
         {/* もっとボタン */}
         {isMoreView && (
@@ -124,6 +124,9 @@ export const TagCardsView = memo(function WorkViewComponent({
             onClick={handleMoreClick}
             loading={isSubmitting}
             radius="xl"
+            rightSection={
+              <IconChevronDown size={16} />
+            }
           >
             もっと見る
           </Button>
