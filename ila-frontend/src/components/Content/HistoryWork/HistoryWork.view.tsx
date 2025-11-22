@@ -1,9 +1,9 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Group, Card, Grid, Image, Textarea, AspectRatio, Center, Button, Text, Pill, Skeleton, Modal } from '@mantine/core';
+import { Group, Card, Grid, Image, Textarea, AspectRatio, Center, Button, Text, Pill, Skeleton } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
-import { IconCube, IconLock, IconPencilCode, IconPhoto } from '@tabler/icons-react';
+import { IconCube, IconEyeOff, IconPencilCode } from '@tabler/icons-react';
 import { IconClock } from '@tabler/icons-react';
 import { ApiWorkWithTag } from '../ImageCard/ImageCard';
 import { useDisclosure } from '@mantine/hooks';
@@ -69,6 +69,29 @@ export const HistoryWorkView = memo(function HistoryWorkViewComponent({
               <Pill mb="md">
                 <Group gap={"5px"}>
                   {imageData?.apiWork?.model}
+                </Group>
+              </Pill>
+            ) : (
+              <Skeleton 
+                mb="md"
+                height={22}
+                width={"80px"}
+                radius={"xl"}
+              />
+            )}
+
+            {/* 対象年齢 */}
+            <Group gap={"5px"} mb="5px">
+              <IconEyeOff size={20} color='var(--mantine-color-blue-6)'/>
+              <Text fw={500} fz={"sm"}>対象年齢</Text>
+            </Group>
+            {imageData?.apiWork?.status ? (
+              <Pill mb="md">
+                <Group gap={"5px"}>
+                  {/* ratingが0だと全年齢、1だとR15、2だとR18を表示 */}
+                  {imageData?.apiWork?.rating === 0 && "全年齢"}
+                  {imageData?.apiWork?.rating === 1 && "R15"}
+                  {imageData?.apiWork?.rating === 2 && "R18"}
                 </Group>
               </Pill>
             ) : (

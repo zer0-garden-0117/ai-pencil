@@ -1,8 +1,8 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Group, Card, Grid, Image, Textarea, AspectRatio, Center, Text, Pill, Skeleton, ActionIcon, Space, Menu, Flex, Loader } from '@mantine/core';
-import { IconCube, IconEdit, IconHeart, IconHeartFilled, IconLoader, IconMenu, IconMenu2, IconPencilCode, IconShare, IconTrash } from '@tabler/icons-react';
+import { Group, Card, Grid, Textarea, AspectRatio, Center, Text, Pill, Skeleton, Space, Flex } from '@mantine/core';
+import { IconCube, IconEyeOff, IconHeartFilled, IconPencilCode } from '@tabler/icons-react';
 import { ApiWorkWithTag } from '../ImageCard/ImageCard';
 import { useDisclosure } from '@mantine/hooks';
 import { WorkModal } from '../WorkModal/WorkModal';
@@ -164,6 +164,29 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
               <Pill mb="md">
                 <Group gap={"5px"}>
                   {imageData?.apiWork?.model}
+                </Group>
+              </Pill>
+            ) : (
+              <Skeleton 
+                mb="md"
+                height={22}
+                width={"80px"}
+                radius={"xl"}
+              />
+            )}
+
+            {/* 対象年齢 */}
+            <Group gap={"5px"} mb="5px">
+              <IconEyeOff size={20} color='var(--mantine-color-blue-6)'/>
+              <Text fw={500} fz={"sm"}>対象年齢</Text>
+            </Group>
+            {imageData?.apiWork?.status ? (
+              <Pill mb="md">
+                <Group gap={"5px"}>
+                  {/* ratingが0だと全年齢、1だとR15、2だとR18を表示 */}
+                  {imageData?.apiWork?.rating === 0 && "全年齢"}
+                  {imageData?.apiWork?.rating === 1 && "R15"}
+                  {imageData?.apiWork?.rating === 2 && "R18"}
                 </Group>
               </Pill>
             ) : (
