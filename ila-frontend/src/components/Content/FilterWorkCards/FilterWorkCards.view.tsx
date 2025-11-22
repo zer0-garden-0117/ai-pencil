@@ -32,7 +32,7 @@ export const FilterWorkCardsView = memo(function WorkViewComponent({
         <Group justify="space-between">
           <Text fz="md" fw={700} mb="xs">
             {/* filterTypeによって表示切替 */}
-            {filterType === "new" && "新着"}
+            {filterType === "new" && "新着投稿"}
             {filterType === "random" && "ランダム"}
             {filterType === "recommended" && "おすすめ"}
           </Text>

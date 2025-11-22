@@ -34,7 +34,7 @@ export const FollowWorkCardsView = memo(function WorkViewComponent({
     <>
         <Group justify="space-between">
           <Text fz="md" fw={700} mb="xs">
-            フォローの新着
+            フォローの最近の投稿
           </Text>
         </Group>
         <Space h="xs" />

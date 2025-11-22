@@ -47,7 +47,7 @@ export const CreateWorkView = memo(function WorkViewComponent({
           onClick={handleHistoryClick}
           disabled={isSubmitting} 
         >
-          生成履歴
+          生成履歴を見る
         </Button>
       </Group>
       <Space h="xs" />

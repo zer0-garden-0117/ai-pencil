@@ -16,6 +16,7 @@ import { UserInfoEditModal } from './UserInfoEditModal';
 import { TagUsersGetResult } from '@/apis/openapi/users/useTagUsersGet';
 import { UserSettingModal } from './UserSettingModal';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
+import CreatedWorksCards from '../CreatedWorksCards/CreatedWorksCards';
 
 type UserInfoViewProps = {
   page: number;
@@ -254,6 +255,16 @@ export const UserInfoView = memo(function WorkViewComponent({
           >
             タグ
           </Button>
+          {/* isLoginUserの場合のみ表示 */}
+          {isLoginUser && (
+            <Button
+              size="compact-sm"
+              variant={tab === 'history' ? 'filled' : 'light'}
+              onClick={() => router.push(`${userData?.customUserId}?tab=history`)}
+            >
+              生成履歴
+            </Button>
+          )}
         </Group>
         <Space h={10}/>
 
@@ -297,6 +308,14 @@ export const UserInfoView = memo(function WorkViewComponent({
               ))}
             </Group>
           </Card>
+        )}
+        {/* isLoginUserの場合のみ表示 */}
+        {(tab === 'history' && isLoginUser) && (
+          <CreatedWorksCards
+            customUserId={loginUser.customUserId || ''}
+            page={page}
+            userWorksFilterType="created"
+          />
         )}
       </Card>
 

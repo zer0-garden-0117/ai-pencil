@@ -37,11 +37,11 @@ export const useCreateProcessing = (
   }, [imageData?.apiWork?.status, updateWork]);
 
   const handleLaterClick = () => {
-    router.push(`/user/${user?.customUserId}`);
+    router.push(`/user/${user?.customUserId}?tab=history`);
   }
 
   const handleHistoryClick = () => {
-    router.push(`/illust/history`);
+    router.push(`/user/${user?.customUserId}?tab=history`);
   }
 
   const handlePostClick = (workId: string | undefined) => {

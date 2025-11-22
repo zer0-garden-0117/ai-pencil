@@ -11,7 +11,7 @@ export type CreateWorkValues = {
 };
 
 export const useCreateWork = () => {
-  const { getIdTokenLatest ,getFreshIdToken } = useFirebaseAuthContext();
+  const { user, getIdTokenLatest ,getFreshIdToken } = useFirebaseAuthContext();
   const router = useRouter();
   const { trigger: createWork } = useMyWorksCreate();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,7 +41,7 @@ export const useCreateWork = () => {
   }
 
   const handleHistoryClick = () => {
-    router.push('/illust/history');
+    router.push(`/user/${user?.customUserId}?tab=history`);
   }
 
   const handlePlanChangeClick = () => {
