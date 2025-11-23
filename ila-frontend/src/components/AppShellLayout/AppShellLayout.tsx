@@ -1,10 +1,11 @@
 'use client';
 
-import { AppShell, Loader, Center } from '@mantine/core';
+import { AppShell, Loader, Center, Space } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { Header } from '../Header/Header';
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from 'next/navigation';
+import { Footer } from '../Footer/Footer';
 
 export const AppShellLayout: React.FC<{ children: React.ReactNode }> = ({
   children
@@ -53,6 +54,13 @@ export const AppShellLayout: React.FC<{ children: React.ReactNode }> = ({
           paddingRight: theme.breakpoints.lg ? '20px' : '10px',
           position: 'static', 
         },
+        footer: {
+          maxWidth: '1200px', // フッターの最大幅を設定
+          margin: '0 auto',   // 両脇に自動で隙間を入れる
+          paddingLeft: theme.breakpoints.lg ? '20px' : '10px', // lg以上のときにパディングを調整
+          paddingRight: theme.breakpoints.lg ? '20px' : '10px',
+          position: 'static', 
+        },
       })}
     >
       <AppShell.Header>
@@ -60,6 +68,8 @@ export const AppShellLayout: React.FC<{ children: React.ReactNode }> = ({
       </AppShell.Header>
       <AppShell.Main>
         {children}
+        <Space h="xl" />
+        <Footer />
       </AppShell.Main>
     </AppShell>
   );
