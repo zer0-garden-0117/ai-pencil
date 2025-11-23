@@ -9,18 +9,18 @@ import {
   Paper,
   Divider,
   Space,
+  Card,
 } from '@mantine/core';
 
 export const Guidelines: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               投稿ガイドライン
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -35,7 +35,7 @@ export const Guidelines: React.FC = () => {
 
           {/* 第1章 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               1. 基本方針
             </Title>
             <Text size="sm">
@@ -46,7 +46,7 @@ export const Guidelines: React.FC = () => {
 
           {/* 第2章 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               2. 投稿できるコンテンツ
             </Title>
             <Text size="sm">以下の種類のコンテンツを投稿できます。</Text>
@@ -60,7 +60,7 @@ export const Guidelines: React.FC = () => {
 
           {/* 第3章 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               3. 投稿できないコンテンツ（禁止事項）
             </Title>
             <Text size="sm">以下に該当するコンテンツの投稿は禁止されています。</Text>
@@ -108,7 +108,7 @@ export const Guidelines: React.FC = () => {
 
           {/* 第4章 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               4. R-18 / センシティブ表現に関するルール
             </Title>
             <Text size="sm">
@@ -135,7 +135,7 @@ export const Guidelines: React.FC = () => {
 
           {/* 第5章 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               5. 違反した場合の対応
             </Title>
             <Text size="sm">
@@ -152,7 +152,7 @@ export const Guidelines: React.FC = () => {
 
           {/* 第6章 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               6. ガイドラインの改定
             </Title>
             <Text size="sm">
@@ -175,7 +175,6 @@ export const Guidelines: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-    </Container>
+      </Card>
   );
 };

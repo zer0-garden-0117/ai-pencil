@@ -9,18 +9,18 @@ import {
   Paper,
   Divider,
   Space,
+  Card,
 } from '@mantine/core';
 
 export const Terms: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               利用規約
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -33,7 +33,7 @@ export const Terms: React.FC = () => {
 
           {/* 第1条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第1条（適用範囲）
             </Title>
             <Text size="sm">
@@ -49,7 +49,7 @@ export const Terms: React.FC = () => {
 
           {/* 第2条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第2条（定義）
             </Title>
             <Text size="sm">
@@ -68,7 +68,7 @@ export const Terms: React.FC = () => {
 
           {/* 第3条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第3条（アカウント登録）
             </Title>
             <Text size="sm">
@@ -82,7 +82,7 @@ export const Terms: React.FC = () => {
 
           {/* 第4条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第4条（コンテンツの投稿・生成）
             </Title>
             <Text size="sm">
@@ -100,7 +100,7 @@ export const Terms: React.FC = () => {
 
           {/* 第5条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第5条（禁止事項）
             </Title>
             <Text size="sm">ユーザーは、本サービスの利用にあたり、以下の行為を行ってはなりません。</Text>
@@ -123,7 +123,7 @@ export const Terms: React.FC = () => {
 
           {/* 第6条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第6条（AI生成に関する注意事項）
             </Title>
             <Text size="sm">
@@ -141,7 +141,7 @@ export const Terms: React.FC = () => {
 
           {/* 第7条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第7条（コンテンツの取り扱い・削除）
             </Title>
             <Text size="sm">
@@ -155,7 +155,7 @@ export const Terms: React.FC = () => {
 
           {/* 第8条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第8条（本サービスの変更・停止）
             </Title>
             <Text size="sm">
@@ -167,7 +167,7 @@ export const Terms: React.FC = () => {
 
           {/* 第9条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第9条（免責事項）
             </Title>
             <Text size="sm">
@@ -179,7 +179,7 @@ export const Terms: React.FC = () => {
 
           {/* 第10条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第10条（規約の変更）
             </Title>
             <Text size="sm">
@@ -191,7 +191,7 @@ export const Terms: React.FC = () => {
 
           {/* 第11条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第11条（準拠法・管轄）
             </Title>
             <Text size="sm">
@@ -214,7 +214,6 @@ export const Terms: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-    </Container>
+      </Card>
   );
 };

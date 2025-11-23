@@ -9,18 +9,18 @@ import {
   Paper,
   Divider,
   Space,
+  Card,
 } from '@mantine/core';
 
 export const Privacy: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               プライバシーポリシー
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -35,7 +35,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第1条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第1条（基本方針）
             </Title>
             <Text size="sm">
@@ -47,7 +47,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第2条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第2条（取得する情報の種類）
             </Title>
             <Text size="sm">本サービスは、ユーザーから以下の情報を取得する場合があります。</Text>
@@ -62,7 +62,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第3条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第3条（情報の利用目的）
             </Title>
             <Text size="sm">取得した情報は、主に次の目的のために利用します。</Text>
@@ -83,7 +83,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第4条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第4条（クッキー等の利用）
             </Title>
             <Text size="sm">
@@ -97,7 +97,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第5条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第5条（外部サービス・第三者提供）
             </Title>
             <Text size="sm">
@@ -117,7 +117,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第6条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第6条（情報の管理・安全対策）
             </Title>
             <Text size="sm">
@@ -129,7 +129,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第7条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第7条（ユーザーによる開示・訂正・削除等の請求）
             </Title>
             <Text size="sm">
@@ -148,7 +148,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第8条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第8条（投稿コンテンツとプライバシー）
             </Title>
             <Text size="sm">
@@ -165,7 +165,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第9条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第9条（統計情報の利用）
             </Title>
             <Text size="sm">
@@ -176,7 +176,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第10条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第10条（本ポリシーの変更）
             </Title>
             <Text size="sm">
@@ -190,7 +190,7 @@ export const Privacy: React.FC = () => {
 
           {/* 第11条 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               第11条（お問い合わせ窓口）
             </Title>
             <Text size="sm">
@@ -211,7 +211,6 @@ export const Privacy: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-    </Container>
+      </Card>
   );
 };
