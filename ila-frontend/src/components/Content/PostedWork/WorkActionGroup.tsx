@@ -14,6 +14,7 @@ type WorkActionGroupProps = {
   isLiked?: boolean;
   isSubmitting: boolean;
   onOpen: () => void;
+  onShareClick: (workId: string) => void;
   onLikeClick: (workId: string) => void;
   onEditClick: (workId: string) => void;
   onDeleteClick: (workId: string) => void;
@@ -27,6 +28,7 @@ export const WorkActionGroup = ({
   isLiked,
   isSubmitting,
   onOpen,
+  onShareClick,
   onLikeClick,
   onEditClick,
   onDeleteClick,
@@ -95,7 +97,7 @@ export const WorkActionGroup = ({
       )}
 
       {/* シェア */}
-      <ActionIcon style={iconButtonStyle}>
+      <ActionIcon style={iconButtonStyle} onClick={() => onShareClick(workId)}>
         <IconShare size={16} color="var(--mantine-color-blue-6)" />
       </ActionIcon>
 

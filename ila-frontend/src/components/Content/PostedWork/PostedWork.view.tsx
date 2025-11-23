@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { Group, Card, Grid, Textarea, AspectRatio, Center, Text, Pill, Skeleton, Space, Flex } from '@mantine/core';
 import { IconCube, IconEyeOff, IconHeartFilled, IconPencilCode } from '@tabler/icons-react';
 import { ApiWorkWithTag } from '../ImageCard/ImageCard';
@@ -9,6 +9,7 @@ import { WorkModal } from '../WorkModal/WorkModal';
 import { SkeltonIcon } from '../SkeltonIcon/SkeltonIcon';
 import { WorkActionGroup } from './WorkActionGroup';
 import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
+import ShareModal from '../ShareModal/ShareModal';
 
 type PostedWorkViewProps = {
   workId: string;
@@ -32,6 +33,7 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
   handleTagClick
 }: PostedWorkViewProps): JSX.Element {
   const [opened, { open, close }] = useDisclosure(false);
+  const [shareOpened, setShareOpened] = useState(false);
   const { user } = useFirebaseAuthContext();
   const isViewSettingNeeded = !!(
     user &&
@@ -86,6 +88,7 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
                     isLiked={imageData?.apiWork?.isLiked}
                     isSubmitting={isSubmitting}
                     onOpen={open}
+                    onShareClick={() => setShareOpened(true)}
                     onLikeClick={handleLikeClick}
                     onEditClick={handleEditClick}
                     onDeleteClick={handleDeleteClick}
@@ -262,6 +265,9 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
 
       {/* モーダルで画像拡大表示 */}
       <WorkModal opened={opened} onClose={close} imageUrl={imageData?.apiWork?.titleImgUrl} />
+
+      {/* シェアモーダル */}
+      <ShareModal imageData={imageData} shareOpened={shareOpened} onClose={() => setShareOpened(false)} />
     </>
   );
 });
