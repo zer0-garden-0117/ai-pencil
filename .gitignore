@@ -70,4 +70,4 @@ application-dev.yml
 .env.development
 
 ## Firebase
-ila-backend/src/main/resources/firebase-service-account.json
+aip-backend/src/main/resources/firebase-service-account.json

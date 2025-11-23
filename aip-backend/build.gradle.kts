@@ -167,5 +167,5 @@ tasks.register<org.springframework.boot.gradle.tasks.run.BootRun>("bootRunDev") 
 }
 
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootWar> {
-    archiveFileName.set("ila-backend.war")
+    archiveFileName.set("aip-backend.war")
 }

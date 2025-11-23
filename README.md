@@ -31,16 +31,16 @@
    - AWS CLI
    - SSL証明書(HTTP to HTTPS)の設定
      - mkcertのインストール
-     - cd ila-backend/nginx/certs
+     - cd aip-backend/nginx/certs
      - config.iniを編集し、keystore-gen.shを実行し、ila-keysotre.p12をOSインポート
    - NodeJS for sharp(avif変換ライブラリ)
-     - cd ila-backend/node-scripts
+     - cd aip-backend/node-scripts
      - npm install
    - 起動
-     - cd ila-backend
+     - cd aip-backend
      - ./gradlew clean bootRunDev
  - フロントエンド
-   - cd ila-frontend
+   - cd aip-frontend
    - npm install
    - npm run dev
 
