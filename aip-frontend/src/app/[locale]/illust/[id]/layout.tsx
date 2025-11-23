@@ -9,7 +9,7 @@ export async function generateMetadata({
   const ogpTitle = "AIペンシル - AIイラストのSNSサイト";
   const ogpUrl = `https://cfa-backend-dev.s3.us-east-1.amazonaws.com/ogp/${params.id}.png`;
   const description =
-  "AIペンシルは、AIイラストを「作る・繋がる」SNSです。生成したAIイラストの投稿やシェアはもちろん、好みの作品を発見してクリエイター同士の交流を楽しめます。";
+  "AIペンシルは、AIイラストを作り、繋がるSNSです。生成したAIイラストの投稿やシェアはもちろん、好みの作品を発見してクリエイター同士の交流を楽しめます。";
 
   return {
     title: ogpTitle,

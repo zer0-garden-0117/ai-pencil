@@ -57,7 +57,7 @@ export const Logo: React.FC<LogoProps> = () => {
         c={"dimmed"}
         ml={-13}
       >
-        AIイラストを「作る・繋がる」SNS
+        AIイラストを作り、繋がるSNS
       </Text>
       </Flex>
     </Flex>
