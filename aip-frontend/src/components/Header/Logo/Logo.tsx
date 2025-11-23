@@ -4,7 +4,6 @@ import { useNavigate } from '@/utils/navigate';
 import { useState } from 'react';
 import classes from './Logo.module.css';
 import { IconCube, IconPencil, IconPencilCode, IconPencilCog, IconPencilHeart, IconPencilX } from '@tabler/icons-react';
-import { IconCubeAIP } from './IconCubeAIP';
 
 export interface LogoProps {
   width?: string;
@@ -58,7 +57,7 @@ export const Logo: React.FC<LogoProps> = () => {
         c={"dimmed"}
         ml={-13}
       >
-        AIイラストのためのSNS
+        AIイラストを「作る・繋がる」SNS
       </Text>
       </Flex>
     </Flex>

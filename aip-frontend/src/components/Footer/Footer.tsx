@@ -48,7 +48,7 @@ export const Footer: React.FC = () => {
                 AIペンシル
               </Text>
               <Text size="xs" c="dimmed">
-                AIイラストを“作る・投稿する・見つける”ためのSNS
+                AIイラストを「作る・繋がる」SNS
               </Text>
             </Stack>
 
