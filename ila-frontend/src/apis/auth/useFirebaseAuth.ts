@@ -8,7 +8,7 @@ import {
   User as FirebaseUser,
   getAdditionalUserInfo
 } from 'firebase/auth';
-import { auth } from '../../configs/auth/config2'
+import { auth } from '../../configs/auth/config'
 import { useMyUserGet, MyUserGetResult } from '../openapi/myusers/useMyUserGet';
 
 interface AuthResult {

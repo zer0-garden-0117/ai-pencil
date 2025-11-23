@@ -4,7 +4,7 @@ import {
   User as FirebaseUser,
   onIdTokenChanged,
 } from 'firebase/auth';
-import { auth } from '../../configs/auth/config2';
+import { auth } from '../../configs/auth/config';
 import { useFirebaseAuth } from '../../apis/auth/useFirebaseAuth';
 import { MyUserGetResult, useMyUserGet } from '@/apis/openapi/myusers/useMyUserGet';
 
