@@ -11,7 +11,7 @@ export const useBillCompleted = (
   const router = useRouter();
 
   const productName = 
-    priceId === 'price_1SFZtJGV099jFwTVZhlq19fo' ? 'Basic' :
+    priceId === 'price_1SWf1pGV099jFwTVuuj4K0dj' ? 'Basic' :
     priceId === 'price_1SFuRWGV099jFwTVqJj2MZUG' ? 'Boost S' :
     priceId === 'price_1SFuRyGV099jFwTVZWPwlLq0' ? 'Boost M' :
     priceId === 'price_1SFuTHGV099jFwTVP7VUCctG' ? 'Boost L' :

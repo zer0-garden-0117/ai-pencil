@@ -18,7 +18,7 @@ export const useCreateWork = () => {
 
   const form = useForm<CreateWorkValues>({
     initialValues: {
-      model: 'illust-ai-v1',
+      model: 'light-pencil',
       prompt: '',
       negativePrompt: '',
     },
@@ -52,12 +52,17 @@ export const useCreateWork = () => {
     router.push('/boost');
   }
 
+  const handleSettingsClick = () => {
+    router.push(`/user/${user?.customUserId}?settingModal=true`);
+  }
+
   return {
     form,
     isSubmitting,
     handleDrawClick,
     handleHistoryClick,
     handlePlanChangeClick,
-    handleBoostAddClick
+    handleBoostAddClick,
+    handleSettingsClick
   };
 };

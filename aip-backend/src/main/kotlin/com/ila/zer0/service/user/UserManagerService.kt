@@ -437,7 +437,7 @@ class UserManagerService(
     fun calLimitNumByPlanAndBoost(plan: String, boost: List<String>): Int {
         // plan に含まれるワードでベースの上限を決定
         var limitNum = when {
-            plan.contains("Basic") -> 10
+            plan.contains("Basic") -> 15
             plan.contains("Free") -> 3
             else -> 3  // 想定外は一旦 Free 相当として扱う
         }

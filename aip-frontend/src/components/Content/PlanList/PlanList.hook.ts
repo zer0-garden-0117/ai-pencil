@@ -59,8 +59,8 @@ export const usePlanList = () => {
     {
       id: 'basic',
       name: 'Basic',
-      price: 980,
-      illustNum: 10,
+      price: 680,
+      illustNum: 15,
       illustHistoryDays: 30,
       isRecommended: true,
       features: [

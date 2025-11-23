@@ -96,7 +96,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
       <Card withBorder radius="md" p="md" mb={10}>
         <Group gap="10px" mb="5px" justify="space-between">
           <Text fw={500} fz="sm">
-            プラン
+            サブスクリプション
           </Text>
           <Anchor>
             <Button
@@ -121,7 +121,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
         {/* ブーストの状態 */}
         <Group gap="10px" mb="5px" justify="space-between">
           <Text fw={500} fz="sm">
-            ブースト
+            ブースト(買い切り型)
           </Text>
           <Anchor>
             <Button

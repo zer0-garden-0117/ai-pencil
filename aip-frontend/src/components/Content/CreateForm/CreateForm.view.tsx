@@ -17,6 +17,7 @@ type CreateWorkViewProps = {
   handleHistoryClick: () => void
   handlePlanChangeClick: () => void
   handleBoostAddClick: () => void
+  handleSettingsClick: () => void
 };
 
 export const CreateWorkView = memo(function WorkViewComponent({
@@ -25,7 +26,8 @@ export const CreateWorkView = memo(function WorkViewComponent({
   handleDrawClick,
   handleHistoryClick,
   handlePlanChangeClick,
-  handleBoostAddClick
+  handleBoostAddClick,
+  handleSettingsClick
 }: CreateWorkViewProps): JSX.Element {
   const { user } = useFirebaseAuthContext();
 
@@ -63,14 +65,11 @@ export const CreateWorkView = memo(function WorkViewComponent({
         今日はあと{user?.remainingIllustNum}回イラストを生成できます。
         <Button
           size='compact-xs'
-          onClick={
-            user?.plan === 'Free' ? handlePlanChangeClick : handleBoostAddClick
-          }
+          onClick={handleSettingsClick}
           disabled={isSubmitting} 
           radius="xl"
         >
-          {/* user.planがFreeの場合は、プランの変更を表示し、Free以外の場合はブーストの追加を表示 */}
-          {user?.plan === 'Free' ? 'プランの変更' : 'ブーストの追加'}
+          イラスト生成数の設定
         </Button>
       </Notification>
       <Space h="md" />
@@ -84,8 +83,8 @@ export const CreateWorkView = memo(function WorkViewComponent({
           {...form.getInputProps('model')}
         >
           <Group>
-            <Radio value="illust-ai-v1" label="illust-ai-v1" />
-            <Radio value="illust-ai-v2" label="illust-ai-v2(近日実装)" disabled/>
+            <Radio value="light-pencil" label="light-pencil" />
+            <Radio value="coming soon..." label="coming soon..." disabled />
           </Group>
         </Radio.Group>
         {/* プロンプト */}

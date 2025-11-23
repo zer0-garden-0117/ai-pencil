@@ -21,12 +21,12 @@ export const BoostListView = memo(function WorkViewComponent({
     <Card withBorder padding="md" radius="md">
       <Group justify="space-between">
         <Text fz="md" fw={700}>
-          ブーストの追加
+          ブースト(買い切り型)の購入
         </Text>
       </Group>
       <Space h="md" />
       {/* プランリスト */}
-      <SimpleGrid cols={{ base: 2, sm: 2, md: 3, lg: 3, xl: 3 }} spacing={{ base: 10 }}>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 2, lg: 3, xl: 3 }} spacing={{ base: 10 }}>
         {boostDatas.map((boostData) => (
           <Card key={boostData.id} shadow="sm" padding="lg" radius="md" withBorder>
 
@@ -42,7 +42,7 @@ export const BoostListView = memo(function WorkViewComponent({
                 料金
               </Text>
             </Group>
-            <Text fz="sm" mb="sm">¥<Text span fz="sm" fw={700}>{boostData.price}</Text></Text>
+            <Text fz="sm" mb="sm"><Text span fz="sm" fw={700}>{boostData.price}</Text>円</Text>
 
             {/* 増える数 */}
             <Group gap={"5px"} mb="5px">
@@ -51,7 +51,7 @@ export const BoostListView = memo(function WorkViewComponent({
                 画像生成
               </Text>
             </Group>
-            <Text fz="sm" mb="sm">+<Text span fz="sm" fw={700}>{boostData.increaseNum}</Text>回/日</Text>
+            <Text fz="sm" mb="sm">1日に生成できる枚数を＋<Text span fz="sm" fw={700}>{boostData.increaseNum}</Text>枚</Text>
 
             {/* 有効期間 */}
             <Group gap={"5px"} mb="5px">

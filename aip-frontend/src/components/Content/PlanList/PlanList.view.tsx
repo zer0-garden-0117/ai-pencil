@@ -23,12 +23,12 @@ export const PlanListView = memo(function WorkViewComponent({
     <Card withBorder padding="md" radius="md">
       <Group justify="space-between">
         <Text fz="md" fw={700}>
-          プランの変更
+          サブスクリプションの購入
         </Text>
       </Group>
       <Space h="md" />
       {/* プランリスト */}
-      <SimpleGrid cols={{ base: 2, sm: 2, md: 2, lg: 2, xl: 2 }} spacing={{ base: 10 }}>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 2, lg: 2, xl: 2 }} spacing={{ base: 10 }}>
         {planData.map((plan) => (
           <Card key={plan.id} shadow="sm" padding="lg" radius="md" withBorder>
 
@@ -50,7 +50,7 @@ export const PlanListView = memo(function WorkViewComponent({
                 月額
               </Text>
             </Group>
-            <Text fz="sm" mb="sm">¥<Text span fz="sm" fw={700}>{plan.price}</Text></Text>
+            <Text fz="sm" mb="sm"><Text span fz="sm" fw={700}>{plan.price}</Text>円</Text>
 
             {/* 生成回数 */}
             <Group gap={"5px"} mb="5px">
@@ -59,7 +59,7 @@ export const PlanListView = memo(function WorkViewComponent({
                 画像生成
               </Text>
             </Group>
-            <Text fz="sm" mb="sm"><Text span fz="sm" fw={700}>{plan.illustNum}</Text>回/日</Text>
+            <Text fz="sm" mb="sm">1日に<Text span fz="sm" fw={700}>{plan.illustNum}</Text>枚まで生成可能</Text>
 
             {/* 生成履歴 */}
             <Group gap={"5px"} mb="5px">
@@ -68,7 +68,7 @@ export const PlanListView = memo(function WorkViewComponent({
                 生成履歴
               </Text>
             </Group>
-            <Text fz="sm" mb="sm"><Text span fz="sm" fw={700}>{plan.illustHistoryDays}</Text>日保存</Text>
+            <Text fz="sm" mb="sm"><Text span fz="sm" fw={700}>{plan.illustHistoryDays}</Text>日間保存</Text>
             {/* 購入ボタン */}
             <Center>
             {/* plan.idがfreeの場合はボタンを表示しない */}

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Group, Card, Image, AspectRatio, Center, Button, Notification, Space, Skeleton } from '@mantine/core';
+import { Group, Card, Image, AspectRatio, Center, Button, Notification, Space, Skeleton, Text } from '@mantine/core';
 import { IconCheck, IconPencilCode } from '@tabler/icons-react';
 import { ApiWorkWithTag } from '../ImageCard/ImageCard';
 
@@ -25,7 +25,10 @@ export const CreateProcessingView = memo(function WorkViewComponent({
     <Card withBorder padding="md" radius="md">
 
       {/* あとで見るボタン */}
-      <Group justify="flex-end">
+      <Group justify="space-between">
+        <Text fz="md" fw={700}>
+          イラスト生成中
+        </Text>
         <Button
           radius={"xl"}
           size="xs"
