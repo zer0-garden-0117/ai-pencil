@@ -18,7 +18,7 @@ export const Footer: React.FC = () => {
 
   const links = [
     { label: '利用規約', href: '/terms' },
-    { label: 'プライバシーポリシー', href: '/privacy' },
+    { label: 'プライバシー', href: '/privacy' },
     { label: '投稿ガイドライン', href: '/guidelines' },
     { label: 'AI生成について', href: '/ai-policy' },
     { label: 'ヘルプ・FAQ', href: '/help' },
