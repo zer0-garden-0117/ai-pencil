@@ -1,9 +1,10 @@
-import { Box, Flex, Text } from '@mantine/core';
+import { Box, Flex, Stack, Text } from '@mantine/core';
 import { useTranslations } from "next-intl";
 import { useNavigate } from '@/utils/navigate';
 import { useState } from 'react';
 import classes from './Logo.module.css';
-import { IconPencilCode } from '@tabler/icons-react';
+import { IconCube, IconPencil, IconPencilCode, IconPencilCog, IconPencilHeart, IconPencilX } from '@tabler/icons-react';
+import { IconCubeAIP } from './IconCubeAIP';
 
 export interface LogoProps {
   width?: string;
@@ -37,36 +38,29 @@ export const Logo: React.FC<LogoProps> = () => {
       onMouseUp={() => setIsActive(false)}
       onMouseLeave={() => setIsActive(false)}
     >
-      <Box
-        ml={-15}
-        mr={15}>
-          <IconPencilCode
-            size={30}
-            color='var(--mantine-color-cyan-3)'/>
-      </Box>
+      <Flex
+        direction="column"
+        gap={-3}
+      >
       <Text
         fw={700}
-        c={"var(--mantine-color-gray-7)"}
-        // c={"var(--mantine-color-blue-5)"}
-        size='20px'
-        ml={-15}
-        fs="italic"
-        lts="-0.15em"
+        size="lg"
+        style={{ fontFamily: 'var(--mantine-font-family)' }}
+        c={"black"}
+        ml={-13}
       >
-        イラスト
+        AIペンシル
       </Text>
       <Text
-        fw={510}
-        ml={-4}
-        // c={"var(--mantine-color-pink-3)"}
-        c={"var(--mantine-color-cyan-3)"}
-        // c={"#00BCD4"}
-        size='29px'
-        fs="italic"
-        lts="-0.02em"
+        fw={400}
+        size="xs"
+        style={{ fontFamily: 'var(--mantine-font-family)' }}
+        c={"dimmed"}
+        ml={-13}
       >
-        AI
+        AIイラストのためのSNS
       </Text>
+      </Flex>
     </Flex>
   );
 };
