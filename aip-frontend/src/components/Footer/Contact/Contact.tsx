@@ -10,6 +10,7 @@ import {
   Divider,
   Space,
   Group,
+  Card,
 } from '@mantine/core';
 
 export const Contact: React.FC = () => {
@@ -19,12 +20,11 @@ export const Contact: React.FC = () => {
   const xId = '@';
 
   return (
-    <Container size="md" py="xl">
-      <Paper withBorder radius="md" p="lg">
+    <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               お問い合わせ
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -37,7 +37,7 @@ export const Contact: React.FC = () => {
 
           {/* 1. お問い合わせ窓口 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               1. お問い合わせ窓口
             </Title>
 
@@ -76,7 +76,7 @@ export const Contact: React.FC = () => {
 
           {/* 2. DM送信時のお願い */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               2. DM送信時のお願い
             </Title>
             <Text size="sm">
@@ -93,7 +93,7 @@ export const Contact: React.FC = () => {
 
           {/* 3. お問い合わせいただける内容の例 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               3. お問い合わせいただける内容の例
             </Title>
             <List size="sm" mt="xs">
@@ -107,7 +107,7 @@ export const Contact: React.FC = () => {
 
           {/* 4. 注意事項 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               4. 注意事項
             </Title>
             <Text size="sm">
@@ -140,7 +140,7 @@ export const Contact: React.FC = () => {
 
           {/* 5. 参考リンク */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               5. あわせてご確認ください
             </Title>
             <List size="sm" mt="xs">
@@ -176,9 +176,6 @@ export const Contact: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-
-      <Space h="xl" />
-    </Container>
+      </Card>
   );
 };

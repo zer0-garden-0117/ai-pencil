@@ -9,18 +9,18 @@ import {
   Paper,
   Divider,
   Space,
+  Card,
 } from '@mantine/core';
 
 export const AiPolicy: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               AI生成について
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -42,7 +42,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 1. AI生成機能の目的 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               1. AI生成機能の目的
             </Title>
             <Text size="sm">
@@ -53,7 +53,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 2. 使用しているAI技術の概要 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               2. 使用しているAI技術の概要
             </Title>
             <Text size="sm">
@@ -68,7 +68,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 3. 生成プロセスとログ */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               3. 生成プロセスとログの取り扱い
             </Title>
             <Text size="sm">
@@ -98,7 +98,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 4. 生成コンテンツの権利と利用 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               4. 生成コンテンツの権利と利用
             </Title>
             <Text size="sm">
@@ -125,7 +125,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 5. 制限事項・注意点 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               5. 制限事項・注意点
             </Title>
             <Text size="sm">
@@ -144,7 +144,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 6. 不適切な生成への対応 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               6. 不適切な生成・利用への対応
             </Title>
             <Text size="sm">
@@ -166,7 +166,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 7. モデル・仕様の変更 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               7. モデルおよび仕様の変更
             </Title>
             <Text size="sm">
@@ -177,7 +177,7 @@ export const AiPolicy: React.FC = () => {
 
           {/* 8. 本ページの位置づけ */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               8. 本ページの位置づけ
             </Title>
             <Text size="sm">
@@ -211,7 +211,6 @@ export const AiPolicy: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-    </Container>
+      </Card>
   );
 };

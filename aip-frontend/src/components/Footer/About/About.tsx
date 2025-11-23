@@ -10,18 +10,18 @@ import {
   Divider,
   Space,
   Group,
+  Card,
 } from '@mantine/core';
 
 export const About: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md" py="xl">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               運営者情報
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
 
           {/* 基本情報 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               1. 基本情報
             </Title>
 
@@ -102,7 +102,7 @@ export const About: React.FC = () => {
 
           {/* サービスの概要・コンセプト */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               2. サービスの概要
             </Title>
             <Text size="sm">
@@ -122,7 +122,7 @@ export const About: React.FC = () => {
 
           {/* 個人運営としてのスタンス */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               3. 個人運営としてのスタンス
             </Title>
             <Text size="sm">
@@ -140,7 +140,7 @@ export const About: React.FC = () => {
 
           {/* 利用規約・ポリシー */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               4. 利用規約・ポリシーについて
             </Title>
             <Text size="sm">
@@ -180,7 +180,7 @@ export const About: React.FC = () => {
 
           {/* 免責（軽く） */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               5. 免責事項（概要）
             </Title>
             <Text size="sm">
@@ -207,9 +207,6 @@ export const About: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-
-      <Space h="xl" />
-    </Container>
+      </Card>
   );
 };

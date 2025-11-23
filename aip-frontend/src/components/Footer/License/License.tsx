@@ -9,18 +9,18 @@ import {
   Paper,
   Divider,
   Space,
+  Card,
 } from '@mantine/core';
 
 export const License: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md" py="xl">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               著作権・ライセンスについて
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -42,7 +42,7 @@ export const License: React.FC = () => {
 
           {/* 1. コンテンツの定義 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               1. コンテンツの定義
             </Title>
             <Text size="sm">
@@ -53,7 +53,7 @@ export const License: React.FC = () => {
 
           {/* 2. 著作権の帰属 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               2. 著作権の帰属
             </Title>
             <Text size="sm">
@@ -67,7 +67,7 @@ export const License: React.FC = () => {
 
           {/* 3. 運営者への利用許諾（ライセンス） */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               3. 本サービス運営者への利用許諾（ライセンス）
             </Title>
             <Text size="sm">
@@ -87,7 +87,7 @@ export const License: React.FC = () => {
 
           {/* 4. ユーザーによる利用（個人・商用利用など） */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               4. ユーザーによるコンテンツの利用（個人・商用利用など）
             </Title>
             <Text size="sm">
@@ -104,7 +104,7 @@ export const License: React.FC = () => {
 
           {/* 5. AI生成コンテンツに関する注意点 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               5. AI生成コンテンツに関する注意点
             </Title>
             <Text size="sm">
@@ -125,7 +125,7 @@ export const License: React.FC = () => {
 
           {/* 6. 禁止される利用例 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               6. 禁止されるコンテンツ利用の例
             </Title>
             <Text size="sm">
@@ -152,7 +152,7 @@ export const License: React.FC = () => {
 
           {/* 7. コンテンツの削除・利用停止 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               7. コンテンツの削除・利用停止
             </Title>
             <Text size="sm">
@@ -179,7 +179,7 @@ export const License: React.FC = () => {
 
           {/* 8. 免責と注意事項 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               8. 免責および注意事項
             </Title>
             <Text size="sm">
@@ -193,7 +193,7 @@ export const License: React.FC = () => {
 
           {/* 9. 本ページの位置づけと変更 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               9. 本ページの位置づけと変更
             </Title>
             <Text size="sm">
@@ -221,9 +221,6 @@ export const License: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-
-      <Space h="xl" />
-    </Container>
+      </Card>
   );
 };

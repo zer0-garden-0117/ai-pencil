@@ -9,18 +9,18 @@ import {
   Paper,
   Divider,
   Space,
+  Card,
 } from '@mantine/core';
 
 export const HelpFaq: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Container size="md" py="xl">
-      <Paper withBorder radius="md" p="lg">
+      <Card withBorder padding="md" radius="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>
-            <Title order={1} size="h2">
+            <Title order={1} size="h5">
               ヘルプ・FAQ
             </Title>
             <Text c="dimmed" size="sm" mt="xs">
@@ -34,7 +34,7 @@ export const HelpFaq: React.FC = () => {
 
           {/* セクション1：アカウント・基本事項 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               1. アカウント・ログインについて
             </Title>
 
@@ -68,7 +68,7 @@ export const HelpFaq: React.FC = () => {
 
           {/* セクション2：AI生成・投稿機能 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               2. AIイラストの生成・投稿について
             </Title>
 
@@ -114,7 +114,7 @@ export const HelpFaq: React.FC = () => {
 
           {/* セクション3：閲覧設定・R18関連 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               3. 閲覧設定・センシティブ内容について
             </Title>
 
@@ -164,7 +164,7 @@ export const HelpFaq: React.FC = () => {
 
           {/* セクション4：トラブル・不具合 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               4. トラブル・不具合について
             </Title>
 
@@ -198,7 +198,7 @@ export const HelpFaq: React.FC = () => {
 
           {/* セクション5：ポリシー・ルール関連 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               5. 各種ポリシー・ルールについて
             </Title>
 
@@ -237,7 +237,7 @@ export const HelpFaq: React.FC = () => {
 
           {/* お問い合わせ案内 */}
           <section>
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h6" mb="xs">
               6. 解決しない場合は
             </Title>
             <Text size="sm">
@@ -260,9 +260,6 @@ export const HelpFaq: React.FC = () => {
             </Text>
           </section>
         </Stack>
-      </Paper>
-
-      <Space h="xl" />
-    </Container>
+      </Card>
   );
 };
