@@ -89,7 +89,7 @@ export const WorkActionGroup = ({
           ) : isLiked ? (
             <IconHeartFilled size={16} color="var(--mantine-color-red-6)" />
         ) : (
-          <IconHeart size={16} color="var(--mantine-color-gray-6)" />
+          <IconHeart size={16} color="var(--mantine-color-red-6)" />
         )}
         </ActionIcon>
       )}
@@ -105,7 +105,7 @@ export const WorkActionGroup = ({
         <Menu shadow="md">
           <Menu.Target>
             <ActionIcon style={iconButtonStyle}>
-              <IconMenu2 size={16} color="var(--mantine-color-gray-6)" />
+              <IconMenu2 size={16} color="var(--mantine-color-cyan-6)" />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
