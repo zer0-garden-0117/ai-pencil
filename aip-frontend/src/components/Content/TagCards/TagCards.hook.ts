@@ -24,6 +24,7 @@ export const useTagCards = (
       initialOffset: 0,
       tag: tag,
       limit: PAGE_SIZE,
+      getIdTokenLatest,
     },
     { revalidateOnFocus: false }
   );

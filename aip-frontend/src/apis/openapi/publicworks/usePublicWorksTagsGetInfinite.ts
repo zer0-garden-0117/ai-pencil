@@ -21,6 +21,7 @@ export type PublicWorksTagsGetInfiniteArgs = {
   initialOffset?: PublicWorksTagsGetQuery['offset'];
   limit: PublicWorksTagsGetQuery['limit'];
   tag: PublicWorksTagsGetPath['tag'];
+  getIdTokenLatest: () => Promise<string | null>;
 };
 
 export const usePublicWorksTagsGetInfinite = (
@@ -31,6 +32,7 @@ export const usePublicWorksTagsGetInfinite = (
     initialOffset = 0,
     limit,
     tag,
+    getIdTokenLatest,
   } = args;
 
   const getKey = (
@@ -47,6 +49,7 @@ export const usePublicWorksTagsGetInfinite = (
   };
 
   const fetcher = async (
+    
     [, tg, off, lim]: [
       string,
       PublicWorksTagsGetPath['tag'],
@@ -54,7 +57,12 @@ export const usePublicWorksTagsGetInfinite = (
       PublicWorksTagsGetQuery['limit']
     ]
   ): Promise<PublicWorksTagsGetResult> => {
+    const token = await getIdTokenLatest();
+    // if (!token) throw new Error('Failed to acquire latest ID token');
+    // token が null の場合でもアクセス可能なAPIなので、そのまま進める
+
     const { data, error } = await client.GET('/public/works/tags/{tag}', {
+      headers: { Authorization: `Bearer ${token}` },
       params: {
         path: {
           tag: tg,
