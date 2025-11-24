@@ -1,7 +1,7 @@
 'use client';
 
 import React, { memo } from 'react';
-import { Group, Card, Grid, Image, Textarea, AspectRatio, Center, Button, Loader, Space, Box } from '@mantine/core';
+import { Group, Card, Grid, Image, Textarea, AspectRatio, Center, Button, Loader, Space, Box, Text } from '@mantine/core';
 import { IconCheck, IconPencil } from '@tabler/icons-react';
 import { ApiWorkWithTag } from '../ImageCard/ImageCard';
 import { UseFormReturnType } from '@mantine/form';
@@ -62,6 +62,7 @@ export const PostFormView = memo(function WorkViewComponent({
               rows={5}
               minRows={5}
               maxRows={5}
+              maxLength={100}
               disabled={isSubmitting || isPosted}
             />
 

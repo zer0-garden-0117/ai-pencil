@@ -38,7 +38,12 @@ class MyWorksController(
         val user = getUser() ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
 
         // バリデーション
-        if (apiWork.prompt.isNullOrEmpty() || apiWork.model.isNullOrEmpty()) {
+        // promptはnullではなく1-250文字以内、negativePromptは0-250文字以内
+        // modelはlight-pencilのみ許可
+        if (apiWork.prompt!!.length !in 1..250 ||
+            apiWork.negativePrompt!!.length !in 0..250 ||
+            apiWork.model != "light-pencil"
+        ) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
 
@@ -46,6 +51,7 @@ class MyWorksController(
         if (usageService.getRemainingToday(user.userId, limit = user.illustNumLimit) <= 0) {
             return ResponseEntity(HttpStatus.PAYMENT_REQUIRED)
         }
+
         // プランによってttlとsupportToに設定する日数を設定
         // Basicであれば30日、Freeであれば3日
         val days = if (user.plan == "Basic") 30 else 3
@@ -112,7 +118,8 @@ class MyWorksController(
         val user = getUser() ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
 
         // バリデーション
-        if (apiWork.description.isNullOrEmpty()) {
+        // descriptionはnullを許容する。100文字以内
+        if (apiWork.description != null && apiWork.description!!.length > 100) {
             return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
 
