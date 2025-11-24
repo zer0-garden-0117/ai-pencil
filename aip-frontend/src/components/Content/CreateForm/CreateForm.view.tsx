@@ -30,6 +30,7 @@ export const CreateWorkView = memo(function WorkViewComponent({
   handleSettingsClick
 }: CreateWorkViewProps): JSX.Element {
   const { user } = useFirebaseAuthContext();
+  const isPromptEmpty = !form.values.prompt?.trim();
 
   return (
     <Card withBorder padding="md" radius="md">
@@ -114,13 +115,19 @@ export const CreateWorkView = memo(function WorkViewComponent({
             <Button
               type="submit"
               radius="xl"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isPromptEmpty || (user?.remainingIllustNum ?? 0) <= 0}
               rightSection={
                 !isSubmitting ? (
                   <>
-                    <IconPencil color="white" size={20} style={{ display: 'block' }} />
+                    <IconPencil
+                      size={20}
+                      style={{ display: 'block' }}
+                    />
                     {user?.remainingIllustNum}
-                    <IconArrowNarrowRight color="white" size={20} style={{ display: 'block' }} />
+                    <IconArrowNarrowRight
+                      size={20}
+                      style={{ display: 'block' }}
+                    />
                     {(user?.remainingIllustNum ?? 0) - 1}
                   </>
                 ) : undefined
