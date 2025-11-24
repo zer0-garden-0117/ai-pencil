@@ -98,6 +98,7 @@ export const CreateWorkView = memo(function WorkViewComponent({
           rows={5}
           minRows={5}
           maxRows={5}
+          maxLength={250}
         />
         {/* ネガティブプロンプト */}
         <Textarea
@@ -109,6 +110,7 @@ export const CreateWorkView = memo(function WorkViewComponent({
           rows={5}
           minRows={5}
           maxRows={5}
+          maxLength={250}
         />
         <Group justify="flex-end" mt="md">
           {user && (
