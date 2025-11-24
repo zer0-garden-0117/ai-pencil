@@ -47,7 +47,8 @@ class MyWorksController(
             return ResponseEntity(HttpStatus.PAYMENT_REQUIRED)
         }
         // プランによってttlとsupportToに設定する日数を設定
-        val days = if (user.plan == "Basic") 30 else 7
+        // Basicであれば30日、Freeであれば3日
+        val days = if (user.plan == "Basic") 30 else 3
         // ttlにはunix epoch millisで設定
         val tll = System.currentTimeMillis() + days * 24 * 60 * 60 * 1000L
         // expiredAtには今日の日付からdaysを足した日付をInstant形式で設定
