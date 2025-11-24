@@ -291,7 +291,7 @@ export const UserInfoView = memo(function WorkViewComponent({
               タグ
             </Text>
             {/* userWorksData?.tagsがnullの場合はSkeleton表示 */}
-            {taggedUsersData?.tags ? (
+            {taggedUsersData ? (
               <Text color="dimmed">
                 {/* userWorksFilterTypeがpostedの場合は「投稿」、favoriteの場合は「いいね」 */}
                 {taggedUsersData.totalTagCount}件のタグ

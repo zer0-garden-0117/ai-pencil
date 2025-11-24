@@ -82,14 +82,12 @@ export const useUserInfo = (
     data: taggedUsersData,
     mutate: updateTaggedUsers,
   } = useTagUsersGet(
-    loginUser
-      ? {
-          customUserId: userId,
-          offset: 0,
-          limit: 10,
-          getIdTokenLatest,
-        }
-      : undefined,
+    {
+      customUserId: userId,
+      offset: 0,
+      limit: 10,
+      getIdTokenLatest,
+    },
     { revalidateOnFocus: true }
   );
 
