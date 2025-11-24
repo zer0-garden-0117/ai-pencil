@@ -76,6 +76,7 @@ export const EditFormView = memo(function WorkViewComponent({
               minRows={5}
               maxRows={5}
               disabled={isSubmitting || isPosted}
+              maxLength={100}
             />
 
           {/* サブミットボタン */}
