@@ -49,7 +49,7 @@ export const usePlanList = () => {
   const planData: PlanData[] = [
     {
       id: 'free',
-      name: 'Free',
+      name: '無料',
       price: 0,
       illustNum: 3,
       illustHistoryDays: 3,

@@ -113,7 +113,7 @@ export const UserSettingModal = memo(function UserSettingModalComponent({
             const parts = loginUser?.plan?.split(':') || [];
             const [planName, renewDate, renewTime] = parts;
             // planNameにFreeが含まれている場合はFreeのみ表示
-            if (planName?.includes('Free')) return 'Free';
+            if (planName?.includes('Free')) return '無料';
             return `${planName} (${renewDate}:${renewTime}に自動更新)`;
           })()}
         </Pill>
