@@ -2,15 +2,15 @@
 dynamodb:
   region: <Your AWS Region ex:us-east-1>
   url: <Your DynamoDB Local URL ex:http://localhost:10000>
+# ユーザープロフィールの画像の保存先
 s3:
   region: <Your AWS Region ex:us-east-1>
   bucket: <Your S3 Bucket Name ex:your-backend-dev>
 
-# 通知
+# 画像生成キュー
 sqs:
   region: <Your AWS Region ex:us-east-1>
   create-image-queue-url: <Your SQS Create Image Queue URL ex:https://sqs.us-east-1.amazonaws.com/xxx/xxx>
-  process-image-queue-url: <Your SQS Process Image Queue URL ex:https://sqs.us-east-1.amazonaws.com/xxx/xxx>
 
 # フロントエンド連携
 cors:
@@ -19,7 +19,23 @@ cdn:
   active: <CDN Active Flag ex:false>
   url: <Your CDN URL ex:https://dev.yourcdn.net>
 
-# NodeJS設定
+# Stripe
+stripe:
+  apiKey: <Your Stripe API Key>
+  priceId:
+    basic: <Your Basic Price ID>
+    boosts: <Your Boosts Price ID>
+    boostm: <Your Boostm Price ID>
+    boostl: <Your Boostl Price ID>
+  planUrl:
+    success: <Your Plan Success URL ex:https://localhost:3001/plan/completed>
+    cancel: <Your Plan Cancel URL ex:https://localhost:3001/plan>
+    return: <Your Plan Return URL ex:https://localhost:3001/plan>
+  boostUrl:
+    success: <Your Boost Success URL ex:https://localhost:3001/boost/completed>
+    cancel: <Your Boost Cancel URL ex:https://localhost:3001/boost>
+
+# NodeJS設定(プロフィール画像の変換)
 nodeJs:
   path: <Your Node Scripts Absoluet Path ex:/Users/{username}/angel-sandbox/node-scripts>
 
@@ -31,7 +47,7 @@ logging:
   pattern:
     dateformat: <Date Format ex:yyyy-MM-dd HH:mm:ss.SSS,Asia/Tokyo>
 
-# AWS認証
+# SpringCloudAWS
 spring:
   cloud:
     aws:
