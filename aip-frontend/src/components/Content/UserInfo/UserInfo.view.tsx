@@ -5,7 +5,7 @@ import { UserInfoFormValues, UserSettingFormValues } from './UserInfo.hook';
 import { IconSettings, IconEdit } from '@tabler/icons-react';
 import { UsersGetResult } from '@/apis/openapi/users/useUsersGet';
 import FollowButton from '@/components/Common/FollowButton/FollowButton';
-import { Skeleton, Button, Group, Text, Card, Space, Anchor, AspectRatio } from '@mantine/core';
+import { Skeleton, Button, Group, Text, Card, Space, Anchor, AspectRatio, Box } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { MyUserGetResult } from '@/apis/openapi/myusers/useMyUserGet';
 import { SkeltonIcon } from '../SkeltonIcon/SkeltonIcon';
@@ -213,22 +213,24 @@ export const UserInfoView = memo(function WorkViewComponent({
           </Text>
           </div>
           {isLoginUser && (
-            <Button
-              color={"var(--mantine-color-gray-5)"} 
-              variant="outline"
-              radius={"xl"}
-              size='compact-lg'
-              leftSection={
-                <IconSettings
-                  color="var(--mantine-color-gray-8)"
-                  size={20}
-                  style={{ display: 'block' }}
-                />
-              }
-              onClick={handleSettingButton}
-            >
-              <Text c="var(--mantine-color-gray-8)">設定</Text>
-            </Button>
+            <Box>
+              <Button
+                color={"var(--mantine-color-gray-5)"} 
+                variant="outline"
+                radius={"xl"}
+                size='compact-lg'
+                leftSection={
+                  <IconSettings
+                    color="var(--mantine-color-gray-8)"
+                    size={20}
+                    style={{ display: 'block' }}
+                  />
+                }
+                onClick={handleSettingButton}
+              >
+                <Text c="var(--mantine-color-gray-8)">設定</Text>
+              </Button>
+            </Box>
           )}
         </Group>
 

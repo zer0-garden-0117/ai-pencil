@@ -55,15 +55,37 @@ class MyUsersController(
     }
 
     override fun patchMyUser(
-        @RequestPart("coverImage", required = true) coverImage: MultipartFile,
-        @RequestPart("profileImage", required = true) profileImage: MultipartFile,
-        @RequestParam(value = "customUserId", required = true) customUserId: String,
-        @RequestParam(value = "userName", required = true) userName: String,
-        @RequestParam(value = "userProfile", required = true) userProfile: String
+        @RequestPart("coverImage", required = false) coverImage: MultipartFile?,
+        @RequestPart("profileImage", required = false) profileImage: MultipartFile?,
+        @RequestParam(value = "customUserId", required = false) customUserId: String?,
+        @RequestParam(value = "userName", required = false) userName: String?,
+        @RequestParam(value = "userProfile", required = false) userProfile: String?
     ): ResponseEntity<ApiUser> {
         // 認証ユーザー取得
         val userId =
             getUserId() ?: return ResponseEntity(HttpStatus.UNAUTHORIZED)
+
+        // バリデーション
+        // customUserIdは3〜12文字の英数字と_のみ使用可能
+        // userNameは1〜20文字のみ
+        // userProfileは5行以内、全てで75文字以内
+        if (customUserId != null) {
+            val customUserIdRegex = "^[a-zA-Z0-9_]{3,12}$".toRegex()
+            if (!customUserId.matches(customUserIdRegex)) {
+                return ResponseEntity(HttpStatus.BAD_REQUEST)
+            }
+        }
+        if (userName != null) {
+            if (userName.length < 1 || userName.length > 20) {
+                return ResponseEntity(HttpStatus.BAD_REQUEST)
+            }
+        }
+        if (userProfile != null) {
+            val lines = userProfile.lines()
+            if (lines.size > 5 || userProfile.length > 75) {
+                return ResponseEntity(HttpStatus.BAD_REQUEST)
+            }
+        }
 
         // ユーザーを取得して更新
         val user =

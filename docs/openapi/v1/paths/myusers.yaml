@@ -53,12 +53,6 @@ UsersMe:
                 type: string
                 description: ユーザーのプロフィール
                 example: xxxxx
-            required:
-              - coverImage
-              - profileImage
-              - customUserId
-              - userName
-              - userProfile
             encoding:
               coverImage:
                 contentType: image/png, image/jpeg

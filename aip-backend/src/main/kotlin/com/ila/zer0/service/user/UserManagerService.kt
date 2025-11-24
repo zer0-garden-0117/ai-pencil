@@ -172,19 +172,14 @@ class UserManagerService(
     @Transactional
     fun updateUser(
         user: User,
-        coverImage: MultipartFile,
-        profileImage: MultipartFile,
-        customUserId: String,
-        userName: String,
-        userProfile: String
+        coverImage: MultipartFile?,
+        profileImage: MultipartFile?,
+        customUserId: String?,
+        userName: String?,
+        userProfile: String?
     ): User {
-        // 引数をすべてログ出力
-        logger.info("Updating user: ${user.userId}, customUserId: $customUserId")
-        logger.info("User profile: $userProfile")
-        logger.info("ProfileImage: ${profileImage.originalFilename}, size: ${profileImage.size}, type: ${profileImage.contentType}")
-        logger.info("CoverImage: ${coverImage.originalFilename}, size: ${coverImage.size}, type: ${coverImage.contentType}")
         // カバー画像の変換
-        if (coverImage.size != 0.toLong() && coverImage.originalFilename != "") {
+        if (coverImage != null && coverImage.size != 0.toLong() && coverImage.originalFilename != "") {
             val coverImagePng = try {
                 convertService.toPng(coverImage)
             } catch (e: Exception) {
@@ -201,7 +196,7 @@ class UserManagerService(
         }
 
         // アイコン画像の変換
-        if (profileImage.size != 0.toLong() && profileImage.originalFilename != "") {
+        if (profileImage != null && profileImage.size != 0.toLong() && profileImage.originalFilename != "") {
             val profileImagePng = try {
                 convertService.toPng(profileImage)
             } catch (e: Exception) {
@@ -217,11 +212,22 @@ class UserManagerService(
         }
 
         // customUserIdの更新
-        user.customUserId = customUserId
+        if (customUserId != null) {
+            user.customUserId = customUserId
+        }
+
         // userNameの更新
-        user.userName = userName
-        // userProfileの更新
-        user.userProfile = userProfile
+        if (userName != null) {
+            user.userName = userName
+        }
+
+        // userProfileの更新(nullだと空文字に設定)
+        if (userProfile != null) {
+            user.userProfile = userProfile
+        } else {
+            user.userProfile = ""
+        }
+
         return userService.updateUser(user)
     }
 

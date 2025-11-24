@@ -211,6 +211,7 @@ export const UserInfoEditModal = memo(function UserInfoEditModal({
             rows={5}
             minRows={5}
             maxRows={5}
+            maxLength={75}
             disabled={isLoading || !isUserIdAvailable}
             onChange={(e) => {
               let value = e.currentTarget.value;
@@ -220,9 +221,6 @@ export const UserInfoEditModal = memo(function UserInfoEditModal({
               if (lines.length > 5) {
                 lines = lines.slice(0, 5);
               }
-
-              // 各行の文字数制限
-              lines = lines.map((line) => line.slice(0, 15));
 
               value = lines.join('\n');
               e.currentTarget.value = value;

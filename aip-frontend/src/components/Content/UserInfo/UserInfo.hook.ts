@@ -186,7 +186,7 @@ export const useUserInfo = (
           profileImage: profileImageFile,
           customUserId: values.customUserId,
           userName: values.userName,
-          userProfile: values.userProfile
+          userProfile: values.userProfile ?? '',
         }
       });
 
@@ -200,7 +200,9 @@ export const useUserInfo = (
 
       // URLのユーザーIDが変更されていたらリダイレクト
       if (userData?.customUserId && userData.customUserId !== values.customUserId) {
-        router.push(`/user/${values.customUserId}`);
+        window.location.href = `/user/${values.customUserId}`;
+      } else {
+        window.location.reload();
       }
     } finally {
       setIsSaving(false);

@@ -3,8 +3,18 @@ import type { AuthHeader } from '../apiClient';
 import type { operations } from "../../../generated/services/ila-v1";
 import useSWRMutation, { SWRMutationConfiguration, SWRMutationResponse } from 'swr/mutation';
 
-export type MyUserUpdateResult = operations["patchMyUser"]["responses"]["200"]["content"]["application/json"];
-export type MyUserUpdateRequestBody = operations["patchMyUser"]["requestBody"]["content"]["multipart/form-data"]
+export type MyUserUpdateResult =
+  operations["patchMyUser"]["responses"]["200"]["content"]["application/json"];
+
+type ApiMyUserUpdateBody =
+  operations["patchMyUser"]["requestBody"]["content"]["multipart/form-data"];
+
+// OpenAPI 生成型をベースに、ファイル系だけ File に差し替え
+export type MyUserUpdateRequestBody = Omit<ApiMyUserUpdateBody, "coverImage" | "profileImage"> & {
+  coverImage?: File | null;
+  profileImage?: File | null;
+};
+
 export type MyUserUpdateHeader = AuthHeader;
 
 export type MyUserUpdateArgs = {
@@ -30,26 +40,21 @@ export const useMyUserUpdate = (
             Authorization: `${arg?.headers?.Authorization}`,
             'Content-Type': 'multipart/form-data',
           },
-          body: arg.body,
+          body: arg.body as unknown as any,
           bodySerializer: (body) => {
             const fd = new FormData();
-            // coverImageをFormDataに追加
             if (body.coverImage) {
               fd.append('coverImage', body.coverImage);
             }
-            // profileImageをFormDataに追加
             if (body.profileImage) {
               fd.append('profileImage', body.profileImage);
             }
-            // customUserIdをFormDataに追加
             if (body.customUserId) {
               fd.append('customUserId', body.customUserId);
             }
-            // userNameをFormDataに追加
             if (body.userName) {
               fd.append('userName', body.userName);
             }
-            // userProfileをFormDataに追加
             if (body.userProfile) {
               fd.append('userProfile', body.userProfile);
             }

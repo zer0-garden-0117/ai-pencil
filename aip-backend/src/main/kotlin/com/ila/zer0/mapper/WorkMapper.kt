@@ -29,6 +29,7 @@ interface WorkMapper {
     @Mapping(target = "ttl", ignore = true)
     @Mapping(target = "expiredAt", ignore = true)
     @Mapping(target = "model", ignore = true)
+    @Mapping(target = "placeholderImgUrl", ignore = true)
     fun toWork(apiWork: ApiWork): Work
 
     @Mapping(
