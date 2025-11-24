@@ -28,7 +28,7 @@ export type UserInfoFormValues = {
 };
 
 export type UserSettingFormValues = {
-  viewRating: string;
+  viewRating: string | undefined;
 };
 
 export const useUserInfo = (
@@ -234,6 +234,10 @@ export const useUserInfo = (
   }
 
   const handleSettingSave = async () => {
+    if (!settingForm.values.viewRating) {
+      return;
+    }
+
     setIsSaving(true);
 
     await updateViewRating({
