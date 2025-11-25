@@ -1,6 +1,7 @@
 import '@mantine/core/styles.css';
 import { type ReactNode } from "react";
 import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import localFont from 'next/font/local';
 
 const notoSansJP = localFont({
@@ -38,6 +39,7 @@ export const CustomMantineProvider: React.FC<CustomMantineProviderProps> = ({ ch
         }
       }}
     >
+      <Notifications />
       {children}
     </MantineProvider>
   );

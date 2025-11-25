@@ -5,11 +5,17 @@ export interface AuthHeader {
   Authorization: `Bearer ${string}`;
 }
 
+export interface HttpError extends Error {
+  status?: number;
+  data?: any;
+}
+
 const throwOnError: Middleware = {
   async onResponse(res) {
     const response = res.response;
+    const status = response.status;
 
-    if (response.status >= 400) {
+    if (status >= 400) {
       const contentType = response.headers.get("content-type");
 
       const body = contentType?.includes("json")
@@ -18,11 +24,16 @@ const throwOnError: Middleware = {
 
       console.error("Error response body:", body);
 
-      throw new Error(
-        contentType?.includes("json")
-          ? JSON.stringify(body, null, 2)
-          : body
-      );
+      const baseMessage =
+        typeof body === "string"
+          ? body
+          : body?.message ?? response.statusText ?? "エラーが発生しました。";
+
+      const error = new Error(baseMessage) as HttpError;
+      error.status = status;
+      error.data = body;
+
+      throw error;
     }
     return undefined;
   },

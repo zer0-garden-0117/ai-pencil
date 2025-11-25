@@ -27,6 +27,7 @@
     "@mantine/dropzone": "^7.17.8",
     "@mantine/form": "^8.3.1",
     "@mantine/hooks": "^7.10.2",
+    "@mantine/notifications": "^7.17.8",
     "@tabler/icons-react": "^3.7.0",
     "aws-amplify": "^6.3.8",
     "dotenv": "^16.4.5",
