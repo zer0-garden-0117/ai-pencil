@@ -41,7 +41,6 @@ export const WorkActionGroup = ({
     user.viewRating < workRating
   );
   const router = useRouter();
-  console.log('user.viewRating:', user?.viewRating, 'workRating:', workRating, 'isViewSettingNeeded:', isViewSettingNeeded);
 
   const iconButtonStyle = {
     backgroundColor: 'light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5))',
