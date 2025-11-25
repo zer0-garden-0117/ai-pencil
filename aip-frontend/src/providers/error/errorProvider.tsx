@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useRef } from 'react';
 import { SWRConfig } from 'swr';
 import { notifications } from '@mantine/notifications';
 
@@ -24,22 +24,37 @@ const DEFAULT_ERROR_MESSAGES: Record<number, string> = {
   500: 'サーバーエラーが発生しました。時間をおいて再度お試しください。',
 };
 
+const ERROR_AUTOCLOSE_MS = 2000;
+const ERROR_COOLDOWN_MS = 30000;
+
 export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [error, setError] = useState<ErrorState | null>(null);
+
+  // いま「エラー通知表示中かどうか」を覚えておくフラグ
+  const isShowingErrorRef = useRef(false);
 
   return (
     <ErrorContext.Provider value={{ error, setError }}>
       <SWRConfig
         value={{
           onError: (error: any) => {
+            if (isShowingErrorRef.current) {
+              return;
+            }
 
-            // 1. ネットワークレベルのエラー（Failed to fetch など）
+            isShowingErrorRef.current = true;
+            setTimeout(() => {
+              isShowingErrorRef.current = false;
+            }, ERROR_COOLDOWN_MS);
+
+            // 1. ネットワークレベルのエラー
             if (error instanceof TypeError) {
               notifications.show({
+                id: 'global-error',
                 title: '通信エラー',
-                message: 'サーバーに接続できませんでした。ネットワーク環境をご確認ください。',
-                color: 'red',
-                autoClose: 2000,
+                message: 'サーバーに接続できませんでした。時間をおいて再度お試しください。',
+                color: 'gray',
+                autoClose: ERROR_AUTOCLOSE_MS,
                 withCloseButton: false,
                 radius: 'md',
                 styles: {
@@ -49,11 +64,11 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
               return;
             }
 
-            // 2. HTTPステータス付きのエラー（apiClient.tsで設定)
+            // 2. HTTPステータス付きのエラー
             const status: number | undefined = error.status;
             if (status) {
               const fallbackMessage =
-                DEFAULT_ERROR_MESSAGES[status] ?? 'エラーが発生しました。';
+                DEFAULT_ERROR_MESSAGES[status] ?? 'エラーが発生しました。時間をおいて再度お試しください。';
 
               const messageFromError =
                 error.message && typeof error.message === 'string'
@@ -63,10 +78,11 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
               const finalMessage = messageFromError || fallbackMessage;
 
               notifications.show({
+                id: 'global-error',
                 title: `エラー (${status})`,
                 message: finalMessage,
-                color: 'red',
-                autoClose: 2000,
+                color: 'gray',
+                autoClose: ERROR_AUTOCLOSE_MS,
                 withCloseButton: false,
                 radius: 'md',
                 styles: {
@@ -79,10 +95,11 @@ export const ErrorProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
             // 3. それ以外のエラー
             notifications.show({
+              id: 'global-error',
               title: 'エラー',
-              message: error?.message ?? '不明なエラーが発生しました。',
-              color: 'red',
-              autoClose: 2000,
+              message: error?.message ?? '処理に失敗しました。時間をおいて再度お試しください。',
+              color: 'gray',
+              autoClose: ERROR_AUTOCLOSE_MS,
               withCloseButton: false,
               radius: 'md',
               styles: {

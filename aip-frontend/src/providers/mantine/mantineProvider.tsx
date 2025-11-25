@@ -39,7 +39,7 @@ export const CustomMantineProvider: React.FC<CustomMantineProviderProps> = ({ ch
         }
       }}
     >
-      <Notifications />
+      <Notifications limit={1}/>
       {children}
     </MantineProvider>
   );
