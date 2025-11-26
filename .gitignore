@@ -66,8 +66,10 @@ ila-scripts/*
 ### env
 application-prod.yml
 application-dev.yml
+application-stg.yml
 .env.production
 .env.development
+.env.stg
 
 ## Firebase
 aip-backend/src/main/resources/firebase-service-account.json
