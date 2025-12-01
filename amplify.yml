@@ -4,11 +4,12 @@ applications:
       phases:
         preBuild:
           commands:
-            - aws s3 cp s3://aip-amplify/.env.stg .env.stg
+            - echo "ENV=$ENV"
+            - aws s3 cp s3://aip-amplify/.env.$ENV .env.$ENV
             - npm ci --cache .npm --prefer-offline
         build:
           commands:
-            - NODE_ENV=stg npm run build
+            - NODE_ENV=$ENV npm run build
       artifacts:
         baseDirectory: .next
         files:
