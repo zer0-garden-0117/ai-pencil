@@ -4,28 +4,31 @@ phases:
   install:
     runtime-versions:
       java: corretto17
+    commands:
+      - echo "Install docker-compose..."
+      - curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      - chmod +x /usr/local/bin/docker-compose
+      - docker-compose version
+
   pre_build:
     commands:
-      - echo "Navigating to the backend directory..."
-      - cd aip-backend
-      - echo "Installing dependencies..."
-      - ./gradlew clean
-      - aws s3 cp s3://aip-backend-ci/application-prod.yml src/main/resources/application-prod.yml
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login \
+          --username AWS \
+          --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+      - aws s3 cp s3://aip-codebuild/application-$ENV.yml src/main/resources/application-$ENV.yml
   build:
     commands:
-      - echo "Building the backend..."
+      - echo Building the SpringBoot project...
       - ./gradlew build -x test
+      - echo Building the Docker image...
+      - aws s3 cp s3://aip-codebuild/docker-compose.$ENV.yml ./
+      - docker-compose -f docker-compose.$ENV.yml build
   post_build:
     commands:
-      - echo "Build completed, preparing artifacts..."
-      - mkdir -p ../build-output
-      - cp build/libs/*.war ../build-output/
-      - cp ../codedeploy/appspec.yml ../build-output/
-      - cp -r ../codedeploy/scripts/*.sh ../build-output/
-
-artifacts:
-  files:
-    - build-output/**
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker-compose -f docker-compose.$ENV.yml push
 
 cache:
   paths:
