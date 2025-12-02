@@ -73,3 +73,10 @@ application-stg.yml
 
 ## Firebase
 aip-backend/src/main/resources/firebase-service-account.json
+
+# Docker
+docker-compose.stg.yml
+docker-compose.prd.yml
+docker-deploy.sh
+docker-ls.sh
+docker-start.sh
