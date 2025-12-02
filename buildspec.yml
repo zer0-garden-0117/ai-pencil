@@ -13,15 +13,15 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login \
-          --username AWS \
-          --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-      - aws s3 cp s3://aip-codebuild/application-$ENV.yml src/main/resources/application-$ENV.yml
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
   build:
     commands:
       - echo Building the SpringBoot project...
+      - cd aip-backend
+      - aws s3 cp s3://aip-codebuild/application-$ENV.yml src/main/resources/application-$ENV.yml
       - ./gradlew build -x test
       - echo Building the Docker image...
+      - cd ..
       - aws s3 cp s3://aip-codebuild/docker-compose.$ENV.yml ./
       - docker-compose -f docker-compose.$ENV.yml build
   post_build:
