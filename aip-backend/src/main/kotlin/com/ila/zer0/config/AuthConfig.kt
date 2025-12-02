@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity
-@Profile("prod", "dev", "test")
+@Profile("prod", "dev", "test", "stg")
 class AuthConfig(
     private val firebaseAuth: FirebaseAuth,
     @Value("\${security.paths.no-bearer-token}") private val noBearerTokenPathAndMethodString: String,
