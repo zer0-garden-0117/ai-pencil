@@ -5,7 +5,7 @@ applications:
         preBuild:
           commands:
             - echo "ENV=$ENV"
-            - aws s3 cp s3://aip-amplify/.env.$ENV .env.$ENV
+            - aws s3 cp s3://aip-amplify/.env.$ENV .env
             - npm ci --cache .npm --prefer-offline
         build:
           commands:
