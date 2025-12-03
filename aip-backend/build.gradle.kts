@@ -145,7 +145,7 @@ tasks.named("processResources") {
 
 // プロファイルの設定
 tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
-    systemProperty("spring.profiles.active", "prod")
+    systemProperty("spring.profiles.active", "prd")
 }
 tasks.register<org.springframework.boot.gradle.tasks.run.BootRun>("bootRunDev") {
     doFirst {

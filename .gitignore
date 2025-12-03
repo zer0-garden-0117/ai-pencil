@@ -64,7 +64,7 @@ ila-scripts/*
 *.p12
 
 ### env
-application-prod.yml
+application-prd.yml
 application-dev.yml
 application-stg.yml
 .env.production
