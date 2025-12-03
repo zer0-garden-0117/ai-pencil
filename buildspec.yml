@@ -19,6 +19,7 @@ phases:
       - echo Building the SpringBoot project...
       - cd aip-backend
       - aws s3 cp s3://aip-codebuild/application-$ENV.yml src/main/resources/application-$ENV.yml
+      - aws s3 cp s3://aip-codebuild/$ENV.firebase-service-account.json src/main/resources/firebase-service-account.json
       - ./gradlew build -x test
       - echo Building the Docker image...
       - cd ..
