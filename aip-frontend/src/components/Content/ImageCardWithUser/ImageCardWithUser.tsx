@@ -30,58 +30,76 @@ export const ImageCardWithUser = ({ data }: ImageCardWithUserProps) => {
     <Card p="md" radius="md" withBorder>
       {/* 画像 + アイコン（重畳） */}
       <Card.Section>
-        <AspectRatio ratio={1 / Math.sqrt(2)}>
-          <Box pos="relative" w="100%" h="100%">
-            <Skeleton
-              visible={!imgLoaded || data?.apiWork?.thumbnailImgUrl === ''}
-              h="100%"
+      <AspectRatio ratio={1 / Math.sqrt(2)}>
+        <Box pos="relative" w="100%" h="100%">
+          <Skeleton
+            visible={!imgLoaded || data?.apiWork?.thumbnailImgUrl === ''}
+            h="100%"
+            w="100%"
+            radius="sm"
+          >
+            <Image
+              src={data?.apiWork?.thumbnailImgUrl}
+              alt={data?.apiWork?.mainTitle || 'Image without title'}
+              style={{
+                width: '100%',
+                height: '100%',
+                opacity: imgLoaded ? 1 : 0,
+                transition: 'opacity 200ms ease',
+                cursor: 'pointer',
+              }}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgLoaded(true)}
+              loading="lazy"
+              onClick={() => {
+                data?.apiWork?.status === 'posted'
+                  ? router.push(`/illust/${data?.apiWork?.workId}`)
+                  : router.push(`/illust/history/${data?.apiWork?.workId}`);
+              }}
+            />
+          </Skeleton>
+
+          {/* 下部 半透明グレー帯 */}
+          {data?.apiWork?.customUserId && (
+            <Box
+              pos="absolute"
+              bottom={0}
+              left={0}
               w="100%"
-              radius="sm"
+              h={56}
+              style={{
+                background:
+                  'linear-gradient(to top, rgba(0,0,0,0.45), rgba(0,0,0,0))',
+                pointerEvents: 'none',
+                zIndex: 1,
+              }}
+            />
+          )}
+
+          {/* アイコン（グレー帯の上） */}
+          {data?.apiWork?.customUserId && (
+            <Box
+              pos="absolute"
+              bottom={8}
+              left={8}
+              style={{
+                zIndex: 2,
+              }}
             >
-              <Image
-                src={data?.apiWork?.thumbnailImgUrl}
-                alt={data?.apiWork?.mainTitle || 'Image without title'}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  opacity: imgLoaded ? 1 : 0,
-                  transition: 'opacity 200ms ease',
-                  cursor: 'pointer',
-                }}
-                onLoad={() => setImgLoaded(true)}
-                onError={() => setImgLoaded(true)}
-                loading="lazy"
+              <SkeltonIcon
+                profileImageUrl={data?.apiWork?.profileImageUrl}
+                width={48}
+                height={48}
+                marginTop={0}
+                isClickable
                 onClick={() => {
-                  data?.apiWork?.status === 'posted'
-                    ? router.push(`/illust/${data?.apiWork?.workId}`)
-                    : router.push(`/illust/history/${data?.apiWork?.workId}`);
+                  router.push(`/user/${data.apiWork!.customUserId}`);
                 }}
               />
-            </Skeleton>
-
-            {data?.apiWork?.customUserId && (
-              <Box
-                pos="absolute"
-                bottom={8}
-                left={8}
-                style={{
-                  zIndex: 2,
-                }}
-              >
-                <SkeltonIcon
-                  profileImageUrl={data?.apiWork?.profileImageUrl}
-                  width={48}
-                  height={48}
-                  marginTop={0}
-                  isClickable
-                  onClick={() => {
-                    router.push(`/user/${data.apiWork!.customUserId}`);
-                  }}
-                />
-              </Box>
-            )}
-          </Box>
-        </AspectRatio>
+            </Box>
+          )}
+        </Box>
+      </AspectRatio>
       </Card.Section>
     </Card>
   );
