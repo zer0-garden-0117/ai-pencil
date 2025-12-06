@@ -1,13 +1,9 @@
 import {
-  ActionIcon,
   AspectRatio,
   Card,
   Flex,
-  Group,
   Image,
   Skeleton,
-  Space,
-  Text,
   Box
 } from '@mantine/core';
 import { useRouter } from 'next/navigation';
@@ -31,6 +27,14 @@ export const ImageCardWithUser = ({ data }: ImageCardWithUserProps) => {
   const likedProfileImageUrls = data?.apiWork?.likedProfileImageUrls
     ? data.apiWork.likedProfileImageUrls.split(',')
     : [];
+  const likedCustomUserIds = data?.apiWork?.likedCustomUserIds
+    ? data.apiWork.likedCustomUserIds.split(',')
+    : [];
+  const likedUsers = likedUserIds.map((userId, index) => ({
+    userId,
+    customUserId: likedCustomUserIds[index],
+    profileImageUrl: likedProfileImageUrls[index],
+  }));
 
   return (
     <Card p="md" radius="md" withBorder>
@@ -106,72 +110,33 @@ export const ImageCardWithUser = ({ data }: ImageCardWithUserProps) => {
           )}
 
           {/* いいねしたユーザーのアイコン（グレー帯の上） */}
-          {data?.apiWork?.customUserId && (
-            <Box
-              pos="absolute"
-              bottom={8}
-              right={8}
-              style={{
-                zIndex: 2,
-              }}
-            >
-              <SkeltonIcon
-                profileImageUrl={data?.apiWork?.profileImageUrl}
-                width={48}
-                height={48}
-                marginTop={0}
-                isClickable
-                onClick={() => {
-                  router.push(`/user/${data.apiWork!.customUserId}`);
-                }}
-              />
+          {likedUsers.length > 0 && (
+            <Box pos="absolute" bottom={8} right={8} style={{ zIndex: 2 }}>
+              <Flex direction="row-reverse" gap={0}>
+                {likedUsers
+                  .slice(0, 3)
+                  .map(({ userId, profileImageUrl, customUserId }, index) => (
+                    <Box
+                      key={`${userId}-${index}`}
+                      style={{
+                        marginRight: index === 0 ? 0 : -30,
+                        zIndex: 10 - index,
+                      }}
+                    >
+                      <SkeltonIcon
+                        profileImageUrl={profileImageUrl}
+                        width={48}
+                        height={48}
+                        isClickable
+                        onClick={() => {
+                          router.push(`/user/${customUserId}`);
+                        }}
+                      />
+                    </Box>
+                  ))}
+              </Flex>
             </Box>
           )}
-
-          {data?.apiWork?.customUserId && (
-            <Box
-              pos="absolute"
-              bottom={8}
-              right={20}
-              style={{
-                zIndex: 2,
-              }}
-            >
-              <SkeltonIcon
-                profileImageUrl={data?.apiWork?.profileImageUrl}
-                width={48}
-                height={48}
-                marginTop={0}
-                isClickable
-                onClick={() => {
-                  router.push(`/user/${data.apiWork!.customUserId}`);
-                }}
-              />
-            </Box>
-          )}
-
-          {data?.apiWork?.customUserId && (
-            <Box
-              pos="absolute"
-              bottom={8}
-              right={32}
-              style={{
-                zIndex: 2,
-              }}
-            >
-              <SkeltonIcon
-                profileImageUrl={data?.apiWork?.profileImageUrl}
-                width={48}
-                height={48}
-                marginTop={0}
-                isClickable
-                onClick={() => {
-                  router.push(`/user/${data.apiWork!.customUserId}`);
-                }}
-              />
-            </Box>
-          )}
-
         </Box>
       </AspectRatio>
       </Card.Section>

@@ -97,6 +97,10 @@ ApiWork:
       type: string
       description: いいねしたユーザーID一覧（カンマ区切り）
       example: xxxxx
+    likedCustomUserIds:
+      type: string
+      description: いいねしたカスタムユーザーID一覧（カンマ区切り）
+      example: xxxxx
     likedProfileImageUrls:
       type: string
       description: いいねしたユーザーアイコン画像一覧（カンマ区切り）

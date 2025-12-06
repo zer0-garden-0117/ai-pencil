@@ -20,7 +20,9 @@ export const SkeltonIcon: React.FC<
         borderRadius: '50%',
         overflow: 'hidden',
         marginTop: marginTop,
+        border: '1px solid var(--mantine-color-gray-5)',
         cursor: isClickable ? 'pointer' : 'default',
+        zIndex: 2,
       }}
       // onClickはisClickableがtrueかつ!profileImageUrl || isUserDataLoadingがfalseの場合のみ有効化
       onClick={isClickable ? onClick : undefined}

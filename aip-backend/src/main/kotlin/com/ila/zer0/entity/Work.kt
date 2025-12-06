@@ -97,6 +97,9 @@ data class Work(
     @get:DynamoDbAttribute("likedUserIds")
     var likedUserIds: String = "",
 
+    @get:DynamoDbAttribute("likedCustomUserIds")
+    var likedCustomUserIds: String = "",
+
     @get:DynamoDbAttribute("likedProfileImageUrls")
     var likedProfileImageUrls: String = "",
 )

@@ -130,21 +130,35 @@ class WorkManagerService(
             }
         }
 
-        // work.likedUserIdsからlikedProfileImageUrlsを設定
+        // worksのwork.likedUserIdsを全てlikedUserIdsListにまとめて取得
+        val likedUserIdsLists = mutableListOf<String>()
         works.forEach { work ->
-            val likedUserIds = work.likedUserIds
-            // likedUserIdsはカンマ区切りの文字列なので分割してリストに変換
-            val likedUserIdList = if (likedUserIds.isEmpty()) {
-                listOf<String>()
-            } else {
-                likedUserIds.split(",")
+            val likedUserIdsList = work.likedUserIds.split(",").toMutableList()
+            likedUserIdsList.forEach { userId ->
+                // userIdが空文字でない場合のみ追加
+                if (userId.isNotEmpty()) {
+                    // 重複を避けるため、既に含まれていない場合のみ追加
+                    if (!likedUserIdsLists.contains(userId)) {
+                        likedUserIdsLists.add(userId)
+                    }
+                }
             }
-            // likedUserIdListを使ってS3のプロフィール画像URLを生成
-            // S3のURLは、https://aip-backend-dev.s3.amazonaws.com/profileImage/{userId}.png
-            val likedProfileImageUrls = likedUserIdList.map { userId ->
-                "https://aip-backend-dev.s3.amazonaws.com/profileImage/$userId.png"
+        }
+        val likedUsers = userRepository.findByUserIds(likedUserIdsLists)
+
+        // likedUserIdsからlikedCustomUserIds, likedProfileImageUrlsを取得して作品に紐付け
+        works.forEach { work ->
+            val likedUserIdsList = work.likedUserIds.split(",").toMutableList()
+            val likedCustomUserIds = mutableListOf<String>()
+            val likedProfileImageUrls = mutableListOf<String>()
+            likedUserIdsList.forEach { userId ->
+                val likedUser = likedUsers.find { it.userId == userId }
+                likedUser?.let {
+                    likedCustomUserIds.add(it.customUserId)
+                    likedProfileImageUrls.add(it.profileImageUrl)
+                }
             }
-            // likedProfileImageUrlsはS3のURLを,で連結した文字列に変換してworkに設定
+            work.likedCustomUserIds = likedCustomUserIds.joinToString(",")
             work.likedProfileImageUrls = likedProfileImageUrls.joinToString(",")
         }
         return WorksWithSearchResult(works, tagResult.totalCount)
