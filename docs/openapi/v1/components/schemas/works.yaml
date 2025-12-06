@@ -93,6 +93,14 @@ ApiWork:
       type: string
       description: ユーザーアイコン画像
       example: xxxxx
+    likedUserIds:
+      type: string
+      description: いいねしたユーザーID一覧（カンマ区切り）
+      example: xxxxx
+    likedProfileImageUrls:
+      type: string
+      description: いいねしたユーザーアイコン画像一覧（カンマ区切り）
+      example: xxxxx
 
 ApiTag:
   description: タグ

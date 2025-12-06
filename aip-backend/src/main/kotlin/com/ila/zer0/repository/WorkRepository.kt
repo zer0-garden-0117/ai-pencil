@@ -129,9 +129,27 @@ class WorkRepository(
         }
     }
 
-    fun addLikes(workId: String): Work {
+    fun addLikes(workId: String, userId: String): Work {
         val existingWork = findByWorkId(workId)
+
+        // 現在の likedUserIds を分解
+        val currentUserIds = existingWork.likedUserIds
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        // すでに含まれている場合は何もしない
+        if (currentUserIds.contains(userId)) {
+            return existingWork
+        }
+
         existingWork.likes += 1
+        // likedUserIds は最大10件まで保存
+        if (currentUserIds.size < 10) {
+            val newUserIds = currentUserIds + userId
+            existingWork.likedUserIds = newUserIds.joinToString(",")
+        }
+
         return try {
             table.updateItem { req ->
                 req.item(existingWork)
@@ -143,9 +161,19 @@ class WorkRepository(
         }
     }
 
-    fun deleteLikes(workId: String): Work {
+    fun deleteLikes(workId: String, userId: String): Work {
         val existingWork = findByWorkId(workId)
-        existingWork.likes -= 1
+
+        // likedUserIds から userId を除外
+        val currentUserIds = existingWork.likedUserIds
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        val newUserIds = currentUserIds.filterNot { it == userId }
+        existingWork.likedUserIds = newUserIds.joinToString(",")
+        existingWork.likes = (existingWork.likes - 1).coerceAtLeast(0)
+
         return try {
             table.updateItem { req ->
                 req.item(existingWork)

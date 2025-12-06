@@ -25,6 +25,12 @@ interface ImageCardWithUserProps {
 export const ImageCardWithUser = ({ data }: ImageCardWithUserProps) => {
   const router = useRouter();
   const [imgLoaded, setImgLoaded] = React.useState(false);
+  const likedUserIds = data?.apiWork?.likedUserIds
+    ? data.apiWork.likedUserIds.split(',')
+    : [];
+  const likedProfileImageUrls = data?.apiWork?.likedProfileImageUrls
+    ? data.apiWork.likedProfileImageUrls.split(',')
+    : [];
 
   return (
     <Card p="md" radius="md" withBorder>
@@ -76,7 +82,7 @@ export const ImageCardWithUser = ({ data }: ImageCardWithUserProps) => {
             />
           )}
 
-          {/* アイコン（グレー帯の上） */}
+          {/* 投稿ユーザーのアイコン（グレー帯の上） */}
           {data?.apiWork?.customUserId && (
             <Box
               pos="absolute"
@@ -98,6 +104,74 @@ export const ImageCardWithUser = ({ data }: ImageCardWithUserProps) => {
               />
             </Box>
           )}
+
+          {/* いいねしたユーザーのアイコン（グレー帯の上） */}
+          {data?.apiWork?.customUserId && (
+            <Box
+              pos="absolute"
+              bottom={8}
+              right={8}
+              style={{
+                zIndex: 2,
+              }}
+            >
+              <SkeltonIcon
+                profileImageUrl={data?.apiWork?.profileImageUrl}
+                width={48}
+                height={48}
+                marginTop={0}
+                isClickable
+                onClick={() => {
+                  router.push(`/user/${data.apiWork!.customUserId}`);
+                }}
+              />
+            </Box>
+          )}
+
+          {data?.apiWork?.customUserId && (
+            <Box
+              pos="absolute"
+              bottom={8}
+              right={20}
+              style={{
+                zIndex: 2,
+              }}
+            >
+              <SkeltonIcon
+                profileImageUrl={data?.apiWork?.profileImageUrl}
+                width={48}
+                height={48}
+                marginTop={0}
+                isClickable
+                onClick={() => {
+                  router.push(`/user/${data.apiWork!.customUserId}`);
+                }}
+              />
+            </Box>
+          )}
+
+          {data?.apiWork?.customUserId && (
+            <Box
+              pos="absolute"
+              bottom={8}
+              right={32}
+              style={{
+                zIndex: 2,
+              }}
+            >
+              <SkeltonIcon
+                profileImageUrl={data?.apiWork?.profileImageUrl}
+                width={48}
+                height={48}
+                marginTop={0}
+                isClickable
+                onClick={() => {
+                  router.push(`/user/${data.apiWork!.customUserId}`);
+                }}
+              />
+            </Box>
+          )}
+
         </Box>
       </AspectRatio>
       </Card.Section>

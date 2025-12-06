@@ -409,14 +409,14 @@ class UserManagerService(
     @Transactional
     fun registerUsersLiked(userId: String, workId: String): Liked {
         val liked = likedService.registerLiked(userId, workId)
-        workService.addLikedToWork(workId)
+        workService.addLikedToWork(workId, userId)
         return liked
     }
 
     @Transactional
     fun deleteUsersLiked(userId: String, workId: String): Liked {
         val liked =  likedService.deleteLiked(userId, workId)
-        workService.deleteLikedToWork(workId)
+        workService.deleteLikedToWork(workId, userId)
         return liked
     }
 

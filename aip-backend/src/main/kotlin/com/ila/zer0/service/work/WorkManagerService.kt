@@ -129,6 +129,24 @@ class WorkManagerService(
                 work.profileImageUrl = user.profileImageUrl
             }
         }
+
+        // work.likedUserIdsからlikedProfileImageUrlsを設定
+        works.forEach { work ->
+            val likedUserIds = work.likedUserIds
+            // likedUserIdsはカンマ区切りの文字列なので分割してリストに変換
+            val likedUserIdList = if (likedUserIds.isEmpty()) {
+                listOf<String>()
+            } else {
+                likedUserIds.split(",")
+            }
+            // likedUserIdListを使ってS3のプロフィール画像URLを生成
+            // S3のURLは、https://aip-backend-dev.s3.amazonaws.com/profileImage/{userId}.png
+            val likedProfileImageUrls = likedUserIdList.map { userId ->
+                "https://aip-backend-dev.s3.amazonaws.com/profileImage/$userId.png"
+            }
+            // likedProfileImageUrlsはS3のURLを,で連結した文字列に変換してworkに設定
+            work.likedProfileImageUrls = likedProfileImageUrls.joinToString(",")
+        }
         return WorksWithSearchResult(works, tagResult.totalCount)
     }
 
@@ -157,6 +175,10 @@ class WorkManagerService(
                 work.profileImageUrl = user.profileImageUrl
             }
         }
+
+        // いいねしたuserIdを取得
+//        val userIds = likedService.findByWorkId()
+
         return WorksWithSearchResult(works, tagResult.totalCount)
     }
 

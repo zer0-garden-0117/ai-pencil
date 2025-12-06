@@ -41,12 +41,12 @@ class WorkService(
         return workRepository.deleteWorkById(workId)
     }
 
-    fun addLikedToWork(workId: String): Work {
-        return workRepository.addLikes(workId)
+    fun addLikedToWork(workId: String, userId: String): Work {
+        return workRepository.addLikes(workId, userId)
     }
 
-    fun deleteLikedToWork(workId: String): Work {
-        return workRepository.deleteLikes(workId)
+    fun deleteLikedToWork(workId: String, userId: String): Work {
+        return workRepository.deleteLikes(workId, userId)
     }
 
     fun addRatingToWork(workId: String, oldRate: Int?, newRate: Int): Work {
