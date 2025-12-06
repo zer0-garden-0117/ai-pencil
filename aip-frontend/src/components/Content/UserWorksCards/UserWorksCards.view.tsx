@@ -7,6 +7,7 @@ import { UsersWorksGetResult } from "@/apis/openapi/publicworks/usePublicWorksBy
 import { PublicWorksUserFilterTypeQueryParam } from './UserWorksCards.hook';
 import { CreateCard } from '../CreateCard/CreateCard';
 import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
+import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
 
 type UserWorkCardsViewProps = {
   page: number;
@@ -49,7 +50,7 @@ export const UserWorkCardsView = memo(function WorkViewComponent({
       <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 4, xl: 4 }} spacing={{ base: 20 }}>
         {!userWorksData &&
           Array.from({ length: 12 }).map((_, idx) => (
-            <ImageCard key={idx} data={{}} index={idx} />
+            <ImageCardWithUser key={idx} data={{}} index={idx} />
           ))
         }
         {/* userWorksFilterTypeがpostedかつ、customUserIdがuser.customUserIdと等しい場合はCreateCardを表示 */}
@@ -57,7 +58,7 @@ export const UserWorkCardsView = memo(function WorkViewComponent({
           <CreateCard />
         )}
         {userWorksData?.works?.map((work, idx) => (
-          <ImageCard key={work.apiWork?.workId} data={work} index={idx} />
+          <ImageCardWithUser key={work.apiWork?.workId} data={work} index={idx} />
         ))}
       </SimpleGrid>
     </Card>

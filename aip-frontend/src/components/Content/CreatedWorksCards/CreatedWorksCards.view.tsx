@@ -5,6 +5,7 @@ import { Card, Group, Pagination, SimpleGrid, Skeleton, Space, Text } from '@man
 import { ImageCard } from '@/components/Content/ImageCard/ImageCard';
 import { UsersWorksGetResult } from "@/apis/openapi/publicworks/usePublicWorksByUserIdAndFilterGet";
 import { useFirebaseAuthContext } from '@/providers/auth/firebaseAuthProvider';
+import { ImageCardWithUser } from '../ImageCardWithUser/ImageCardWithUser';
 
 type CreatedWorksCardsViewProps = {
   page: number;
@@ -40,11 +41,11 @@ export const CreatedWorksCardsView = memo(function WorkViewComponent({
       <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 4, xl: 4 }} spacing={{ base: 20 }}>
         {!userWorksData &&
           Array.from({ length: 12 }).map((_, idx) => (
-            <ImageCard key={idx} data={{}} index={idx} />
+            <ImageCardWithUser key={idx} data={{}} index={idx} />
           ))
         }
         {userWorksData?.works?.map((work, idx) => (
-          <ImageCard key={work.apiWork?.workId} data={work} index={idx} />
+          <ImageCardWithUser key={work.apiWork?.workId} data={work} index={idx} />
         ))}
       </SimpleGrid>
     </Card>
