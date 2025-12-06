@@ -71,7 +71,7 @@ export const PostedWorkView = memo(function PostedWorkViewComponent({
 
   return (
     <>
-      <Card withBorder>
+      <Card p={0}>
         <Grid justify="center" style={{ marginTop: '20px', marginBottom: '20px' }}>
           {/* 画像表示 */}
           <Grid.Col span={{ base: 12, sm: 6, lg: 6 }}>

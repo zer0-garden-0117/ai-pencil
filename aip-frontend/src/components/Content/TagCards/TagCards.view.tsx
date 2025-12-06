@@ -42,7 +42,7 @@ export const TagCardsView = memo(function WorkViewComponent({
 
   return (
     <>
-      <Card withBorder padding="md" radius="md">
+      <Card padding="0" mt="xs" mb="xs">
         <Group justify="space-between">
           <Text fz="md" fw={700} mb="xs" c="blue">
             #{tag}
@@ -88,7 +88,6 @@ export const TagCardsView = memo(function WorkViewComponent({
         )}
 
         </Group>
-        <Space h="xs" />
 
         {/* newの作品 */}
         <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 4, xl: 4 }} spacing={{ base: 20 }}>

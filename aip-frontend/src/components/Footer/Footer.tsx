@@ -33,8 +33,8 @@ export const Footer: React.FC = () => {
       component="footer"
       style={(theme) => ({
         borderTop: `1px solid ${theme.colors.gray[3]}`,
-        paddingTop: theme.spacing.xl,
-        paddingBottom: theme.spacing.xl,
+        paddingTop: theme.spacing.xs,
+        paddingBottom: theme.spacing.md,
         backgroundColor: theme.colors.gray[0],
       })}
     >

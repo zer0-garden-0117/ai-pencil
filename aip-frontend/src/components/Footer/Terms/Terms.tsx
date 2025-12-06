@@ -16,7 +16,7 @@ export const Terms: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-      <Card withBorder padding="md" radius="md">
+      <Card padding="0" mt="xs" mb="md">
         <Stack gap="lg">
           {/* 見出し */}
           <div>

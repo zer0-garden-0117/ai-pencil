@@ -30,14 +30,13 @@ export const FilterWorkCardsView = memo(function WorkViewComponent({
   return (
     <>
         <Group justify="space-between">
-          <Text fz="md" fw={700} mb="xs">
+          <Text fz="md" fw={700} mb="xs" mt="xs">
             {/* filterTypeによって表示切替 */}
             {filterType === "new" && "新着投稿"}
             {filterType === "random" && "ランダム"}
             {filterType === "recommended" && "おすすめ"}
           </Text>
         </Group>
-        <Space h="xs" />
 
         {/* newの作品 */}
         <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 4, xl: 4 }} spacing={{ base: 20 }}>

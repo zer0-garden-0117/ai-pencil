@@ -33,7 +33,7 @@ export const CreateWorkView = memo(function WorkViewComponent({
   const isPromptEmpty = !form.values.prompt?.trim();
 
   return (
-    <Card withBorder padding="md" radius="md">
+    <Card padding="0" mt="xs" mb="xs">
       <Group justify="space-between">
         <Text fz="md" fw={700}>
           イラストの生成

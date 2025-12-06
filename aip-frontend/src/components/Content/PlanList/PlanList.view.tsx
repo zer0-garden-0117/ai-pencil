@@ -29,19 +29,16 @@ export const PlanListView = memo(function WorkViewComponent({
   const isFreeUser = user?.plan === 'Free';
 
   return (
-    <Card withBorder p="lg" radius="lg">
+    <Card p="0" mt="xs">
       <Group justify="space-between" align="flex-start">
         <div>
-          <Text fz="lg" fw={700}>
+          <Text fz="md" fw={700}>
             サブスクリプションの購入
           </Text>
           <Text fz="sm" c="dimmed" mt={4}>
-            生成回数や履歴保存を増やして、AIイラスト体験をもっと快適に。
+            生成回数や履歴保存を増やして、AIイラストの生成をもっと快適に！
           </Text>
         </div>
-        <Badge variant="outline" radius="xl">
-          いつでも解約OK
-        </Badge>
       </Group>
 
       <Space h="md" />
@@ -55,6 +52,7 @@ export const PlanListView = memo(function WorkViewComponent({
             <Card
               key={plan.id}
               shadow={isRecommended ? 'md' : 'xs'}
+              pt="xs"
               p="lg"
               radius="lg"
               withBorder
@@ -73,21 +71,16 @@ export const PlanListView = memo(function WorkViewComponent({
                   <Text fz="lg" fw={800}>
                     {plan.name}
                   </Text>
-                  {plan.id === 'free' && (
-                    <Text fz="xs" c="dimmed">
-                      はじめての方向けのお試しプラン
-                    </Text>
-                  )}
                 </div>
 
                 {isRecommended && (
                   <Badge
                     leftSection={<IconSparkles size={14} />}
-                    color="orange"
+                    color="cyan"
                     radius="xl"
                     variant="filled"
                   >
-                    人気 No.1
+                    おすすめ
                   </Badge>
                 )}
               </Group>
@@ -102,9 +95,11 @@ export const PlanListView = memo(function WorkViewComponent({
                   円 / 月
                 </Text>
               </Group>
-              <Text fz="xs" c="dimmed" mb="sm">
-                ※税込 / 自動更新・いつでもキャンセル可能
-              </Text>
+              {plan.id === 'basic' && (
+                <Text fz="xs" c="dimmed" mb="sm">
+                  ※税込 / 自動更新（いつでも解約可能）
+                </Text>
+              )}
 
               {/* メリット（箇条書き） */}
               <Stack gap={6} mb="md">
@@ -140,46 +135,39 @@ export const PlanListView = memo(function WorkViewComponent({
                 {plan.id !== 'free' && (
                   <List spacing={4} mt="xs" fz="xs" c="dimmed">
                     <List.Item icon={<IconPhoto size={14} />}>
-                      お気に入りのプロンプトをいつでも呼び出し
+                      生成履歴の保存日数を+27日間延長
                     </List.Item>
                     <List.Item icon={<IconMoneybag size={14} />}>
-                      Freeに比べて圧倒的に多くの枚数を生成
+                      画像生成数を+12枚/日増加
                     </List.Item>
                     <List.Item icon={<IconSparkles size={14} />}>
-                      集中的に創作したい日にも安心の枚数
+                      AIイラスト生成の優先サポート
                     </List.Item>
                   </List>
                 )}
               </Stack>
 
               {/* 購入ボタン */}
+              {/* plan.idがfreeの場合はボタンを表示しない */}
+              {plan.id !== 'free' && user && (
               <Center mt="md">
-                {/* plan.idがfreeの場合はボタンを表示しない */}
-                {plan.id !== 'free' && user && (
-                  <Button
-                    radius="xl"
-                    size="md"
-                    fullWidth
-                    onClick={
-                      isFreeUser
-                        ? () => handleSubscriptionClick(plan.id)
-                        : () => handleSubscriptionChangeClick()
-                    }
-                    variant={isRecommended ? 'filled' : 'light'}
-                  >
-                    {isFreeUser
-                      ? `${plan.name} を選ぶ`
-                      : '現在のプランを変更する'}
-                  </Button>
-                )}
-
-                {/* 未ログインユーザー向けの導線（任意）：ログインしていない時に表示 */}
-                {plan.id !== 'free' && !user && (
-                  <Text fz="xs" c="dimmed">
-                    ログインするとこのプランを申し込めます
-                  </Text>
-                )}
+                <Button
+                  radius="xl"
+                  size="md"
+                  fullWidth
+                  onClick={
+                    isFreeUser
+                      ? () => handleSubscriptionClick(plan.id)
+                      : () => handleSubscriptionChangeClick()
+                  }
+                  variant={isRecommended ? 'filled' : 'light'}
+                >
+                  {isFreeUser
+                    ? `${plan.name} を購入`
+                    : '現在のプランを変更する'}
+                </Button>
               </Center>
+              )}
             </Card>
           );
         })}

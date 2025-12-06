@@ -35,25 +35,16 @@ export const BoostListView = memo(function WorkViewComponent({
   const { user } = useFirebaseAuthContext();
 
   return (
-    <Card withBorder p="lg" radius="lg">
+    <Card p="0" mt="xs" mb="xs">
       <Group justify="space-between" align="flex-start">
         <div>
-          <Text fz="lg" fw={700}>
+          <Text fz="md" fw={700}>
             ブースト（買い切り型）の購入
           </Text>
           <Text fz="sm" c="dimmed" mt={4}>
-            生成枚数を一時的に増やせます。少し多めに生成したいに便利です。
+             1回きり・自動更新なし。一時的に少し多めに生成したい時に便利です。
           </Text>
         </div>
-        <Badge
-          color="pink"
-          variant="gradient"
-          gradient={{ from: 'pink', to: 'orange', deg: 67 }}
-          radius="xl"
-          leftSection={<IconRocket size={14} />}
-        >
-          1回きり・自動更新なし
-        </Badge>
       </Group>
 
       <Space h="md" />
@@ -76,6 +67,7 @@ export const BoostListView = memo(function WorkViewComponent({
             <Card
               key={boostData.id}
               shadow={isRecommended ? 'md' : 'xs'}
+              pt="xs"
               p="lg"
               radius="lg"
               withBorder
@@ -91,11 +83,6 @@ export const BoostListView = memo(function WorkViewComponent({
               {/* プラン名 + おすすめバッジ */}
               <Group justify="space-between" mb="sm" align="flex-start">
                 <Group gap="xs">
-                  <IconRocket
-                    size={22}
-                    style={{ transform: 'translateY(1px)' }}
-                    color="var(--mantine-color-blue-6)"
-                  />
                   <div>
                     <Text fz="lg" fw={800}>
                       {boostData.name}
@@ -112,7 +99,7 @@ export const BoostListView = memo(function WorkViewComponent({
                     radius="xl"
                     leftSection={<IconSparkles size={14} />}
                   >
-                    おすすめブースト
+                    おすすめ
                   </Badge>
                 )}
               </Group>
@@ -190,23 +177,19 @@ export const BoostListView = memo(function WorkViewComponent({
               </Stack>
 
               {/* 購入ボタン */}
+              { user && (
               <Center mt="md">
-                {user ? (
-                  <Button
-                    radius="xl"
-                    size="md"
-                    fullWidth
-                    onClick={() => handleAddClick(boostData.id)}
-                    variant={isRecommended ? 'filled' : 'light'}
-                  >
-                    今すぐブーストする
-                  </Button>
-                ) : (
-                  <Text fz="xs" c="dimmed">
-                    ログインするとブーストを購入できます
-                  </Text>
-                )}
+                <Button
+                  radius="xl"
+                  size="md"
+                  fullWidth
+                  onClick={() => handleAddClick(boostData.id)}
+                  variant={isRecommended ? 'filled' : 'light'}
+                >
+                  今すぐブーストする
+                </Button>
               </Center>
+              )}
             </Card>
           );
         })}

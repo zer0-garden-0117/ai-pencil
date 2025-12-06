@@ -8,7 +8,7 @@ export const TopCards: React.FC = () => {
   const { user } = useFirebaseAuthContext();
 
   return (
-    <Card withBorder>
+    <Card p="0">
       <FilterWorkCards filterType="new" />
       <Space h="md" />
       {/* userが存在する場合のみ表示 */}

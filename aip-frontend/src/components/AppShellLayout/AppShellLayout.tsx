@@ -1,6 +1,6 @@
 'use client';
 
-import { AppShell, Loader, Center, Space } from '@mantine/core';
+import { AppShell, Loader, Center, Space, Divider } from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { Header } from '../Header/Header';
 import { useTranslations } from "next-intl";
@@ -67,8 +67,9 @@ export const AppShellLayout: React.FC<{ children: React.ReactNode }> = ({
         <Header setLoading={setLoading} />
       </AppShell.Header>
       <AppShell.Main>
+        <Divider/>
         {children}
-        <Space h="xl" />
+        <Space h="xs" />
         <Footer />
       </AppShell.Main>
     </AppShell>

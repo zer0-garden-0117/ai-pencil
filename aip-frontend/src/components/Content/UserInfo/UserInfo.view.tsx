@@ -102,7 +102,7 @@ export const UserInfoView = memo(function WorkViewComponent({
 
   return (
     <>
-      <Card withBorder padding="xl" radius="md">
+      <Card padding="0">
         <Card.Section>
           <AspectRatio ratio={6 / 1} mah={140}>
             <Skeleton
